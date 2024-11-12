@@ -247,47 +247,78 @@
 </footer>
     <script src="js/script.js"></script>
     <script>
-        function updateHarga() {
-            const layanan = document.getElementById("service").value;
-            const hargaDisplay = document.getElementById("harga");
-            let harga = 0;
-            if (layanan === "deep-clean") harga = 35000;
-            else if (layanan === "fast-clean") harga = 15000;
-            else if (layanan === "repaint") harga = 150000;
-            else if (layanan === "unyellowing") harga = 45000;
-            else if (layanan === "repair-sol") harga = 70000;
-            else if (layanan === "whitening") harga = 50000;
-            else if (layanan === "leather-care") harga = 40000;
-            else if (layanan === "reglue") harga = 70000;
-            hargaDisplay.textContent = "Rp " + harga.toLocaleString();
-        }
+// Fungsi untuk mendapatkan parameter dari URL
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
 
-        function handleSubmit(event) {
-            event.preventDefault();
-            document.getElementById("successMessage").style.display = "block";
-        }
-    </script>
-<script>
-    // Fungsi untuk mendapatkan parameter dari URL
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
+// Mapping harga untuk setiap layanan
+const servicesPrices = {
+    'fast-clean': 15000,
+    'deep-clean': 35000,
+    'unyellowing': 45000,
+    'repaint': 150000,
+    'repair-sol': 70000,
+    'whitening': 50000,
+    'leather-care': 40000,
+    'reglue': 70000
+};
 
-    // Fungsi untuk mengatur nilai select saat halaman dimuat
-    window.onload = function() {
-        var serviceParam = getUrlParameter('service');
-        if (serviceParam) {
-            var serviceSelect = document.getElementById('service');
-            if (serviceSelect) {
-                serviceSelect.value = serviceParam;
-                // Trigger event change untuk memperbarui harga
-                updateHarga();
-            }
+// Mapping nilai layanan untuk select option
+const servicesMapping = {
+    'fast-clean': '2',
+    'deep-clean': '1',
+    'unyellowing': '3',
+    'repaint': '4',
+    'repair-sol': '5',
+    'whitening': '6',
+    'leather-care': '7',
+    'reglue': '8'
+};
+
+// Fungsi untuk mengatur nilai select dan harga saat halaman dimuat
+window.onload = function() {
+    var serviceParam = getUrlParameter('service');
+    if (serviceParam) {
+        var serviceSelect = document.getElementById('service');
+        var totalInput = document.getElementById('total');
+        
+        if (serviceSelect && totalInput) {
+            // Set nilai select option berdasarkan mapping
+            serviceSelect.value = servicesMapping[serviceParam];
+            
+            // Set nilai harga
+            totalInput.value = servicesPrices[serviceParam];
         }
     }
+}
+
+// Fungsi untuk update harga ketika layanan dipilih dari dropdown
+function updateHarga() {
+    const serviceSelect = document.getElementById('service');
+    const totalInput = document.getElementById('total');
+    
+    // Mapping ID ke harga
+    const priceMapping = {
+        '1': 35000,  // Deep Clean
+        '2': 15000,  // Fast Clean
+        '3': 45000,  // Unyellowing
+        '4': 150000, // Repaint
+        '5': 70000,  // Repair Soles
+        '6': 50000,  // Whitening
+        '7': 40000,  // Leather Care
+        '8': 70000   // Reglue
+    };
+    
+    const selectedValue = serviceSelect.value;
+    if (selectedValue && totalInput) {
+        totalInput.value = priceMapping[selectedValue];
+    }
+}
+    
 </script>
 </body>
 </html>

@@ -1,32 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
-    <!DOCTYPE html> 
-    <html lang="id"> 
-    <head> 
-        <meta charset="UTF-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <title>Exshoetic Shoes & Care</title> 
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
-        <link rel="stylesheet" href="css/kombinasi.css"> 
-        <link rel="icon" href="img/favicon.ico" type="image/x-icon"> <!-- Favicon opsional --> 
-    </head> 
-    <body> 
-        <header> 
-            <!--div id="menu-bar" class="fa fa-bars" aria-label="Menu"></div--> 
-            <a href="#" class="logo">Exshoetic</a> 
-            <nav class="navbar"> 
-                <a href="index.html" >Beranda</a> 
-                <a href="lokasi.html">Lokasi</a> 
-                <a href="layanan.html">Layanan</a> 
-                <a href="cuci.html" class="active">Cuci</a> 
-                <a href="review.html">Galeri</a> 
-            </nav> 
-            <div class="icons"> 
-                <a href="#" aria-label="Favorit"><i class="fa fa-heart"></i></a> 
-                <a href="#" aria-label="Keranjang Belanja"><i class="fa fa-shopping-cart"></i></a> 
-                <a href="#" aria-label="Profil Pengguna"><i class="fa fa-user"></i></a> 
-            </div> 
-        </header> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exshoetic Shoes & Care</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/kombinasi.css">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <style>
         .container {
             max-width: 1200px;
@@ -154,22 +134,27 @@
 </head>
 <body>
 
+    <header>
+        <a href="#" class="logo">Exshoetic</a>
+        <nav class="navbar">
+            <a href="index.html">Beranda</a>
+            <a href="lokasi.html">Lokasi</a>
+            <a href="layanan.html">Layanan</a>
+            <a href="cuci.html" class="active">Cuci</a>
+            <a href="review.html">Galeri</a>
+        </nav>
+        <div class="icons">
+            <a href="#" aria-label="Favorit"><i class="fa fa-heart"></i></a>
+            <a href="#" aria-label="Keranjang Belanja"><i class="fa fa-shopping-cart"></i></a>
+            <a href="#" aria-label="Profil Pengguna"><i class="fa fa-user"></i></a>
+        </div>
+    </header>
+
     <div class="container">
         <div class="form-container">
-            <div class="form-header">
-                <h1 class="form-title">Form Pemesanan Layanan Cuci Sepatu</h1>
-                <div class="service-highlights">
-                    <div class="highlight-item"><i class="fas fa-box"></i><span>Packing Aman</span></div>
-                    <div class="highlight-item"><i class="fas fa-truck"></i><span>Pickup & Delivery</span></div>
-                    <div class="highlight-item"><i class="fas fa-map-marker-alt"></i><span>Tracking Real-time</span></div>
-                </div>
-            </div>
-
-            <div class="success-message" id="successMessage">Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.</div>
-
+            <h1 class="form-title">Form Pemesanan Layanan Cuci Sepatu</h1>
             <form id="shoeServiceForm" action="php/proses_pemesanan.php" method="POST">
                 <div class="form-grid">
-                    <!-- Data Customer -->
                     <div class="form-group">
                         <label for="name">Nama Lengkap</label>
                         <input type="text" id="name" name="name" required>
@@ -180,10 +165,8 @@
                     </div>
                     <div class="form-group full-width">
                         <label for="address">Alamat Lengkap</label>
-                        <input type="text" id="address" name="address" placeholder="Nama Jalan, Nomor Rumah" required>
+                        <input type="text" id="address" name="address" required>
                     </div>
-            
-                    <!-- Data Pesanan -->
                     <div class="form-group">
                         <label for="service">Jenis Layanan</label>
                         <select id="service" name="treatment_id" onchange="updateHarga()" required>
@@ -202,8 +185,6 @@
                         <label for="total">Total Tagihan</label>
                         <input type="number" id="total" name="total_bill" required>
                     </div>
-            
-                    <!-- Data Pembayaran -->
                     <div class="form-group">
                         <label for="payment_method">Metode Pembayaran</label>
                         <select id="payment_method" name="payment_method" required>
@@ -217,108 +198,49 @@
                 </div>
                 <button type="submit" class="btn-submit">Kirim</button>
             </form>
-            
         </div>
     </div>
-<!-- Footer -->
-<footer> 
-    <div class="footer-content"> 
-        <div class="footer-section"> 
-            <h3>Tentang Kami</h3> 
-            <p>Exshoetic adalah mitra terpercaya Anda dalam layanan perawatan sepatu premium. Kami berkomitmen menjaga sepatu Anda agar selalu tampak terbaik.</p> 
-        </div> 
-        <div class="footer-section"> 
-            <h3>Tautan Cepat</h3> 
-            <a href="#services">Layanan</a> 
-            <a href="#home">Tentang Kami</a> <!-- Link disesuaikan dengan bagian terkait --> 
-            <a href="lokasi.html">Lokasi</a>  
-            <a href="#contact">Kontak</a>  
-        </div> 
-        <div class="footer-section">
-            <h3>Info Kontak</h3>
-            <p>Email: info@exshoetic.com</p>
-            <p>Telepon: (555) 123-4567</p>
-            <p>Alamat: Jl. Sepatu No.123, Kawasan Fashion</p>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tentang Kami</h3>
+                <p>Exshoetic adalah mitra terpercaya Anda dalam layanan perawatan sepatu premium.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Tautan Cepat</h3>
+                <a href="#services">Layanan</a>
+                <a href="#home">Tentang Kami</a>
+                <a href="lokasi.html">Lokasi</a>
+                <a href="#contact">Kontak</a>
+            </div>
+            <div class="footer-section">
+                <h3>Info Kontak</h3>
+                <p>Email: info@exshoetic.com</p>
+                <p>Telepon: (555) 123-4567</p>
+                <p>Alamat: Jl. Sepatu No.123, Kawasan Fashion</p>
+            </div>
         </div>
-    </div>
-    <div>
-        <p>Exshoetic Shoes and Care</p>
-    </div>
-</footer>
+    </footer>
+
     <script src="js/script.js"></script>
     <script>
-// Fungsi untuk mendapatkan parameter dari URL
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
-
-// Mapping harga untuk setiap layanan
-const servicesPrices = {
-    'fast-clean': 15000,
-    'deep-clean': 35000,
-    'unyellowing': 45000,
-    'repaint': 150000,
-    'repair-sol': 70000,
-    'whitening': 50000,
-    'leather-care': 40000,
-    'reglue': 70000
-};
-
-// Mapping nilai layanan untuk select option
-const servicesMapping = {
-    'fast-clean': '2',
-    'deep-clean': '1',
-    'unyellowing': '3',
-    'repaint': '4',
-    'repair-sol': '5',
-    'whitening': '6',
-    'leather-care': '7',
-    'reglue': '8'
-};
-
-// Fungsi untuk mengatur nilai select dan harga saat halaman dimuat
-window.onload = function() {
-    var serviceParam = getUrlParameter('service');
-    if (serviceParam) {
-        var serviceSelect = document.getElementById('service');
-        var totalInput = document.getElementById('total');
-        
-        if (serviceSelect && totalInput) {
-            // Set nilai select option berdasarkan mapping
-            serviceSelect.value = servicesMapping[serviceParam];
-            
-            // Set nilai harga
-            totalInput.value = servicesPrices[serviceParam];
+        // Fungsi JavaScript untuk update harga
+        function updateHarga() {
+            const serviceSelect = document.getElementById('service');
+            const totalInput = document.getElementById('total');
+            const priceMapping = {
+                '1': 35000,
+                '2': 15000,
+                '3': 45000,
+                '4': 150000,
+                '5': 70000,
+                '6': 50000,
+                '7': 40000,
+                '8': 70000
+            };
+            totalInput.value = priceMapping[serviceSelect.value] || '';
         }
-    }
-}
-
-// Fungsi untuk update harga ketika layanan dipilih dari dropdown
-function updateHarga() {
-    const serviceSelect = document.getElementById('service');
-    const totalInput = document.getElementById('total');
-    
-    // Mapping ID ke harga
-    const priceMapping = {
-        '1': 35000,  // Deep Clean
-        '2': 15000,  // Fast Clean
-        '3': 45000,  // Unyellowing
-        '4': 150000, // Repaint
-        '5': 70000,  // Repair Soles
-        '6': 50000,  // Whitening
-        '7': 40000,  // Leather Care
-        '8': 70000   // Reglue
-    };
-    
-    const selectedValue = serviceSelect.value;
-    if (selectedValue && totalInput) {
-        totalInput.value = priceMapping[selectedValue];
-    }
-}
-    
-</script>
+    </script>
 </body>
 </html>

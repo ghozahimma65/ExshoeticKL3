@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Nov 2024 pada 17.32
--- Versi server: 8.1.0
--- Versi PHP: 8.1.17
+-- Generation Time: Nov 12, 2024 at 08:05 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,31 +24,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
-  `Username` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Nama` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `Password` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `Username` varchar(12) NOT NULL,
+  `Nama` varchar(20) NOT NULL,
+  `Password` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `customer`
+-- Table structure for table `customer`
 --
 
 CREATE TABLE `customer` (
-  `Customer_ID` int NOT NULL,
-  `Nama` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `No_Hp` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Alamat` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `ID_Pesanan` int NOT NULL
+  `Customer_ID` int(11) NOT NULL,
+  `Nama` varchar(255) NOT NULL,
+  `No_Hp` varchar(255) NOT NULL,
+  `Alamat` varchar(255) NOT NULL,
+  `ID_Pesanan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `customer`
+-- Dumping data for table `customer`
 --
 
 INSERT INTO `customer` (`Customer_ID`, `Nama`, `No_Hp`, `Alamat`, `ID_Pesanan`) VALUES
@@ -63,32 +63,43 @@ INSERT INTO `customer` (`Customer_ID`, `Nama`, `No_Hp`, `Alamat`, `ID_Pesanan`) 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detail_pesanan`
+-- Table structure for table `detail_pesanan`
 --
 
 CREATE TABLE `detail_pesanan` (
-  `DetailPesanan_ID` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `ID_Pesanan` int NOT NULL,
-  `Customer_ID` int NOT NULL,
-  `Pembayaran_ID` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `DetailPesanan_ID` varchar(255) NOT NULL,
+  `ID_Pesanan` int(11) NOT NULL,
+  `Customer_ID` int(11) NOT NULL,
+  `Pembayaran_ID` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pembayaran`
+-- Table structure for table `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `Invoice ID` varchar(11) NOT NULL,
+  `Merk Sepatu` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembayaran`
 --
 
 CREATE TABLE `pembayaran` (
-  `Pembayaran_ID` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `ID_Pesanan` int NOT NULL,
+  `Pembayaran_ID` varchar(255) NOT NULL,
+  `ID_Pesanan` int(11) NOT NULL,
   `Tanggal_Pembayaran` date NOT NULL,
-  `Metode_Pembayaran` enum('BRI','Mandiri','BCA','DANA','ShopeePay','SeaBank','COD','QRIS') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Total_Tagihan` int NOT NULL
+  `Metode_Pembayaran` enum('BRI','Mandiri','BCA','DANA','ShopeePay','SeaBank','COD','QRIS') NOT NULL,
+  `Total_Tagihan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pembayaran`
+-- Dumping data for table `pembayaran`
 --
 
 INSERT INTO `pembayaran` (`Pembayaran_ID`, `ID_Pesanan`, `Tanggal_Pembayaran`, `Metode_Pembayaran`, `Total_Tagihan`) VALUES
@@ -103,19 +114,19 @@ INSERT INTO `pembayaran` (`Pembayaran_ID`, `ID_Pesanan`, `Tanggal_Pembayaran`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pesanan`
+-- Table structure for table `pesanan`
 --
 
 CREATE TABLE `pesanan` (
-  `ID_Pesanan` int NOT NULL,
+  `ID_Pesanan` int(11) NOT NULL,
   `Tanggal_Pesanan` date NOT NULL,
-  `Treatment_ID` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Total_Tagihan` int NOT NULL,
-  `Status` enum('Diambil','Proses','Diantar','Selesai') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `Treatment_ID` varchar(11) NOT NULL,
+  `Total_Tagihan` int(11) NOT NULL,
+  `Status` enum('Diambil','Proses','Diantar','Selesai') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pesanan`
+-- Dumping data for table `pesanan`
 --
 
 INSERT INTO `pesanan` (`ID_Pesanan`, `Tanggal_Pesanan`, `Treatment_ID`, `Total_Tagihan`, `Status`) VALUES
@@ -130,19 +141,19 @@ INSERT INTO `pesanan` (`ID_Pesanan`, `Tanggal_Pesanan`, `Treatment_ID`, `Total_T
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `treatmen`
+-- Table structure for table `treatmen`
 --
 
 CREATE TABLE `treatmen` (
-  `Treatment_ID` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
-  `Nama_Treatment` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `Deskripsi` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Treatment_ID` varchar(11) NOT NULL,
+  `Nama_Treatment` varchar(20) NOT NULL,
+  `Deskripsi` varchar(255) NOT NULL,
   `Harga` decimal(27,0) DEFAULT NULL,
-  `Estimasi` varchar(225) COLLATE utf8mb4_general_ci NOT NULL
+  `Estimasi` varchar(225) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `treatmen`
+-- Dumping data for table `treatmen`
 --
 
 INSERT INTO `treatmen` (`Treatment_ID`, `Nama_Treatment`, `Deskripsi`, `Harga`, `Estimasi`) VALUES
@@ -161,20 +172,20 @@ INSERT INTO `treatmen` (`Treatment_ID`, `Nama_Treatment`, `Deskripsi`, `Harga`, 
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`Username`);
 
 --
--- Indeks untuk tabel `customer`
+-- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`Customer_ID`),
   ADD KEY `ID_Pesanan` (`ID_Pesanan`);
 
 --
--- Indeks untuk tabel `detail_pesanan`
+-- Indexes for table `detail_pesanan`
 --
 ALTER TABLE `detail_pesanan`
   ADD PRIMARY KEY (`DetailPesanan_ID`),
@@ -183,70 +194,70 @@ ALTER TABLE `detail_pesanan`
   ADD KEY `Pembayaran_ID` (`Pembayaran_ID`);
 
 --
--- Indeks untuk tabel `pembayaran`
+-- Indexes for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
   ADD PRIMARY KEY (`Pembayaran_ID`),
   ADD KEY `ID_Pesanan` (`ID_Pesanan`);
 
 --
--- Indeks untuk tabel `pesanan`
+-- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
   ADD PRIMARY KEY (`ID_Pesanan`),
   ADD KEY `Treatment_ID` (`Treatment_ID`);
 
 --
--- Indeks untuk tabel `treatmen`
+-- Indexes for table `treatmen`
 --
 ALTER TABLE `treatmen`
   ADD PRIMARY KEY (`Treatment_ID`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `customer`
+-- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `Customer_ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT untuk tabel `pesanan`
+-- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `ID_Pesanan` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1008;
+  MODIFY `ID_Pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1008;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `customer`
+-- Constraints for table `customer`
 --
 ALTER TABLE `customer`
-  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `detail_pesanan`
+-- Constraints for table `detail_pesanan`
 --
 ALTER TABLE `detail_pesanan`
-  ADD CONSTRAINT `detail_pesanan_ibfk_1` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `detail_pesanan_ibfk_2` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`Customer_ID`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  ADD CONSTRAINT `detail_pesanan_ibfk_3` FOREIGN KEY (`Pembayaran_ID`) REFERENCES `pembayaran` (`Pembayaran_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `detail_pesanan_ibfk_1` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `detail_pesanan_ibfk_2` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`Customer_ID`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `detail_pesanan_ibfk_3` FOREIGN KEY (`Pembayaran_ID`) REFERENCES `pembayaran` (`Pembayaran_ID`) ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `pembayaran`
+-- Constraints for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  ADD CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `pesanan`
+-- Constraints for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  ADD CONSTRAINT `pesanan_ibfk_1` FOREIGN KEY (`Treatment_ID`) REFERENCES `treatmen` (`Treatment_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+  ADD CONSTRAINT `pesanan_ibfk_1` FOREIGN KEY (`Treatment_ID`) REFERENCES `treatmen` (`Treatment_ID`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

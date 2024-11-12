@@ -1,87 +1,46 @@
 <?php
-require_once 'database.php';
+// Konfigurasi koneksi database
+$host = 'localhost';
+$user = 'root';
+$password = '';
+$dbname = 'esac';
 
-// Fungsi untuk membersihkan input
-function cleanInput($data) {
-    global $conn;
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $conn->real_escape_string($data);
+$conn = new mysqli($host, $user, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Mengambil data dari form
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Data customer
-    $nama = cleanInput($_POST['name']);
-    $no_hp = cleanInput($_POST['phone']);
-    $alamat = cleanInput($_POST['address']);
-    
-    // Data pesanan
-    $treatment_id = intval(cleanInput($_POST['treatment_id']));
-    $total_tagihan = floatval(cleanInput($_POST['total_bill']));
-    $metode_pembayaran = cleanInput($_POST['payment_method']);
-    
-    try {
-        // Mulai transaksi
-        $conn->begin_transaction();
-        
-        // Insert data ke tabel customer
-        $query_customer = "INSERT INTO customer (Nama, No_HP, Alamat) VALUES (?, ?, ?)";
-        $stmt_customer = $conn->prepare($query_customer);
-        $stmt_customer->bind_param("sss", $nama, $no_hp, $alamat);
-        
-        if (!$stmt_customer->execute()) {
-            throw new Exception("Error saat menyimpan data customer: " . $stmt_customer->error);
-        }
-        
-        // Ambil ID customer yang baru saja di-insert
-        $customer_id = $conn->insert_id;
-        
-        // Insert data ke tabel pesanan
-        $query_pesanan = "INSERT INTO pesanan (Customer_ID, Treatment_ID, Total_Tagihan) VALUES (?, ?, ?)";
-        $stmt_pesanan = $conn->prepare($query_pesanan);
-        $stmt_pesanan->bind_param("iid", $customer_id, $treatment_id, $total_tagihan);
-        
-        if (!$stmt_pesanan->execute()) {
-            throw new Exception("Error saat menyimpan data pesanan: " . $stmt_pesanan->error);
-        }
-        
-        // Ambil ID pesanan yang baru saja di-insert
+// Menerima data dari form
+$nama = $_POST['name'];
+$no_hp = $_POST['phone'];
+$alamat = $_POST['address'];
+$treatmen_id = $_POST['treatment_id'];
+$total_tagihan = $_POST['total_bill'];
+$metode_pembayaran = $_POST['payment_method'];
+
+// Query untuk menyimpan data ke tabel Customer
+$queryCustomer = "INSERT INTO Customer (Nama, No_HP, Alamat) VALUES ('$nama', '$no_hp', '$alamat')";
+if ($conn->query($queryCustomer) === TRUE) {
+    $customer_id = $conn->insert_id;
+
+    // Query untuk menyimpan data ke tabel Pesanan
+    $queryPesanan = "INSERT INTO Pesanan (Tanggal_Pesanan, Treatmen_ID, Total_Tagihan, Status) VALUES (NOW(), '$treatmen_id', '$total_tagihan', 'Menunggu')";
+    if ($conn->query($queryPesanan) === TRUE) {
         $pesanan_id = $conn->insert_id;
-        
-        // Insert data ke tabel pembayaran
-        $query_pembayaran = "INSERT INTO pembayaran (Pesanan_ID, Metode_Pembayaran, Total_Tagihan) VALUES (?, ?, ?)";
-        $stmt_pembayaran = $conn->prepare($query_pembayaran);
-        $stmt_pembayaran->bind_param("isd", $pesanan_id, $metode_pembayaran, $total_tagihan);
-        
-        if (!$stmt_pembayaran->execute()) {
-            throw new Exception("Error saat menyimpan data pembayaran: " . $stmt_pembayaran->error);
+
+        // Query untuk menyimpan data ke tabel Pembayaran
+        $queryPembayaran = "INSERT INTO Pembayaran (Pesanan_ID, Tanggal_Pembayaran, Metode_Pembayaran, Total_Tagihan) VALUES ('$pesanan_id', NOW(), '$metode_pembayaran', '$total_tagihan')";
+        if ($conn->query($queryPembayaran) === TRUE) {
+            echo json_encode(["status" => "success", "message" => "Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda."]);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
         }
-        
-        // Commit transaksi
-        $conn->commit();
-        
-        // Redirect ke halaman sukses
-        header("Location: ../success.html");
-        exit();
-        
-    } catch (Exception $e) {
-        // Rollback transaksi jika terjadi error
-        $conn->rollback();
-        
-        // Tampilkan error (untuk debugging, bisa dihapus di production)
-        echo "Error: " . $e->getMessage();
-        
-        // Redirect ke halaman error
-        header("Location: ../error.html");
-        exit();
-    } finally {
-        // Tutup statement dan koneksi
-        if (isset($stmt_customer)) $stmt_customer->close();
-        if (isset($stmt_pesanan)) $stmt_pesanan->close();
-        if (isset($stmt_pembayaran)) $stmt_pembayaran->close();
-        $conn->close();
+    } else {
+        echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
     }
+} else {
+    echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
 }
+$conn->close();
 ?>

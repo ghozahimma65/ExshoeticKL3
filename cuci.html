@@ -1,158 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exshoetic Shoes & Care</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/kombinasi.css">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <style>
-        .container {
-            max-width: 1200px;
-            margin: 80px auto 2rem;
-            padding: 0 1rem;
-        }
-        .form-container {
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .form-title {
-            font-size: 1.6rem;
-            color: #333;
-            font-weight: 600;
-            font-family: "Arial", sans-serif;
-            margin-bottom: 0.75rem;
-        }
-        .service-highlights {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .highlight-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #444;
-            font-size: 0.85rem;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-        .address-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.4rem;
-            color: #555;
-            font-weight: 500;
-            font-size: 0.85rem;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 2px rgba(13,110,253,0.2);
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .btn-submit {
-            background: #0d6efd;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            padding: 0.8rem 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s;
-        }
-        .btn-submit:hover {
-            background: #0b5ed7;
-            transform: translateY(-2px);
-        }
-        .success-message {
-            display: none;
-            background: #e6f4ea;
-            border: 1px solid #34a853;
-            color: #1e8e3e;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1.25rem;
-            text-align: center;
-        }
-        .price-display {
-            font-size: 1.1rem;
-            color: #333;
-            font-weight: bold;
-            margin-top: 0.5rem;
-        }
-        @media (max-width: 768px) {
-            .form-grid, .address-grid {
-                grid-template-columns: 1fr;
-            }
-            .form-group.full-width {
-                grid-column: span 1;
-            }
-            .service-highlights {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-        }
-    </style>
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Exshoetic Shoes & Care</title> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="css/kombinasi.css"> 
+    <link rel="stylesheet" href="css/cuci.css"> 
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon"> <!-- Favicon opsional --> 
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">Exshoetic</a>
-        <nav class="navbar">
-            <a href="index.html">Beranda</a>
-            <a href="lokasi.html">Lokasi</a>
-            <a href="layanan.html">Layanan</a>
-            <a href="cuci.html" class="active">Cuci</a>
-            <a href="review.html">Galeri</a>
-        </nav>
-        <div class="icons">
-            <a href="#" aria-label="Favorit"><i class="fa fa-heart"></i></a>
-            <a href="#" aria-label="Keranjang Belanja"><i class="fa fa-shopping-cart"></i></a>
-            <a href="#" aria-label="Profil Pengguna"><i class="fa fa-user"></i></a>
-        </div>
+    <header> 
+        <a href="#" class="logo">Exshoetic</a> 
+        <nav class="navbar"> 
+            <a href="index.html" >Beranda</a> 
+            <a href="lokasi.html">Lokasi</a> 
+            <a href="layanan.html">Layanan</a> 
+            <a href="cuci.html" class="active">Cuci</a> 
+            <a href="review.html">Galeri</a> 
+        </nav> 
+        <div class="icons"> 
+            <a href="#" aria-label="Favorit"><i class="fa fa-heart"></i></a> 
+            <a href="#" aria-label="Keranjang Belanja"><i class="fa fa-shopping-cart"></i></a> 
+            <a href="#" aria-label="Profil Pengguna"><i class="fa fa-user"></i></a> 
+        </div> 
     </header>
 
     <div class="container">
         <div class="form-container">
-            <h1 class="form-title">Form Pemesanan Layanan Cuci Sepatu</h1>
+            <div class="form-header">
+                <h1 class="form-title">Form Pemesanan Layanan Cuci Sepatu</h1>
+                <div class="service-highlights">
+                    <div class="highlight-item"><i class="fas fa-box"></i><span>Packing Aman</span></div>
+                    <div class="highlight-item"><i class="fas fa-truck"></i><span>Pickup & Delivery</span></div>
+                    <div class="highlight-item"><i class="fas fa-map-marker-alt"></i><span>Tracking Real-time</span></div>
+                </div>
+            </div>
+
+            <div class="success-message" id="successMessage">Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.</div>
+
             <form id="shoeServiceForm" action="php/proses_pemesanan.php" method="POST">
                 <div class="form-grid">
                     <div class="form-group">
@@ -165,8 +52,9 @@
                     </div>
                     <div class="form-group full-width">
                         <label for="address">Alamat Lengkap</label>
-                        <input type="text" id="address" name="address" required>
+                        <input type="text" id="address" name="address" placeholder="Nama Jalan, Nomor Rumah" required>
                     </div>
+            
                     <div class="form-group">
                         <label for="service">Jenis Layanan</label>
                         <select id="service" name="treatment_id" onchange="updateHarga()" required>
@@ -185,6 +73,7 @@
                         <label for="total">Total Tagihan</label>
                         <input type="number" id="total" name="total_bill" required>
                     </div>
+            
                     <div class="form-group">
                         <label for="payment_method">Metode Pembayaran</label>
                         <select id="payment_method" name="payment_method" required>
@@ -201,19 +90,19 @@
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Tentang Kami</h3>
-                <p>Exshoetic adalah mitra terpercaya Anda dalam layanan perawatan sepatu premium.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Tautan Cepat</h3>
-                <a href="#services">Layanan</a>
-                <a href="#home">Tentang Kami</a>
-                <a href="lokasi.html">Lokasi</a>
-                <a href="#contact">Kontak</a>
-            </div>
+    <footer> 
+        <div class="footer-content"> 
+            <div class="footer-section"> 
+                <h3>Tentang Kami</h3> 
+                <p>Exshoetic adalah mitra terpercaya Anda dalam layanan perawatan sepatu premium. Kami berkomitmen menjaga sepatu Anda agar selalu tampak terbaik.</p> 
+            </div> 
+            <div class="footer-section"> 
+                <h3>Tautan Cepat</h3> 
+                <a href="#services">Layanan</a> 
+                <a href="#home">Tentang Kami</a> 
+                <a href="lokasi.html">Lokasi</a>  
+                <a href="#contact">Kontak</a>  
+            </div> 
             <div class="footer-section">
                 <h3>Info Kontak</h3>
                 <p>Email: info@exshoetic.com</p>
@@ -221,11 +110,14 @@
                 <p>Alamat: Jl. Sepatu No.123, Kawasan Fashion</p>
             </div>
         </div>
+        <div>
+            <p>Exshoetic Shoes and Care</p>
+        </div>
     </footer>
 
     <script src="js/script.js"></script>
     <script>
-        // Fungsi JavaScript untuk update harga
+        // Javascript untuk mengatur harga layanan
         function updateHarga() {
             const serviceSelect = document.getElementById('service');
             const totalInput = document.getElementById('total');
@@ -242,5 +134,87 @@
             totalInput.value = priceMapping[serviceSelect.value] || '';
         }
     </script>
+    <script>
+        // Mengambil elemen form dan pesan sukses
+        const form = document.getElementById("shoeServiceForm");
+        const successMessage = document.getElementById("successMessage");
+    
+        // Fungsi untuk mengirim form menggunakan AJAX
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Mencegah refresh halaman
+    
+            const formData = new FormData(form);
+    
+            // Mengirim data ke PHP menggunakan fetch API
+            fetch("php/proses_pemesanan.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    // Menampilkan pesan sukses
+                    successMessage.style.display = "block";
+                    successMessage.textContent = data.message;
+    
+                    // Mengosongkan form
+                    form.reset();
+    
+                    // Sembunyikan pesan sukses setelah beberapa detik
+                    setTimeout(() => {
+                        successMessage.style.display = "none";
+                    }, 5000);
+                } else {
+                    alert(data.message); // Tampilkan pesan error jika ada
+                }
+            })
+            .catch(error => {
+                alert("Terjadi kesalahan saat mengirim pesanan. Silakan coba lagi.");
+                console.error("Error:", error);
+            });
+        });
+    </script> 
+    <script> 
+        // Fungsi untuk mendapatkan parameter dari URL
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+// Fungsi untuk mengatur layanan berdasarkan parameter URL
+function setServiceFromUrl() {
+    const serviceParam = getUrlParameter('service');
+    if (!serviceParam) return;
+
+    const serviceSelect = document.getElementById('service');
+    if (!serviceSelect) return;
+
+    // Mapping URL parameter ke value pada select option
+    const serviceMapping = {
+        'fast-clean': '2',
+        'deep-clean': '1',
+        'unyellowing': '3',
+        'repaint': '4',
+        'repair-sol': '5',
+        'whitening': '6',
+        'leather-care': '7',
+        'reglue': '8'
+    };
+
+    const serviceValue = serviceMapping[serviceParam];
+    if (serviceValue) {
+        serviceSelect.value = serviceValue;
+        // Trigger event change untuk mengupdate harga
+        updateHarga();
+    }
+}
+
+// Jalankan fungsi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    setServiceFromUrl();
+});
+    </script> 
 </body>
 </html>

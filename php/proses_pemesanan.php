@@ -26,14 +26,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         case 'reglue': $harga = 70000; break;
     }
 
-    // Query untuk menyimpan data ke database
-    $query = "INSERT INTO pesanan_sepatu (nama_pelanggan, no_telepon, jenis_layanan, jenis_sepatu, ukuran_sepatu, alamat_lengkap, kota, kecamatan, kode_pos, catatan, harga) 
-              VALUES ('$nama', '$telepon', '$jenis_layanan', '$jenis_sepatu', '$ukuran_sepatu', '$alamat', '$kota', '$kecamatan', '$kode_pos', '$catatan', '$harga')";
+    // Insert data ke tabel pelanggan
+    $query_pelanggan = "INSERT INTO pelanggan (nama_pelanggan, no_telepon) VALUES ('$nama', '$telepon')";
+    if ($conn->query($query_pelanggan) === TRUE) {
+        // Ambil id_pelanggan yang baru saja dimasukkan
+        $id_pelanggan = $conn->insert_id;
 
-    if ($conn->query($query) === TRUE) {
-        echo "<script>alert('Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.'); window.location.href = '../cuci.html';</script>";
+        // Insert data ke tabel pesanan_sepatu
+        $query_pesanan = "INSERT INTO pesanan_sepatu (id_pelanggan, jenis_layanan, jenis_sepatu, ukuran_sepatu, alamat_lengkap, kota, kecamatan, kode_pos, catatan, harga) 
+                          VALUES ('$id_pelanggan', '$jenis_layanan', '$jenis_sepatu', '$ukuran_sepatu', '$alamat', '$kota', '$kecamatan', '$kode_pos', '$catatan', '$harga')";
+
+        if ($conn->query($query_pesanan) === TRUE) {
+            echo "<script>alert('Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.'); window.location.href = '../cuci.html';</script>";
+        } else {
+            echo "<script>alert('Gagal mengirim pesanan: " . $conn->error . "'); window.history.back();</script>";
+        }
     } else {
-        echo "<script>alert('Gagal mengirim pesanan: " . $conn->error . "'); window.history.back();</script>";
+        echo "<script>alert('Gagal menyimpan data pelanggan: " . $conn->error . "'); window.history.back();</script>";
     }
 
     $conn->close();

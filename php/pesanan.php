@@ -3,7 +3,7 @@
 $host = 'localhost';
 $user = 'root';
 $password = '';
-$dbname = 'exshoetic'; // Sesuaikan dengan nama database Anda
+$dbname = 'exshoetic_db'; // Sesuaikan dengan nama database Anda
 
 $conn = new mysqli($host, $user, $password, $dbname);
 

@@ -3,7 +3,7 @@
 include 'database.php';
 
 // Query untuk mengambil data customer
-$sql = "SELECT Nama_Treatment, Treatment_ID, Deskripsi, Harga, Estimasi FROM treatmen";
+$sql = "SELECT Nama, No_Hp AS Telepon, Alamat, ID_Pesanan FROM customer";
 $result = $conn->query($sql);
 ?>
 
@@ -230,7 +230,7 @@ $result = $conn->query($sql);
     transform: scale(1.05);
     }
 
-      /* Warna khusus untuk ikon di kolom aksi */
+    /* Warna khusus untuk ikon di kolom aksi */
 .text-yellow-500 {
     color: #f59e0b; /* Warna kuning */
 }
@@ -324,6 +324,7 @@ $result = $conn->query($sql);
   transform: scale(1.05);
 }
 
+
   </style>
 </head>
 <body>
@@ -339,8 +340,8 @@ $result = $conn->query($sql);
         <i class="fas fa-database"></i> Data Master
       </a>
       <ul id="data-master" class="show">
-        <li><a href="customer.php" ><i class="fas fa-users"></i>Customer</a></li>
-        <li><a href="treatment.php"class="active"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
+        <li><a href="customer.php" class="active"><i class="fas fa-users"></i>Customer</a></li>
+        <li><a href="treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
     </li>
     <li style="--i:2">
@@ -366,50 +367,51 @@ $result = $conn->query($sql);
 
 <!-- Content -->
 <div class="content" id="content">
-  <h1 class="page-title">Data Treatment</h1>
+  <h1 class="page-title">Data Customer</h1>
   <a href="../admin.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
-  <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Treatment</a>
+  <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
 
-<input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Treatment dan Deskripsi" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
+  <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, Telepon, atau Alamat" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
   <div class="table-container">
     <table>
       <thead>
         <tr>
           <th>No</th>
-          <th>Nama Treatment</th>
-          <th>ID</th>
-          <th>Deskripsi</th>
-          <th>Harga</th>
-          <th>Estimasi</th>
+          <th>Nama</th>
+          <th>Telepon</th>
+          <th>Alamat</th>
+          <th>ID Pesanan</th>
           <th>Aksi</th>
+
+      
        
         </tr>
       </thead>
-      <tbody id="TreatmentTable">
+      <tbody  id="customerTable">
         <?php
         if ($result->num_rows > 0) {
             $no = 1;
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>
                         <td>{$no}</td>
-                        <td>{$row['Nama_Treatment']}</td>
-                        <td>{$row['Treatment_ID']}</td>
-                        <td>{$row['Deskripsi']}</td>
-                        <td>{$row['Harga']}</td>
-                        <td>{$row['Estimasi']}</td>
-
-                                      <td class='p-3'>
-    <a href='detail.php?id={$row['Treatment_ID']}' class='action-button detail'><i class='fas fa-info-circle'></i> </a>
-    <a href='edit.php?id={$row['Treatment_ID']}' class='action-button edit'><i class='fas fa-edit'></i> </a>
-    <a href='delete.php?id={$row['Treatment_ID']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
+                        <td>{$row['Nama']}</td>
+                        <td>{$row['Telepon']}</td>
+                        <td>{$row['Alamat']}</td>
+                        <td>{$row['ID_Pesanan']}</td>
+               <td class='p-3'>
+    <a href='detail.php?id={$row['ID_Pesanan']}' class='action-button detail'><i class='fas fa-info-circle'></i> </a>
+    <a href='edit.php?id={$row['ID_Pesanan']}' class='action-button edit'><i class='fas fa-edit'></i> </a>
+    <a href='delete.php?id={$row['ID_Pesanan']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
 </td>
+
+
                    
                       </tr>";
                 $no++;
             }
         } else {
-            echo "<tr><td colspan='6' style='text-align: center;'>Data treatment tidak ditemukan</td></tr>";
+            echo "<tr><td colspan='6' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
         }
         ?>
       </tbody>
@@ -458,21 +460,20 @@ $result = $conn->query($sql);
   // Fungsi pencarian
   function searchFunction() {
     const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.getElementById("TreatmentTable").getElementsByTagName("tr");
+    const rows = document.getElementById("customerTable").getElementsByTagName("tr");
 
     for (let i = 0; i < rows.length; i++) {
-        const namaTreatment = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
-        const deskripsi = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
+      const nama = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
+      const telepon = rows[i].getElementsByTagName("td")[2]?.innerText.toLowerCase() || "";
+      const alamat = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
 
-        if (namaTreatment.includes(input) || deskripsi.includes(input)) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
-        }
+      if (nama.includes(input) || telepon.includes(input) || alamat.includes(input)) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
     }
-}
-
-  
+  }
 </script>
 
 </body>

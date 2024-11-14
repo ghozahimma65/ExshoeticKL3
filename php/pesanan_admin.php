@@ -369,7 +369,7 @@ $result = $conn->query($sql);
 <div class="content" id="content">
   <h1 class="page-title">Data Customer</h1>
   <a href="../admin.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
-  <a href="../input_customer.html" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
+  <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
 
   <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, Telepon, atau Alamat" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
@@ -383,6 +383,9 @@ $result = $conn->query($sql);
           <th>Alamat</th>
           <th>ID Pesanan</th>
           <th>Aksi</th>
+
+      
+       
         </tr>
       </thead>
       <tbody  id="customerTable">

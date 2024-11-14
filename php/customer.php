@@ -230,6 +230,82 @@ $result = $conn->query($sql);
     transform: scale(1.05);
     }
 
+    /* Warna khusus untuk ikon di kolom aksi */
+.text-yellow-500 {
+    color: #f59e0b; /* Warna kuning */
+}
+
+.text-yellow-700 {
+    color: #d97706; /* Warna kuning lebih gelap */
+}
+
+.text-blue-500 {
+    color: #3b82f6; /* Warna biru */
+}
+
+.text-blue-700 {
+    color: #2563eb; /* Warna biru lebih gelap */
+}
+
+.text-red-500 {
+    color: #ef4444; /* Warna merah */
+}
+
+.text-red-700 {
+    color: #dc2626; /* Warna merah lebih gelap */
+}
+
+/* Hover effects */
+.text-yellow-500:hover {
+    color: #d97706;
+}
+
+.text-blue-500:hover {
+    color: #2563eb;
+}
+
+.text-red-500:hover {
+    color: #dc2626;
+}
+/* Style untuk tombol aksi di kolom Aksi */
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.action-button.detail {
+    background-color: #f59e0b; /* Warna kuning */
+}
+
+.action-button.detail:hover {
+    background-color: #d97706;
+}
+
+.action-button.edit {
+    background-color: #3b82f6; /* Warna biru */
+}
+
+.action-button.edit:hover {
+    background-color: #2563eb;
+}
+
+.action-button.delete {
+    background-color: #ef4444; /* Warna merah */
+}
+
+.action-button.delete:hover {
+    background-color: #dc2626;
+}
+
   </style>
 </head>
 <body>
@@ -283,6 +359,9 @@ $result = $conn->query($sql);
           <th>Telepon</th>
           <th>Alamat</th>
           <th>ID Pesanan</th>
+          <th>Aksi</th>
+
+      
        
         </tr>
       </thead>
@@ -297,6 +376,13 @@ $result = $conn->query($sql);
                         <td>{$row['Telepon']}</td>
                         <td>{$row['Alamat']}</td>
                         <td>{$row['ID_Pesanan']}</td>
+               <td class='p-3'>
+    <a href='detail.php?id={$row['ID_Pesanan']}' class='action-button detail'><i class='fas fa-info-circle'></i> </a>
+    <a href='edit.php?id={$row['ID_Pesanan']}' class='action-button edit'><i class='fas fa-edit'></i> </a>
+    <a href='delete.php?id={$row['ID_Pesanan']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
+</td>
+
+
                    
                       </tr>";
                 $no++;

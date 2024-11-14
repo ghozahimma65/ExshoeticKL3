@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Nov 2024 pada 02.39
+-- Waktu pembuatan: 14 Nov 2024 pada 08.24
 -- Versi server: 8.1.0
 -- Versi PHP: 8.1.17
 
@@ -63,6 +63,19 @@ CREATE TABLE `detail_pesanan` (
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `ID_Invoice` int NOT NULL,
+  `Customer_ID` int NOT NULL,
+  `ID_Pesanan` int NOT NULL,
+  `Pembayaran_ID` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `pembayaran`
 --
 
@@ -97,6 +110,7 @@ CREATE TABLE `pesanan` (
   `ID_Pesanan` int NOT NULL,
   `Tanggal_Pesanan` date NOT NULL,
   `Treatment_ID` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Merk_Sepatu` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Total_Tagihan` int NOT NULL,
   `Status` enum('Diambil','Proses','Diantar','Selesai') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -105,14 +119,14 @@ CREATE TABLE `pesanan` (
 -- Dumping data untuk tabel `pesanan`
 --
 
-INSERT INTO `pesanan` (`ID_Pesanan`, `Tanggal_Pesanan`, `Treatment_ID`, `Total_Tagihan`, `Status`) VALUES
-(1001, '2024-11-08', 'TM003', 45000, 'Proses'),
-(1002, '2024-11-09', 'TM001', 20000, 'Selesai'),
-(1003, '2024-11-09', 'TM004', 90000, 'Selesai'),
-(1004, '2024-11-10', 'TM006', 35000, 'Diambil'),
-(1005, '2024-11-11', 'TM008', 120000, 'Diambil'),
-(1006, '2024-11-10', 'TM001', 20000, 'Proses'),
-(1007, '2024-11-10', 'TM003', 45000, 'Diambil');
+INSERT INTO `pesanan` (`ID_Pesanan`, `Tanggal_Pesanan`, `Treatment_ID`, `Merk_Sepatu`, `Total_Tagihan`, `Status`) VALUES
+(1001, '2024-11-08', 'TM003', 'Adidas - Hitam', 45000, 'Proses'),
+(1002, '2024-11-09', 'TM001', 'New Era - Putih', 20000, 'Selesai'),
+(1003, '2024-11-09', 'TM004', 'Aero Street - Hitam putih', 90000, 'Selesai'),
+(1004, '2024-11-10', 'TM006', 'Adidas - Pink', 35000, 'Diambil'),
+(1005, '2024-11-11', 'TM008', 'Bata -Hitam', 120000, 'Diambil'),
+(1006, '2024-11-10', 'TM001', 'Ventela - Merah Putih', 20000, 'Proses'),
+(1007, '2024-11-10', 'TM003', 'Ventela - Hitam', 45000, 'Diambil');
 
 -- --------------------------------------------------------
 
@@ -169,6 +183,15 @@ ALTER TABLE `detail_pesanan`
   ADD KEY `Pembayaran_ID` (`Pembayaran_ID`);
 
 --
+-- Indeks untuk tabel `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`ID_Invoice`),
+  ADD KEY `Customer_ID` (`Customer_ID`,`ID_Pesanan`),
+  ADD KEY `ID_Pesanan` (`ID_Pesanan`),
+  ADD KEY `Pembayaran_ID` (`Pembayaran_ID`);
+
+--
 -- Indeks untuk tabel `pembayaran`
 --
 ALTER TABLE `pembayaran`
@@ -221,6 +244,13 @@ ALTER TABLE `detail_pesanan`
   ADD CONSTRAINT `detail_pesanan_ibfk_1` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `detail_pesanan_ibfk_2` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`Customer_ID`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `detail_pesanan_ibfk_3` FOREIGN KEY (`Pembayaran_ID`) REFERENCES `pembayaran` (`Pembayaran_ID`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `invoice`
+--
+ALTER TABLE `invoice`
+  ADD CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`Customer_ID`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `invoice_ibfk_2` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `pembayaran`

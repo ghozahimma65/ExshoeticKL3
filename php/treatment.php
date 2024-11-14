@@ -230,6 +230,100 @@ $result = $conn->query($sql);
     transform: scale(1.05);
     }
 
+      /* Warna khusus untuk ikon di kolom aksi */
+.text-yellow-500 {
+    color: #f59e0b; /* Warna kuning */
+}
+
+.text-yellow-700 {
+    color: #d97706; /* Warna kuning lebih gelap */
+}
+
+.text-blue-500 {
+    color: #3b82f6; /* Warna biru */
+}
+
+.text-blue-700 {
+    color: #2563eb; /* Warna biru lebih gelap */
+}
+
+.text-red-500 {
+    color: #ef4444; /* Warna merah */
+}
+
+.text-red-700 {
+    color: #dc2626; /* Warna merah lebih gelap */
+}
+
+/* Hover effects */
+.text-yellow-500:hover {
+    color: #d97706;
+}
+
+.text-blue-500:hover {
+    color: #2563eb;
+}
+
+.text-red-500:hover {
+    color: #dc2626;
+}
+/* Style untuk tombol aksi di kolom Aksi */
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    color: #fff;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.action-button.detail {
+    background-color: #f59e0b; /* Warna kuning */
+}
+
+.action-button.detail:hover {
+    background-color: #d97706;
+}
+
+.action-button.edit {
+    background-color: #3b82f6; /* Warna biru */
+}
+
+.action-button.edit:hover {
+    background-color: #2563eb;
+}
+
+.action-button.delete {
+    background-color: #ef4444; /* Warna merah */
+}
+
+.action-button.delete:hover {
+    background-color: #dc2626;
+}
+
+.btn-add-customer {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+}
+
+.btn-add-customer:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
   </style>
 </head>
 <body>
@@ -274,6 +368,10 @@ $result = $conn->query($sql);
 <div class="content" id="content">
   <h1 class="page-title">Data Customer</h1>
   <a href="../admin.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
+
+<input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, Telepon, atau Alamat" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
+
   <div class="table-container">
     <table>
       <thead>
@@ -284,10 +382,11 @@ $result = $conn->query($sql);
           <th>Deskripsi</th>
           <th>Harga</th>
           <th>Estimasi</th>
+          <th>Aksi</th>
        
         </tr>
       </thead>
-      <tbody>
+      <tbody id="TreatmentTable">
         <?php
         if ($result->num_rows > 0) {
             $no = 1;
@@ -299,12 +398,18 @@ $result = $conn->query($sql);
                         <td>{$row['Deskripsi']}</td>
                         <td>{$row['Harga']}</td>
                         <td>{$row['Estimasi']}</td>
+
+                                      <td class='p-3'>
+    <a href='detail.php?id={$row['Treatment_ID']}' class='action-button detail'><i class='fas fa-info-circle'></i> </a>
+    <a href='edit.php?id={$row['Treatment_ID']}' class='action-button edit'><i class='fas fa-edit'></i> </a>
+    <a href='delete.php?id={$row['Treatment_ID']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
+</td>
                    
                       </tr>";
                 $no++;
             }
         } else {
-            echo "<tr><td colspan='6' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
+            echo "<tr><td colspan='6' style='text-align: center;'>Data treatment tidak ditemukan</td></tr>";
         }
         ?>
       </tbody>
@@ -349,6 +454,25 @@ $result = $conn->query($sql);
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('data-master').classList.add('show');
   });
+
+  // Fungsi pencarian
+  function searchFunction() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.getElementById("TreatmentTable").getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+        const namaTreatment = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
+        const deskripsi = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
+
+        if (namaTreatment.includes(input) || deskripsi.includes(input)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+}
+
+  
 </script>
 
 </body>

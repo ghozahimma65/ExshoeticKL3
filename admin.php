@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php"); // Redirect ke login jika tidak ada session
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +18,6 @@
   <link rel="stylesheet" href="css/admin.css"> 
 </head>
 <body>
-
 <div class="sidebar" id="sidebar">
   <button class="toggle-sidebar" onclick="toggleSidebar()">
     <i class="fas fa-arrow-left"></i>

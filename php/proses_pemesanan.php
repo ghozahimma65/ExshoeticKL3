@@ -15,6 +15,8 @@ if ($conn->connect_error) {
 $nama = $conn->real_escape_string($_POST['name']);
 $no_hp = $conn->real_escape_string($_POST['phone']);
 $alamat = $conn->real_escape_string($_POST['address']);
+$merk_sepatu = $conn->real_escape_string($_POST['brand']);
+$notes = $conn->real_escape_string($_POST['notes']);
 $treatment_id = 'TM00' . $conn->real_escape_string($_POST['treatment_id']); // Format sesuai database
 $total_tagihan = (int)$_POST['total_bill'];
 $metode_pembayaran = $conn->real_escape_string($_POST['payment_method']);
@@ -24,10 +26,10 @@ $conn->begin_transaction();
 
 try {
     // 1. Insert ke tabel pesanan
-    $queryPesanan = "INSERT INTO pesanan (Tanggal_Pesanan, Treatment_ID, Total_Tagihan, Status) 
-                     VALUES (NOW(), ?, ?, 'Diambil')";
+    $queryPesanan = "INSERT INTO pesanan (Tanggal_Pesanan, Treatment_ID, Merk_Sepatu, Total_Tagihan, Status, Keterangan) 
+                     VALUES (NOW(), ?, ?, ?, 'Diambil', ?)";
     $stmtPesanan = $conn->prepare($queryPesanan);
-    $stmtPesanan->bind_param("si", $treatment_id, $total_tagihan);
+    $stmtPesanan->bind_param("ssis", $treatment_id, $merk_sepatu, $total_tagihan, $notes);
     $stmtPesanan->execute();
     $id_pesanan = $conn->insert_id;
 

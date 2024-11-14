@@ -36,7 +36,7 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  color:green;
+  color:rgb(255, 255, 255);
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -246,7 +246,7 @@ $result = $conn->query($sql);
       </a>
       <ul id="data-master" class="show">
         <li><a href="customer.php" class="active"><i class="fas fa-users"></i>Customer</a></li>
-        <li><a href="#"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
+        <li><a href="treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
     </li>
     <li style="--i:2">

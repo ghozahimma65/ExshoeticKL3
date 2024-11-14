@@ -3,7 +3,7 @@
 include 'database.php';
 
 // Query untuk mengambil data customer
-$sql = "SELECT Nama, No_Hp AS Telepon, Alamat, ID_Pesanan FROM customer";
+$sql = "SELECT Nama_Treatment, Treatment_ID, Deskripsi, Harga, Estimasi FROM treatmen";
 $result = $conn->query($sql);
 ?>
 
@@ -245,8 +245,8 @@ $result = $conn->query($sql);
         <i class="fas fa-database"></i> Data Master
       </a>
       <ul id="data-master" class="show">
-        <li><a href="customer.php" class="active"><i class="fas fa-users"></i>Customer</a></li>
-        <li><a href="#"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
+        <li><a href="customer.php" ><i class="fas fa-users"></i>Customer</a></li>
+        <li><a href="treatment.php"class="active"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
     </li>
     <li style="--i:2">
@@ -279,10 +279,11 @@ $result = $conn->query($sql);
       <thead>
         <tr>
           <th>No</th>
-          <th>Nama</th>
-          <th>Telepon</th>
-          <th>Alamat</th>
-          <th>ID Pesanan</th>
+          <th>Nama_Treatment</th>
+          <th>ID</th>
+          <th>Deskripsi</th>
+          <th>Harga</th>
+          <th>Estimasi</th>
        
         </tr>
       </thead>
@@ -293,10 +294,11 @@ $result = $conn->query($sql);
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>
                         <td>{$no}</td>
-                        <td>{$row['Nama']}</td>
-                        <td>{$row['Telepon']}</td>
-                        <td>{$row['Alamat']}</td>
-                        <td>{$row['ID_Pesanan']}</td>
+                        <td>{$row['Nama_Treatment']}</td>
+                        <td>{$row['Treatment_ID']}</td>
+                        <td>{$row['Deskripsi']}</td>
+                        <td>{$row['Harga']}</td>
+                        <td>{$row['Estimasi']}</td>
                    
                       </tr>";
                 $no++;

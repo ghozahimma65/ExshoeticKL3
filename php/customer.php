@@ -383,9 +383,6 @@ $result = $conn->query($sql);
           <th>Alamat</th>
           <th>ID Pesanan</th>
           <th>Aksi</th>
-
-      
-       
         </tr>
       </thead>
       <tbody  id="customerTable">

@@ -7,14 +7,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href="css/kombinasi.css"> 
     <link rel="stylesheet" href="css/cuci.css"> 
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon"> <!-- Favicon opsional --> 
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
-
     <header> 
         <a href="#" class="logo">Exshoetic</a> 
         <nav class="navbar"> 
-            <a href="index.html" >Beranda</a> 
+            <a href="index.html">Beranda</a> 
             <a href="lokasi.html">Lokasi</a> 
             <a href="layanan.html">Layanan</a> 
             <a href="cuci.html" class="active">Pesan</a> 
@@ -38,7 +37,9 @@
                 </div>
             </div>
 
-            <div class="success-message" id="successMessage">Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.</div>
+            <div class="success-message" id="successMessage" style="display: none;">
+                Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.
+            </div>
 
             <form id="shoeServiceForm" action="php/proses_pemesanan.php" method="POST">
                 <div class="form-grid">
@@ -51,15 +52,15 @@
                         <input type="tel" id="phone" name="phone" required>
                     </div>
 
-                        <div class="form-group">
-                            <label for="brand">Merk Sepatu</label>
-                            <input type="text" id="brand" name="brand" placeholder="Contoh: Nike, Adidas" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="brand">Merk Sepatu</label>
+                        <input type="text" id="brand" name="brand" placeholder="Contoh: Nike, Adidas" required>
+                    </div>
 
-                        <div class="form-group full-width">
-                            <label for="notes">Keterangan Tambahan</label>
-                            <textarea id="notes" name="notes" placeholder="Catatan khusus untuk layanan (opsional)"></textarea>
-                        </div>
+                    <div class="form-group full-width">
+                        <label for="notes">Keterangan Tambahan</label>
+                        <textarea id="notes" name="notes" placeholder="Catatan khusus untuk layanan (opsional)"></textarea>
+                    </div>
 
                     <div class="form-group full-width">
                         <label for="address">Alamat Lengkap</label>
@@ -78,13 +79,13 @@
                             <option value="6">Whitening</option>
                             <option value="7">Leather Care</option>
                             <option value="8">Reglue</option>
-                         
                         </select>
                     </div>
                     
                     <div class="form-group">
                         <label for="total">Total Tagihan</label>
                         <input type="number" id="total" name="total_bill" readonly required>
+                        <div id="formatted-price" class="price-display"></div>
                     </div>
             
                     <div class="form-group">
@@ -101,7 +102,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn-submit">Kirim</button>
+                <button type="submit" class="btn-submit">Kirim Pesanan</button>
             </form>
         </div>
     </div>
@@ -131,106 +132,133 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
     <script>
-        // Javascript untuk mengatur harga layanan
+        // Fungsi untuk memformat harga ke format Rupiah
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(angka);
+        }
+
+        // Fungsi untuk mengupdate harga berdasarkan treatment yang dipilih
         function updateHarga() {
             const serviceSelect = document.getElementById('service');
             const totalInput = document.getElementById('total');
+            const formattedPriceDiv = document.getElementById('formatted-price');
+            
             const priceMapping = {
-                '1': 35000,
-                '2': 15000,
-                '3': 45000,
-                '4': 150000,
-                '5': 70000,
-                '6': 50000,
-                '7': 40000,
-                '8': 70000
+                '1': 35000,  // Deep Clean
+                '2': 15000,  // Fast Cleaning
+                '3': 45000,  // Unyellowing
+                '4': 150000, // Repaint
+                '5': 70000,  // Repair Sol
+                '6': 50000,  // Whitening
+                '7': 40000,  // Leather Care
+                '8': 70000   // Reglue
             };
-            totalInput.value = priceMapping[serviceSelect.value] || '';
+            
+            const harga = priceMapping[serviceSelect.value] || 0;
+            totalInput.value = harga;
+            formattedPriceDiv.textContent = formatRupiah(harga);
         }
-    </script>
-    <script>
-        // Mengambil elemen form dan pesan sukses
-        const form = document.getElementById("shoeServiceForm");
-        const successMessage = document.getElementById("successMessage");
-    
-        // Fungsi untuk mengirim form menggunakan AJAX
-        form.addEventListener("submit", function(event) {
-            event.preventDefault(); // Mencegah refresh halaman
-    
+
+        // Event listener untuk form submission
+        document.getElementById("shoeServiceForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const form = this;
             const formData = new FormData(form);
-    
-            // Mengirim data ke PHP menggunakan fetch API
-            fetch("php/pesanan.php", {
+            const submitButton = form.querySelector('button[type="submit"]');
+            const successMessage = document.getElementById("successMessage");
+            
+            // Disable submit button
+            submitButton.disabled = true;
+            submitButton.textContent = 'Mengirim...';
+            
+            // Kirim data ke server
+            fetch("php/proses_pemesanan.php", {
                 method: "POST",
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.status === "success") {
-                    // Menampilkan pesan sukses
                     successMessage.style.display = "block";
                     successMessage.textContent = data.message;
-    
-                    // Mengosongkan form
                     form.reset();
-    
-                    // Sembunyikan pesan sukses setelah beberapa detik
+                    updateHarga(); // Reset displayed price
+                    
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Hide success message after 5 seconds
                     setTimeout(() => {
                         successMessage.style.display = "none";
                     }, 5000);
                 } else {
-                    alert(data.message); // Tampilkan pesan error jika ada
+                    throw new Error(data.message || 'Terjadi kesalahan saat memproses pesanan');
                 }
             })
             .catch(error => {
-                alert("Terjadi kesalahan saat mengirim pesanan. Silakan coba lagi.");
+                alert("Terjadi kesalahan: " + error.message);
                 console.error("Error:", error);
+            })
+            .finally(() => {
+                // Re-enable submit button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Kirim Pesanan';
             });
         });
-    </script> 
-    <script> 
+
+        // Inisialisasi tampilan harga saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceSelect = document.getElementById('service');
+            if (serviceSelect.value) {
+                updateHarga();
+            }
+        });
+
         // Fungsi untuk mendapatkan parameter dari URL
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    const results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
 
-// Fungsi untuk mengatur layanan berdasarkan parameter URL
-function setServiceFromUrl() {
-    const serviceParam = getUrlParameter('service');
-    if (!serviceParam) return;
+        // Fungsi untuk mengatur layanan berdasarkan parameter URL
+        function setServiceFromUrl() {
+            const serviceParam = getUrlParameter('service');
+            if (!serviceParam) return;
 
-    const serviceSelect = document.getElementById('service');
-    if (!serviceSelect) return;
+            const serviceMapping = {
+                'fast-clean': '2',
+                'deep-clean': '1',
+                'unyellowing': '3',
+                'repaint': '4',
+                'repair-sol': '5',
+                'whitening': '6',
+                'leather-care': '7',
+                'reglue': '8'
+            };
 
-    // Mapping URL parameter ke value pada select option
-    const serviceMapping = {
-        'fast-clean': '2',
-        'deep-clean': '1',
-        'unyellowing': '3',
-        'repaint': '4',
-        'repair-sol': '5',
-        'whitening': '6',
-        'leather-care': '7',
-        'reglue': '8'
-    };
+            const serviceSelect = document.getElementById('service');
+            if (serviceMapping[serviceParam]) {
+                serviceSelect.value = serviceMapping[serviceParam];
+                updateHarga();
+            }
+        }
 
-    const serviceValue = serviceMapping[serviceParam];
-    if (serviceValue) {
-        serviceSelect.value = serviceValue;
-        // Trigger event change untuk mengupdate harga
-        updateHarga();
-    }
-}
-
-// Jalankan fungsi saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-    setServiceFromUrl();
-});
-    </script> 
+        // Set layanan dari URL saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', setServiceFromUrl);
+    </script>
 </body>
 </html>

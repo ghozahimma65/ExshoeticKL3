@@ -306,6 +306,25 @@ $result = $conn->query($sql);
     background-color: #dc2626;
 }
 
+.btn-add-customer {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+}
+
+.btn-add-customer:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+
   </style>
 </head>
 <body>
@@ -350,6 +369,10 @@ $result = $conn->query($sql);
 <div class="content" id="content">
   <h1 class="page-title">Data Customer</h1>
   <a href="../admin.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
+
+  <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, Telepon, atau Alamat" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
+
   <div class="table-container">
     <table>
       <thead>
@@ -365,7 +388,7 @@ $result = $conn->query($sql);
        
         </tr>
       </thead>
-      <tbody>
+      <tbody  id="customerTable">
         <?php
         if ($result->num_rows > 0) {
             $no = 1;
@@ -433,6 +456,24 @@ $result = $conn->query($sql);
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('data-master').classList.add('show');
   });
+
+  // Fungsi pencarian
+  function searchFunction() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.getElementById("customerTable").getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      const nama = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
+      const telepon = rows[i].getElementsByTagName("td")[2]?.innerText.toLowerCase() || "";
+      const alamat = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
+
+      if (nama.includes(input) || telepon.includes(input) || alamat.includes(input)) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+  }
 </script>
 
 </body>

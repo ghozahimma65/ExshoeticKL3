@@ -50,6 +50,17 @@
                         <label for="phone">Nomor Telepon</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
+
+                        <div class="form-group">
+                            <label for="brand">Merk Sepatu</label>
+                            <input type="text" id="brand" name="brand" placeholder="Contoh: Nike, Adidas" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="notes">Keterangan Tambahan</label>
+                            <textarea id="notes" name="notes" placeholder="Catatan khusus untuk layanan (opsional)"></textarea>
+                        </div>
+
                     <div class="form-group full-width">
                         <label for="address">Alamat Lengkap</label>
                         <input type="text" id="address" name="address" placeholder="Nama Jalan, Nomor Rumah" required>
@@ -70,9 +81,10 @@
                          
                         </select>
                     </div>
+                    
                     <div class="form-group">
                         <label for="total">Total Tagihan</label>
-                        <input type="number" id="total" name="total_bill" required>
+                        <input type="number" id="total" name="total_bill" readonly required>
                     </div>
             
                     <div class="form-group">

@@ -306,6 +306,25 @@ $result = $conn->query($sql);
     background-color: #dc2626;
 }
 
+.btn-add-customer {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+}
+
+.btn-add-customer:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+
   </style>
 </head>
 <body>
@@ -350,6 +369,8 @@ $result = $conn->query($sql);
 <div class="content" id="content">
   <h1 class="page-title">Data Customer</h1>
   <a href="../admin.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
+
   <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, Telepon, atau Alamat" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
   <div class="table-container">

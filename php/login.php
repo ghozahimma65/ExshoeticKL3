@@ -5,7 +5,7 @@ session_start();
 $host = 'localhost';
 $dbname = 'exshoetic_db';
 $username = 'root';
-$password = 'putritrisula14';
+$password = '';
 
 try {
     // Koneksi ke database menggunakan PDO

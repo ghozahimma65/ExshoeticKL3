@@ -16,6 +16,36 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
+       /* Add new styles for status badges */
+       .status-badge {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      font-weight: 500;
+      text-align: center;
+      display: inline-block;
+      min-width: 100px;
+    }
+
+    .status-active {
+      background-color: #10B981;
+      color: white;
+    }
+
+    .status-inactive {
+      background-color: #6B7280;
+      color: white;
+    }
+
+    .status-pending {
+      background-color: #F59E0B;
+      color: white;
+    }
+
+    .status-completed {
+      background-color: #3B82F6;
+      color: white;
+    }
     * {
       margin: 0;
       padding: 0;
@@ -142,7 +172,9 @@ $result = $conn->query($sql);
       padding: 20px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       margin-top: 0px;
-      overflow-x: auto;
+      overflow-x: auto; /* Scroll secara horizontal jika tabel terlalu lebar */
+      overflow-y: auto; /* Scroll secara vertikal jika tabel terlalu tinggi */
+      max-height: 400px; /* Atur tinggi maksimum untuk membuat tabel lebih ringkas */
     }
 
     table {
@@ -383,6 +415,8 @@ $result = $conn->query($sql);
           <th>Alamat</th>
           <th>ID Pesanan</th>
           <th>Aksi</th>
+          <th>Status</th>
+         
         </tr>
       </thead>
       <tbody  id="customerTable">
@@ -417,14 +451,16 @@ $result = $conn->query($sql);
 </div>
 
 <script>
+  // Fungsi untuk toggle sidebar
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
     const toggleButton = document.querySelector('.toggle-sidebar i');
-    
+
     sidebar.classList.toggle('hidden');
     content.classList.toggle('full-width');
-    
+
+    // Mengubah ikon toggle
     if (sidebar.classList.contains('hidden')) {
       toggleButton.classList.remove('fa-arrow-left');
       toggleButton.classList.add('fa-arrow-right');
@@ -434,25 +470,60 @@ $result = $conn->query($sql);
     }
   }
 
+  // Fungsi untuk toggle submenu
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
-    
+
+    // Menutup semua submenu kecuali data-master
     allSubmenus.forEach(menu => {
       if (menu.id !== id && menu.id !== 'data-master') {
         menu.classList.remove('show');
       }
     });
-    
+
+    // Toggle submenu jika bukan data-master
     if (id !== 'data-master') {
       submenu.classList.toggle('show');
     }
   }
 
-  // Keep data-master submenu open on page load
+  // Membiarkan submenu data-master tetap terbuka saat halaman dimuat
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('data-master').classList.add('show');
   });
+
+  // Membuat koneksi WebSocket untuk update status secara real-time
+  const ws = new WebSocket('ws://your-websocket-server');
+
+  ws.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    if (data.type === 'status_update') {
+      updateCustomerStatus(data.customer_id, data.new_status);
+    }
+  };
+
+  // Fungsi untuk memperbarui status pelanggan
+  function updateCustomerStatus(customerId, newStatus) {
+    const rows = document.getElementById("customerTable").getElementsByTagName("tr");
+
+    for (let row of rows) {
+      const idCell = row.getElementsByTagName("td")[4]; // Kolom ID Pesanan
+      if (idCell && idCell.innerText === customerId) {
+        const statusCell = row.getElementsByTagName("td")[5];
+        const statusBadge = statusCell.getElementsByClassName('status-badge')[0];
+
+        // Menghapus kelas status lama
+        statusBadge.classList.remove('status-active', 'status-inactive', 'status-pending', 'status-completed');
+
+        // Menambahkan kelas status baru
+        statusBadge.classList.add(`status-${newStatus.toLowerCase()}`);
+
+        // Memperbarui teks status
+        statusBadge.innerText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+      }
+    }
+  }
 
   // Fungsi pencarian
   function searchFunction() {
@@ -464,6 +535,7 @@ $result = $conn->query($sql);
       const telepon = rows[i].getElementsByTagName("td")[2]?.innerText.toLowerCase() || "";
       const alamat = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
 
+      // Menampilkan baris jika cocok dengan input pencarian
       if (nama.includes(input) || telepon.includes(input) || alamat.includes(input)) {
         rows[i].style.display = "";
       } else {
@@ -472,6 +544,7 @@ $result = $conn->query($sql);
     }
   }
 </script>
+
 
 </body>
 </html>

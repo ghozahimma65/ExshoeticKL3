@@ -12,7 +12,9 @@ session_start();
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="css/admin.css"> 
+  <link rel="stylesheet" href="admin-css/cont-admin.css"> 
+  <link rel="stylesheet" href="admin-css/sidebar.css"> 
+
 </head>
 <body>
 <div class="sidebar" id="sidebar">

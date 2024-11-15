@@ -1,0 +1,250 @@
+      /* Add new styles for status badges */
+      .status-badge {
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        font-weight: 500;
+        text-align: center;
+        display: inline-block;
+        min-width: 100px;
+      }
+  
+      .status-active {
+        background-color: #10B981;
+        color: white;
+      }
+  
+      .status-inactive {
+        background-color: #6B7280;
+        color: white;
+      }
+  
+      .status-pending {
+        background-color: #F59E0B;
+        color: white;
+      }
+  
+      .status-completed {
+        background-color: #3B82F6;
+        color: white;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+      }
+  
+      body {
+        background-color: #f3f4f6;
+        min-height: 100vh;
+        display: flex;
+      }
+  
+    
+  
+      /* Content Styles */
+      .content {
+        margin-left: 260px;
+        padding: 30px;
+        width: calc(100% - 260px);
+        transition: margin-left 0.2s ease-in-out, width 0.2s ease-in-out;
+      }
+  
+      .content.full-width {
+        margin-left: 30px;
+        width: calc(100% - 30px);
+      }
+  
+      /* Table Styles */
+      .table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-top: 0px;
+        overflow-x: auto; /* Scroll secara horizontal jika tabel terlalu lebar */
+        overflow-y: auto; /* Scroll secara vertikal jika tabel terlalu tinggi */
+        max-height: 400px; /* Atur tinggi maksimum untuk membuat tabel lebih ringkas */
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+  
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+      }
+  
+      th {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 500;
+      }
+  
+      tr:hover {
+        background-color: #f9fafb;
+      }
+  
+      .page-title {
+        color: #1f2937;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+  
+  
+      /* Animations */
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+  
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 230px;
+        }
+        
+        .content {
+          margin-left: 230px;
+          width: calc(100% - 230px);
+          padding: 20px;
+        }
+        
+        .content.full-width {
+          margin-left: 30px;
+          width: calc(100% - 30px);
+        }
+  
+        .table-container {
+          padding: 10px;
+        }
+  
+        th, td {
+          padding: 8px;
+          font-size: 0.9em;
+        }
+          }
+          .btn-back {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      background-color: #3b82f6;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.2s ease-in-out;
+      }
+  
+      .btn-back:hover {
+      background-color: #2563eb;
+      transform: scale(1.05);
+      }
+  
+      /* Warna khusus untuk ikon di kolom aksi */
+  .text-yellow-500 {
+      color: #f59e0b; /* Warna kuning */
+  }
+  
+  .text-yellow-700 {
+      color: #d97706; /* Warna kuning lebih gelap */
+  }
+  
+  .text-blue-500 {
+      color: #3b82f6; /* Warna biru */
+  }
+  
+  .text-blue-700 {
+      color: #2563eb; /* Warna biru lebih gelap */
+  }
+  
+  .text-red-500 {
+      color: #ef4444; /* Warna merah */
+  }
+  
+  .text-red-700 {
+      color: #dc2626; /* Warna merah lebih gelap */
+  }
+  
+  /* Hover effects */
+  .text-yellow-500:hover {
+      color: #d97706;
+  }
+  
+  .text-blue-500:hover {
+      color: #2563eb;
+  }
+  
+  .text-red-500:hover {
+      color: #dc2626;
+  }
+  /* Style untuk tombol aksi di kolom Aksi */
+  .action-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      margin-right: 5px;
+      border-radius: 5px;
+      font-size: 1.1em;
+      color: #fff;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+  }
+  
+  .action-button.detail {
+      background-color: #f59e0b; /* Warna kuning */
+  }
+  
+  .action-button.detail:hover {
+      background-color: #d97706;
+  }
+  
+  .action-button.edit {
+      background-color: #3b82f6; /* Warna biru */
+  }
+  
+  .action-button.edit:hover {
+      background-color: #2563eb;
+  }
+  
+  .action-button.delete {
+      background-color: #ef4444; /* Warna merah */
+  }
+  
+  .action-button.delete:hover {
+      background-color: #dc2626;
+  }
+  
+  .btn-add-customer {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+  }
+  
+  .btn-add-customer:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+  }
+  
+  

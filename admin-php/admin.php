@@ -12,11 +12,12 @@ session_start();
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="admin-css/cont-admin.css"> 
-  <link rel="stylesheet" href="admin-css/sidebar.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-admin.css"> 
 
 </head>
 <body>
+  
 <div class="sidebar" id="sidebar">
   <button class="toggle-sidebar" onclick="toggleSidebar()">
     <i class="fas fa-arrow-left"></i>
@@ -28,8 +29,8 @@ session_start();
         Data Master
       </a>
       <ul id="data-master">
-        <li><a href="php/customer.php"><i class="fas fa-users"></i>Customer</a></li>
-        <li><a href="php/treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
+        <li><a href="../admin-php/customer.php"><i class="fas fa-users"></i>Customer</a></li>
+        <li><a href="../admin-php/treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
     </li>
     <li style="--i:2">
@@ -48,12 +49,21 @@ session_start();
         Transaksi
       </a>
       <ul id="transaksi">
-        <li><a href="#"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
+        <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
     </li>
+    <!-- Tambahkan Tombol Logout -->
+    <li class="logout-menu">
+      <form method="POST" action="logout.php">
+        <button type="submit" name="logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </form>
+    </li>
   </ul>
 </div>
+
 
 <div class="content" id="content">
   <div class="stats-container">
@@ -87,12 +97,6 @@ session_start();
     </div>
   </div>
 </div>
-
-    <form method="POST" action="logout.php">
-        <button type="submit" name="logout" class="logout-btn">
-            <i class="fa fa-sign-out-alt"></i> Logout
-        </button>
-    </form>
 
 <script>
   function toggleSidebar() {

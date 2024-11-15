@@ -8,13 +8,15 @@
     transition: all 0.3s ease;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
     z-index: 1000;
-  }
-  
-  .sidebar.hidden {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.hidden {
     transform: translateX(-230px);
-  }
-  
-  .toggle-sidebar {
+}
+
+.toggle-sidebar {
     position: absolute;
     right: -15px;
     top: 20px;
@@ -30,23 +32,24 @@
     justify-content: center;
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  .toggle-sidebar:hover {
+}
+
+.toggle-sidebar:hover {
     background: #2563eb;
     transform: scale(1.1);
-  }
-  
-  .sidebar ul {
+}
+
+.sidebar ul {
     list-style: none;
     padding: 0;
-  }
-  
-  .sidebar > ul > li {
+    flex-grow: 1;
+}
+
+.sidebar > ul > li {
     margin-bottom: 15px;
-  }
-  
-  .sidebar a {
+}
+
+.sidebar a {
     color: #4b5563;
     text-decoration: none;
     display: flex;
@@ -55,42 +58,74 @@
     border-radius: 8px;
     transition: all 0.3s ease;
     cursor: pointer;
-  }
-  
-  .sidebar a:hover {
+}
+
+.sidebar a:hover {
     background: #f3f4f6;
     color: #3b82f6;
-  }
-  
-  .sidebar i {
+}
+
+.sidebar i {
     margin-right: 10px;
     width: 20px;
     text-align: center;
-  }
-  
-  .sidebar ul ul {
+}
+
+.sidebar ul ul {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
     margin-left: 30px;
-  }
-  
-  .sidebar ul ul.show {
+}
+
+.sidebar ul ul.show {
     max-height: 200px;
-  }
-  
-  .sidebar ul ul li {
+}
+
+.sidebar ul ul li {
     margin: 5px 0;
-  }
-  
-  .sidebar ul ul a {
+}
+
+.sidebar ul ul a {
     font-size: 0.9em;
     padding: 8px 10px;
-  }
-  
-  @media (max-width: 768px) {
+}
+
+.logout-menu {
+    margin-top: auto;
+    padding: 10px;
+}
+
+.logout-btn {
+    width: 100%;
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn i {
+    margin-right: 10px;
+}
+
+.logout-btn:hover {
+    background-color: #2563eb;
+}
+
+.logout-btn:active {
+    background-color: #1e40af;
+}
+
+@media (max-width: 768px) {
     .sidebar {
-      width: 230px;
+        width: 230px;
     }
-  }
-  
+}

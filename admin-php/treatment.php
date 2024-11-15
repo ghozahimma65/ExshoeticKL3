@@ -49,7 +49,7 @@ $result = $conn->query($sql);
         <i class="fas fa-exchange-alt"></i> Transaksi
       </a>
       <ul id="transaksi">
-        <li><a href="#"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
+        <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
     </li>
@@ -59,7 +59,7 @@ $result = $conn->query($sql);
 <!-- Content -->
 <div class="content" id="content">
   <h1 class="page-title">Data Treatment</h1>
-  <a href="../admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
   <a href="tambah_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Treatment</a>
 
 <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Treatment dan Deskripsi" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
@@ -90,13 +90,10 @@ $result = $conn->query($sql);
                         <td>{$row['Deskripsi']}</td>
                         <td>{$row['Harga']}</td>
                         <td>{$row['Estimasi']}</td>
-
-                                      <td class='p-3'>
-    <a href='detail.php?id={$row['Treatment_ID']}' class='action-button detail'><i class='fas fa-info-circle'></i> </a>
-    <a href='edit.php?id={$row['Treatment_ID']}' class='action-button edit'><i class='fas fa-edit'></i> </a>
-    <a href='delete.php?id={$row['Treatment_ID']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
-</td>
-                   
+                <td class='p-3'>
+                        <a href='edit.php?id={$row['Treatment_ID']}' class='action-button edit'><i class='fas fa-edit'></i> </a>
+                        <a href='delete.php?id={$row['Treatment_ID']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
+                      </td> 
                       </tr>";
                 $no++;
             }
@@ -114,10 +111,8 @@ $result = $conn->query($sql);
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
     const toggleButton = document.querySelector('.toggle-sidebar i');
-    
     sidebar.classList.toggle('hidden');
     content.classList.toggle('full-width');
-    
     if (sidebar.classList.contains('hidden')) {
       toggleButton.classList.remove('fa-arrow-left');
       toggleButton.classList.add('fa-arrow-right');
@@ -130,17 +125,14 @@ $result = $conn->query($sql);
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
-    
     allSubmenus.forEach(menu => {
-      if (menu.id !== id && menu.id !== 'data-master') {
+      if (menu.id !== id) {
         menu.classList.remove('show');
       }
     });
-    
-    if (id !== 'data-master') {
-      submenu.classList.toggle('show');
-    }
+    submenu.classList.toggle('show');
   }
+
 
   // Keep data-master submenu open on page load
   document.addEventListener('DOMContentLoaded', function() {

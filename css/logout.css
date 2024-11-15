@@ -1,0 +1,31 @@
+
+/* Gaya tombol logout */
+.logout-btn {
+    background-color: #ff4d4d; /* Warna merah terang */
+    color: white; /* Teks putih */
+    border: none;
+    padding: 12px 20px; /* Ruang dalam tombol */
+    font-size: 16px; /* Ukuran font */
+    border-radius: 5px; /* Sudut membulat */
+    cursor: pointer; /* Menambahkan cursor pointer */
+    transition: all 0.3s ease; /* Transisi untuk animasi */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-btn i {
+    margin-right: 10px; /* Spasi antara ikon dan teks */
+}
+
+/* Efek saat hover (ketika kursor berada di atas tombol) */
+.logout-btn:hover {
+    background-color: #ff1a1a; /* Warna merah lebih gelap */
+    transform: scale(1.1); /* Perbesar tombol sedikit */
+}
+
+/* Efek klik (menekan tombol) */
+.logout-btn:active {
+    background-color: #e60000; /* Merah lebih gelap saat tombol ditekan */
+    transform: scale(0.98); /* Menjaga tombol sedikit mengecil saat klik */
+}

@@ -1,3 +1,8 @@
+
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,13 +61,8 @@
     </div>
     <div class="stat-card">
       <h4>Pendapatan</h4>
-      <div class="value">
-          Rp <?php 
-              include 'php/get_pendapatan.php'; 
-              echo number_format($total_pendapatan, 0, ',', '.'); 
-          ?>
-      </div>
-  </div>
+      <div class="value">$10,840</div>
+    </div>
     <div class="stat-card">
       <h4>Total Customer</h4>
       <div class="value">1,250</div>
@@ -85,6 +85,12 @@
     </div>
   </div>
 </div>
+
+    <form method="POST" action="logout.php">
+        <button type="submit" name="logout" class="logout-btn">
+            <i class="fa fa-sign-out-alt"></i> Logout
+        </button>
+    </form>
 
 <script>
   function toggleSidebar() {

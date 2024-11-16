@@ -134,43 +134,10 @@ $result = $conn->query($sql);
     submenu.classList.toggle('show');
   }
 
-
   // Membiarkan submenu data-master tetap terbuka saat halaman dimuat
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('data-master').classList.add('show');
   });
-
-  // Membuat koneksi WebSocket untuk update status secara real-time
-  const ws = new WebSocket('ws://your-websocket-server');
-
-  ws.onmessage = function(event) {
-    const data = JSON.parse(event.data);
-    if (data.type === 'status_update') {
-      updateCustomerStatus(data.customer_id, data.new_status);
-    }
-  };
-
-  // Fungsi untuk memperbarui status pelanggan
-  function updateCustomerStatus(customerId, newStatus) {
-    const rows = document.getElementById("customerTable").getElementsByTagName("tr");
-
-    for (let row of rows) {
-      const idCell = row.getElementsByTagName("td")[4]; // Kolom ID Pesanan
-      if (idCell && idCell.innerText === customerId) {
-        const statusCell = row.getElementsByTagName("td")[5];
-        const statusBadge = statusCell.getElementsByClassName('status-badge')[0];
-
-        // Menghapus kelas status lama
-        statusBadge.classList.remove('status-active', 'status-inactive', 'status-pending', 'status-completed');
-
-        // Menambahkan kelas status baru
-        statusBadge.classList.add(`status-${newStatus.toLowerCase()}`);
-
-        // Memperbarui teks status
-        statusBadge.innerText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-      }
-    }
-  }
 
   // Fungsi pencarian
   function searchFunction() {
@@ -191,7 +158,6 @@ $result = $conn->query($sql);
     }
   }
 </script>
-
 
 </body>
 </html>

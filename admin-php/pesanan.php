@@ -164,38 +164,33 @@ td, th {
 }
 </style>
 
-<script>
-  // Fungsi untuk toggle sidebar
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('content');
-    const toggleButton = document.querySelector('.toggle-sidebar i');
-    sidebar.classList.toggle('hidden');
-    content.classList.toggle('full-width');
-    if (sidebar.classList.contains('hidden')) {
-      toggleButton.classList.remove('fa-arrow-left');
-      toggleButton.classList.add('fa-arrow-right');
-    } else {
-      toggleButton.classList.remove('fa-arrow-right');
-      toggleButton.classList.add('fa-arrow-left');
-    }
-  }
-
+  <script>
+  // Fungsi untuk toggle submenu
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
+
+    // Menutup semua submenu yang bukan milik submenu yang dipilih
     allSubmenus.forEach(menu => {
-      if (menu.id !== id) {
+      if (menu !== submenu) {
         menu.classList.remove('show');
       }
     });
+
+    // Toggle submenu yang dipilih
     submenu.classList.toggle('show');
   }
 
-  // Membiarkan submenu data-master tetap terbuka saat halaman dimuat
+  // Membiarkan submenu transaksi tetap terbuka saat halaman dimuat
   document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('transaksi').classList.add('show');
+    // Tambahkan kondisi untuk submenu yang aktif, misalnya 'transaksi'
+    const activeMenu = window.location.href.includes("pesanan.php") ? 'transaksi' : '';
+    if (activeMenu) {
+      document.getElementById(activeMenu).classList.add('show');
+    }
   });
+
+
 
   // Membuat koneksi WebSocket untuk update status secara real-time
   const ws = new WebSocket('ws://your-websocket-server');

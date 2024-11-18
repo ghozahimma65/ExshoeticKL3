@@ -34,7 +34,7 @@ $result = $conn->query($sql);
       <a onclick="toggleSubmenu('data-master')">
         <i class="fas fa-database"></i> Data Master
       </a>
-      <ul id="data-master" class="show">
+      <ul id="data-master" >
         <li><a href="customer.php" class="active"><i class="fas fa-users"></i>Customer</a></li>
         <li><a href="treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
@@ -44,7 +44,7 @@ $result = $conn->query($sql);
         <i class="fas fa-chart-line"></i> Keuangan
       </a>
       <ul id="keuangan">
-        <li><a href="#"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
+        <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
@@ -52,7 +52,7 @@ $result = $conn->query($sql);
       <a onclick="toggleSubmenu('transaksi')">
         <i class="fas fa-exchange-alt"></i> Transaksi
       </a>
-      <ul id="transaksi">
+      <ul id="transaksi" class="show">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
@@ -165,31 +165,37 @@ td, th {
 </style>
 
   <script>
-  // Fungsi untuk toggle submenu
+  // Fungsi untuk toggle sidebar
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+    const toggleButton = document.querySelector('.toggle-sidebar i');
+    sidebar.classList.toggle('hidden');
+    content.classList.toggle('full-width');
+    if (sidebar.classList.contains('hidden')) {
+      toggleButton.classList.remove('fa-arrow-left');
+      toggleButton.classList.add('fa-arrow-right');
+    } else {
+      toggleButton.classList.remove('fa-arrow-right');
+      toggleButton.classList.add('fa-arrow-left');
+    }
+  }
+
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
-
-    // Menutup semua submenu yang bukan milik submenu yang dipilih
     allSubmenus.forEach(menu => {
-      if (menu !== submenu) {
+      if (menu.id !== id) {
         menu.classList.remove('show');
       }
     });
-
-    // Toggle submenu yang dipilih
     submenu.classList.toggle('show');
   }
 
-  // Membiarkan submenu transaksi tetap terbuka saat halaman dimuat
+  // Membiarkan submenu transkasi tetap terbuka saat halaman dimuat
   document.addEventListener('DOMContentLoaded', function() {
-    // Tambahkan kondisi untuk submenu yang aktif, misalnya 'transaksi'
-    const activeMenu = window.location.href.includes("pesanan.php") ? 'transaksi' : '';
-    if (activeMenu) {
-      document.getElementById(activeMenu).classList.add('show');
-    }
+    document.getElementById('transaksi').classList.add('show');
   });
-
 
 
   // Membuat koneksi WebSocket untuk update status secara real-time

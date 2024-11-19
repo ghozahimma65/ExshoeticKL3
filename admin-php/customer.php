@@ -49,7 +49,7 @@ $result = $conn->query($sql);
         <i class="fas fa-exchange-alt"></i> Transaksi
       </a>
       <ul id="transaksi">
-        <li><a href=""><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
+        <li><a href="pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
     </li>

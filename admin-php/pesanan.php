@@ -44,7 +44,7 @@ $result = $conn->query($sql);
         <i class="fas fa-chart-line"></i> Keuangan
       </a>
       <ul id="keuangan">
-        <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
+        <li><a href="#"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
@@ -53,7 +53,7 @@ $result = $conn->query($sql);
         <i class="fas fa-exchange-alt"></i> Transaksi
       </a>
       <ul id="transaksi" class="show">
-        <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
+        <li><a href="pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
     </li>

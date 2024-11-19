@@ -44,7 +44,7 @@ $result = $conn->query($sql);
         <i class="fas fa-chart-line"></i> Keuangan
       </a>
       <ul id="keuangan">
-        <li><a href="#"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
+        <li><a href="pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>

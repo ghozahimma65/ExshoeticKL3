@@ -74,15 +74,14 @@ try {
         throw new Exception("Execute statement pembayaran gagal: " . $stmtPembayaran->error);
     }
 
-    // 4. Insert ke detail_pesanan
-    $detail_id = 'DP' . str_pad($id_pesanan, 3, '0', STR_PAD_LEFT);
-    $queryDetail = "INSERT INTO detail_pesanan (DetailPesanan_ID, ID_Pesanan, Customer_ID, Pembayaran_ID) 
-                   VALUES (?, ?, ?, ?)";
+    // 4. Insert ke tabel detail_pesanan
+    $queryDetail = "INSERT INTO detail_pesanan (ID_Pesanan, Customer_ID, Pembayaran_ID) 
+                   VALUES (?, ?, ?)";
     $stmtDetail = $conn->prepare($queryDetail);
     if (!$stmtDetail) {
         throw new Exception("Prepare statement detail_pesanan gagal: " . $conn->error);
     }
-    $stmtDetail->bind_param("siis", $detail_id, $id_pesanan, $customer_id, $pembayaran_id);
+    $stmtDetail->bind_param("iis", $id_pesanan, $customer_id, $pembayaran_id);
     if (!$stmtDetail->execute()) {
         throw new Exception("Execute statement detail_pesanan gagal: " . $stmtDetail->error);
     }

@@ -100,10 +100,16 @@ $result = $conn->query($sql);
                         <td>{$row['Merk_Sepatu']}</td>
                         <td>Rp " . number_format($row['Total_Tagihan'], 0, ',', '.') . "</td>
                         <td><span class='status-badge status-{$row['Status']}'>{$row['Status']}</span></td>
-                        <td class='p-3'>
-                            <a href='detail.php?id={$row['ID_Pesanan']}' class='action-button detail'><i class='fas fa-info-circle'></i></a>
-                            <a href='edit.php?id={$row['ID_Pesanan']}' class='action-button edit'><i class='fas fa-edit'></i></a>
-                            <a href='delete.php?id={$row['ID_Pesanan']}' class='action-button delete'><i class='fas fa-trash'></i></a>
+                      <td class='p-3'>
+                            <form method='POST' action='../php/update_status.php'>
+                              <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
+                              <select name='status' onchange='this.form.submit()'>
+                                <option value='Diambil' " . ($row['Status'] == 'Diambil' ? 'selected' : '') . ">Diambil</option>
+                                <option value='Proses' " . ($row['Status'] == 'Proses' ? 'selected' : '') . ">Proses</option>
+                                <option value='Diantar' " . ($row['Status'] == 'Diantar' ? 'selected' : '') . ">Diantar</option>
+                                <option value='Selesai' " . ($row['Status'] == 'Selesai' ? 'selected' : '') . ">Selesai</option>
+                              </select>
+                            </form>
                         </td>
                       </tr>";
                 $no++;
@@ -126,24 +132,24 @@ $result = $conn->query($sql);
     text-transform: uppercase;
 }
 
-.status-pending {
+.status-diambil {
     background-color: #FFF3CD;
     color: #856404;
 }
 
-.status-process {
+.status-proses {
     background-color: #CCE5FF;
     color: #004085;
 }
 
-.status-completed {
-    background-color: #D4EDDA;
-    color: #155724;
+.status-diantar {
+    background-color: #D1ECF1;
+    color: #0C5460;
 }
 
-.status-cancelled {
-    background-color: #F8D7DA;
-    color: #721C24;
+.status-selesai {
+    background-color: #D4EDDA;
+    color: #155724;
 }
 
 .table-container {

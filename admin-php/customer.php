@@ -88,9 +88,11 @@ $result = $conn->query($sql);
                         <td>{$row['Telepon']}</td>
                         <td>{$row['Alamat']}</td>
                         <td>{$row['ID_Pesanan']}</td>
-               <td class='p-3'>
-                        <a href='delete.php?id={$row['ID_Pesanan']}' class='action-button delete'><i class='fas fa-trash'></i> </a>
-              </td>   
+          <td class='p-3'>
+                            <a href='delete.php?id={$row['ID_Pesanan']}' class='action-button delete' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>
+                                <i class='fas fa-trash'></i>
+                            </a>
+                        </td>
                       </tr>";
                 $no++;
             }

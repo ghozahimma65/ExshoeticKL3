@@ -165,58 +165,67 @@
             formattedPriceDiv.textContent = formatRupiah(harga);
         }
 
-        // Event listener untuk form submission
-        document.getElementById("shoeServiceForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            const form = this;
-            const formData = new FormData(form);
-            const submitButton = form.querySelector('button[type="submit"]');
-            const successMessage = document.getElementById("successMessage");
-            
-            // Disable submit button
-            submitButton.disabled = true;
-            submitButton.textContent = 'Mengirim...';
-            
-            // Kirim data ke server
-            fetch("php/proses_pemesanan.php", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.status === "success") {
-                    successMessage.style.display = "block";
-                    successMessage.textContent = data.message;
-                    form.reset();
-                    updateHarga(); // Reset displayed price
-                    
-                    // Scroll to success message
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        successMessage.style.display = "none";
-                    }, 5000);
-                } else {
-                    throw new Error(data.message || 'Terjadi kesalahan saat memproses pesanan');
-                }
-            })
-            .catch(error => {
-                alert("Terjadi kesalahan: " + error.message);
-                console.error("Error:", error);
-            })
-            .finally(() => {
-                // Re-enable submit button
-                submitButton.disabled = false;
-                submitButton.textContent = 'Kirim Pesanan';
-            });
+        document.getElementById("shoeServiceForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Mencegah form refresh halaman secara default
+
+    const form = this;
+    const formData = new FormData(form);
+    const submitButton = form.querySelector('button[type="submit"]');
+    const successMessage = document.getElementById("successMessage");
+
+    // Disable tombol submit sementara
+    submitButton.disabled = true;
+    submitButton.textContent = 'Mengirim...';
+
+    // Kirim data ke server menggunakan fetch
+    fetch("php/proses_pemesanan.php", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => {
+            // Pastikan status HTTP sukses (200-299)
+            if (!response.ok) {
+                throw new Error(`Terjadi kesalahan jaringan (${response.status}): ${response.statusText}`);
+            }
+            // Coba parsing JSON
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "success") {
+                // Tampilkan pesan sukses
+                successMessage.style.display = "block";
+                successMessage.textContent = data.message;
+                
+                // Reset form hanya jika sukses
+                form.reset();
+                updateHarga(); // Reset harga jika fungsi ini ada
+                
+                // Scroll ke pesan sukses
+                successMessage.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // Sembunyikan pesan sukses setelah 5 detik
+                setTimeout(() => {
+                    successMessage.style.display = "none";
+                    // Arahkan ke halaman invoice setelah 5 detik
+                    window.location.href = "invoice.html";
+                }, 1000);
+            } else {
+                // Tangani error dari respons server
+                throw new Error(data.message || "Terjadi kesalahan saat memproses pesanan");
+            }
+        })
+        .catch(error => {
+            // Tangkap dan tampilkan semua kesalahan
+            alert(`Terjadi kesalahan: ${error.message}`);
+            console.error("Error:", error);
+        })
+        .finally(() => {
+            // Kembalikan tombol ke kondisi semula
+            submitButton.disabled = false;
+            submitButton.textContent = "Kirim Pesanan";
         });
+});
+
 
         // Inisialisasi tampilan harga saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {

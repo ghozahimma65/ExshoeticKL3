@@ -28,30 +28,52 @@ $result = $conn->query($sql);
   <ul>
     <li style="--i:1">
       <a onclick="toggleSubmenu('data-master')">
-        <i class="fas fa-database"></i> Data Master
+        <i class="fas fa-database"></i>
+        Data Master
       </a>
       <ul id="data-master" class="show">
-        <li><a href="customer.php" class="active"><i class="fas fa-users"></i>Customer</a></li>
-        <li><a href="treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
+        <li><a href="../admin-php/customer.php"><i class="fas fa-users"></i>Customer</a></li>
+        <li><a href="../admin-php/treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
     </li>
     <li style="--i:2">
       <a onclick="toggleSubmenu('keuangan')">
-        <i class="fas fa-chart-line"></i> Keuangan
+        <i class="fas fa-chart-line"></i>
+        Keuangan
       </a>
       <ul id="keuangan">
-        <li><a href="pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
+        <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
     <li style="--i:3">
       <a onclick="toggleSubmenu('transaksi')">
-        <i class="fas fa-exchange-alt"></i> Transaksi
+        <i class="fas fa-exchange-alt"></i>
+        Transaksi
       </a>
       <ul id="transaksi">
-        <li><a href="pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
+        <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
+    </li>
+        <!-- Tambahan: Pengaturan Admin -->
+        <li style="--i:4">
+      <a onclick="toggleSubmenu('pengaturan-admin')">
+        <i class="fas fa-cogs"></i>
+        Pengaturan
+      </a>
+      <ul id="pengaturan-admin">
+        <li><a href="../admin-php/profile.php"><i class="fas fa-user"></i>Profil Admin</a></li>
+        <li><a href="../admin-php/settings.php"><i class="fas fa-tools"></i>Pengaturan Sistem</a></li>
+      </ul>
+    </li>
+    <!-- Tambahkan Tombol Logout -->
+    <li class="logout-menu">
+      <form method="POST" action="logout.php">
+        <button type="submit" name="logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </form>
     </li>
   </ul>
 </div>

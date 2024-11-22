@@ -39,7 +39,7 @@ session_start();
         Keuangan
       </a>
       <ul id="keuangan">
-        <li><a href="#"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
+        <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
@@ -51,6 +51,17 @@ session_start();
       <ul id="transaksi">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
+      </ul>
+    </li>
+        <!-- Tambahan: Pengaturan Admin -->
+        <li style="--i:4">
+      <a onclick="toggleSubmenu('pengaturan-admin')">
+        <i class="fas fa-cogs"></i>
+        Pengaturan
+      </a>
+      <ul id="pengaturan-admin">
+        <li><a href="../admin-php/profile.php"><i class="fas fa-user"></i>Profil Admin</a></li>
+        <li><a href="../admin-php/settings.php"><i class="fas fa-tools"></i>Pengaturan Sistem</a></li>
       </ul>
     </li>
     <!-- Tambahkan Tombol Logout -->

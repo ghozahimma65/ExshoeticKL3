@@ -32,7 +32,7 @@ try {
     $total_tagihan = (int)$_POST['total_bill'];
     $metode_pembayaran = $conn->real_escape_string($_POST['payment_method']);
 
-    // Mulai transaction
+    // Mulai transaksi
     $conn->begin_transaction();
 
     // 1. Insert ke tabel pesanan
@@ -86,15 +86,55 @@ try {
         throw new Exception("Execute statement detail_pesanan gagal: " . $stmtDetail->error);
     }
 
-    // Commit transaction
-    $conn->commit();
-    
-    // Kirim response sukses
-    echo json_encode([
-        "status" => "success",
-        "message" => "Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.",
-        "order_id" => $id_pesanan
-    ]);
+    // Kirim pesan WhatsApp menggunakan Twilio
+    // Twilio credentials
+    $account_sid = ''; // Ganti dengan SID akun Twilio kamu
+    $auth_token = ''; // Ganti dengan Auth Token Twilio kamu
+    $twilio_number = 'whatsapp:+14155238886'; // Ganti dengan nomor WhatsApp Twilio kamu
+    $customer_number = 'whatsapp:+62' . ltrim($no_hp, '0'); // Konversi nomor pelanggan ke format WhatsApp
+
+    // Pesan otomatis yang akan dikirim
+    $message = "Halo $nama, sepatu Anda masih dalam proses pengerjaan. Tolong ditunggu ya!\n\nDetail Pesanan Anda:\n- Merk Sepatu: $merk_sepatu\n- Layanan: $treatment_id\n- Total Tagihan: Rp$total_tagihan\n- Alamat: $alamat\n\nKami akan menghubungi Anda kembali ketika sepatu selesai dan siap untuk diambil.\n\nTerima kasih telah memilih Exshoetic!";
+
+    // Kirim pesan menggunakan Twilio
+    $data = [
+        'To' => $customer_number,
+        'From' => $twilio_number,
+        'Body' => $message,
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://api.twilio.com/2010-04-01/Accounts/$account_sid/Messages.json");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_USERPWD, "$account_sid:$auth_token");
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // Konversi respons menjadi JSON
+    $response_data = json_decode($response, true);
+
+    // Periksa apakah pesan berhasil dikirim
+    if (isset($response_data['sid'])) {
+        // Commit transaksi
+        $conn->commit();
+        
+        // Kirim response sukses
+        echo json_encode([
+            "status" => "success",
+            "message" => "Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.",
+            "order_id" => $id_pesanan
+        ]);
+    } else {
+        // Jika gagal mengirim WhatsApp, rollback transaksi
+        error_log("Twilio Error Response: " . print_r($response_data, true));
+        $conn->rollback();
+        echo json_encode([
+            "status" => "error",
+            "message" => "Pesanan berhasil disimpan, tetapi gagal mengirim pesan WhatsApp."
+        ]);
+    }
 
 } catch (Exception $e) {
     // Rollback jika terjadi error

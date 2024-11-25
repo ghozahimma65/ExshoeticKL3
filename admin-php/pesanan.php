@@ -120,17 +120,16 @@ $result = $conn->query($sql);
                         <td>{$row['Treatment_ID']}</td>
                         <td>{$row['Merk_Sepatu']}</td>
                         <td><span class='status-badge status-{$row['Status']}'>{$row['Status']}</span></td>
-                      <td class='p-3'>
-                            <form method='POST' action='../php/update_status.php'>
-                              <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
-                              <select name='status' onchange='this.form.submit()'>
-                                <option value='Diambil' " . ($row['Status'] == 'Diambil' ? 'selected' : '') . ">Diambil</option>
-                                <option value='Proses' " . ($row['Status'] == 'Proses' ? 'selected' : '') . ">Proses</option>
-                                <option value='Diantar' " . ($row['Status'] == 'Diantar' ? 'selected' : '') . ">Diantar</option>
-                                <option value='Selesai' " . ($row['Status'] == 'Selesai' ? 'selected' : '') . ">Selesai</option>
-                              </select>
-                            </form>
-                        </td>
+                 <td>
+  <form method='POST' action='../php/update_status.php'>
+    <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
+    <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
+      <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
+      <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
+    </select>
+  </form>
+</td>
+
                       </tr>";
                 $no++;
             }
@@ -223,38 +222,20 @@ td, th {
     document.getElementById('transaksi').classList.add('show');
   });
 
+  function updateStatus(selectElement, idPesanan) {
+    const newStatus = selectElement.value;
+    const statusCell = selectElement.closest('tr').querySelector('.status-badge');
 
-  // Membuat koneksi WebSocket untuk update status secara real-time
-  const ws = new WebSocket('ws://your-websocket-server');
+    // Update status badge warna dan teks
+    statusCell.className = `status-badge status-${newStatus.replace(/\s+/g, '-').toLowerCase()}`;
+    statusCell.textContent = newStatus;
 
-  ws.onmessage = function(event) {
-    const data = JSON.parse(event.data);
-    if (data.type === 'status_update') {
-      updateCustomerStatus(data.customer_id, data.new_status);
-    }
-  };
-
-  // Fungsi untuk memperbarui status pelanggan
-  function updateCustomerStatus(customerId, newStatus) {
-    const rows = document.getElementById("customerTable").getElementsByTagName("tr");
-
-    for (let row of rows) {
-      const idCell = row.getElementsByTagName("td")[4]; // Kolom ID Pesanan
-      if (idCell && idCell.innerText === customerId) {
-        const statusCell = row.getElementsByTagName("td")[5];
-        const statusBadge = statusCell.getElementsByClassName('status-badge')[0];
-
-        // Menghapus kelas status lama
-        statusBadge.classList.remove('status-active', 'status-inactive', 'status-pending', 'status-completed');
-
-        // Menambahkan kelas status baru
-        statusBadge.classList.add(`status-${newStatus.toLowerCase()}`);
-
-        // Memperbarui teks status
-        statusBadge.innerText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-      }
-    }
-  }
+    // Kirim permintaan AJAX untuk memperbarui status di database
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '../php/update_status.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(`id_pesanan=${idPesanan}&status=${newStatus}`);
+}
 
 // Tambahan untuk fungsi pencarian yang diperbarui
 function searchFunction() {

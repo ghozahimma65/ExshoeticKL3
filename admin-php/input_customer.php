@@ -1,3 +1,26 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Tangkap data dari form
+    $name = htmlspecialchars($_POST['name']);
+    $phone = htmlspecialchars($_POST['phone']);
+    $brand = htmlspecialchars($_POST['brand']);
+    $notes = htmlspecialchars($_POST['notes']);
+    $address = htmlspecialchars($_POST['address']);
+    $service = htmlspecialchars($_POST['treatment_id']);
+    $total_bill = htmlspecialchars($_POST['total_bill']);
+    $payment_method = htmlspecialchars($_POST['payment_method']);
+
+    // Validasi input sederhana
+    if (empty($name) || empty($phone) || empty($address) || empty($service) || empty($total_bill)) {
+        echo "<script>alert('Semua field wajib diisi!');</script>";
+    } else {
+        // Contoh proses selanjutnya (tampilkan data)
+        echo "<script>alert('Pesanan atas nama $name berhasil ditambahkan!');</script>";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -8,14 +31,14 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/addcus.css" />
+    <link rel="stylesheet" href="../admin-css/addcus.css" />
     <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 
     
     
   </head>
   <body>
-    <a href="admin-php/customer.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+    <a href="customer.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
     <div class="container">
       <div class="form-container">
         <div class="form-header">
@@ -40,7 +63,7 @@
 
         <form
           id="shoeServiceForm"
-          action="php/proses_pemesanan.php"
+          action="../php/proses_pemesanan.php"
           method="POST"
         >
           <div class="form-grid">
@@ -179,7 +202,7 @@
           submitButton.disabled = true;
           submitButton.textContent = "Mengirim...";
 
-          fetch("php/proses_pemesanan.php", {
+          fetch("../php/proses_pemesanan.php", {
             method: "POST",
             body: formData,
           })

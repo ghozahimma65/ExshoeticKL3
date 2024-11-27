@@ -80,26 +80,26 @@ session_start();
   <div class="stats-container">
     <div class="stat-card">
       <h4>Total Pesanan</h4>
-      <div class="value">2,845</div>
+      <div class="value" id="total-pesanan">Loading...</div>
     </div>
     <div class="stat-card">
       <h4>Pendapatan</h4>
-      <div class="value">$10,840</div>
+      <div class="value" id="total-pendapatan">Loading...</div>
     </div>
     <div class="stat-card">
       <h4>Total Customer</h4>
-      <div class="value">1,250</div>
+      <div class="value" id="total-customer">Loading...</div>
     </div>
     <div class="stat-card">
       <h4>Treatment Selesai</h4>
-      <div class="value">985</div>
+      <div class="value" id="total-treatment-selesai">Loading...</div>
     </div>
   </div>
 
   <div class="chart-container">
     <div class="card">
       <h3>Grafik Pesanan</h3>
-      <p>Total Profit <span style="color: #3b82f6; font-weight: 600; font-size: 1.2em;">$10,840</span></p>
+      <p>Total Profit <span style="color: #3b82f6; font-weight: 600; font-size: 1.2em;" id="profit">Loading...</span></p>
       <canvas id="lineChart"></canvas>
     </div>
     <div class="card">
@@ -136,129 +136,58 @@ session_start();
     submenu.classList.toggle('show');
   }
 
-  // Line Chart
-  const lineCtx = document.getElementById('lineChart').getContext('2d');
-  const lineChart = new Chart(lineCtx, {
-    type: 'line',
-    data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      datasets: [{
-        label: 'Total Pesanan',
-        data: [120, 150, 180, 200, 250, 300, 270, 290, 320, 340, 380, 400],
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-        tension: 0.3,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'top' }
-      },
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
-  });
-
-  // Pie Chart
-  const pieCtx = document.getElementById('pieChart').getContext('2d');
-  const pieChart = new Chart(pieCtx, {
-    type: 'pie',
-    data: {
-      labels: ['Sneakers', 'Boots', 'Sandals', 'Formal'],
-      datasets: [{
-        label: 'Jenis Sepatu',
-        data: [40, 20, 25, 15],
-        backgroundColor: ['#3b82f6', '#2563eb', '#1e40af', '#1d4ed8'],
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'bottom' }
-      }
-    }
-  });
-</script>
-<script>
-  // Ambil data dari API menggunakan fetch
-  async function fetchData() {
+    // Ambil data dari file PHP yang sudah dipisahkan
+    async function fetchData() {
     try {
-      const response = await fetch('http://localhost/Exshoetic/php/dashboard_data.php');
+      const response = await fetch('dashboard_data.php'); // Mengambil data dari file PHP
       const data = await response.json();
 
-      // Ambil data pesanan harian
-      const dailyOrders = data.daily_orders;
-      const labels = dailyOrders.map(item => item.tanggal);
-      const ordersData = dailyOrders.map(item => parseInt(item.jumlah_pesanan));
-      const revenueData = dailyOrders.map(item => parseInt(item.total_pendapatan));
+      // Update nilai-nilai di dashboard
+      document.getElementById('total-pesanan').innerText = data.total_pesanan;
+      document.getElementById('total-pendapatan').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
+      document.getElementById('total-customer').innerText = data.total_customer;
+      document.getElementById('total-treatment-selesai').innerText = data.total_treatment_selesai;
+      document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
 
-      // Update line chart
-      updateLineChart(labels, ordersData, revenueData);
-
+      // Update grafik (Chart.js)
+      updateLineChart(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
 
-  // Fungsi untuk memperbarui grafik line chart
-  function updateLineChart(labels, ordersData, revenueData) {
-  const lineCtx = document.getElementById('lineChart').getContext('2d');
-
-  // Hancurkan chart sebelumnya hanya jika sudah merupakan instance Chart
-  if (window.lineChart instanceof Chart) {
-    window.lineChart.destroy();
-  }
-
-  // Buat line chart baru
-  window.lineChart = new Chart(lineCtx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Jumlah Pesanan',
-          data: ordersData,
+  function updateLineChart(data) {
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Total Pesanan',
+          data: Array(12).fill(100),  // Data dummy, bisa disesuaikan dengan data asli
           borderColor: '#3b82f6',
           backgroundColor: 'rgba(59, 130, 246, 0.1)',
           tension: 0.3,
           fill: true
-        },
-        {
-          label: 'Total Pendapatan (Rp)',
-          data: revenueData,
-          borderColor: '#1d4ed8',
-          backgroundColor: 'rgba(29, 78, 216, 0.1)',
-          tension: 0.3,
-          fill: true
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'top' }
+        }]
       },
-      scales: {
-        y: { 
-          beginAtZero: true,
-          ticks: {
-            callback: function(value) {
-              return 'Rp ' + value.toLocaleString('id-ID');
-            }
-          }
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' }
+        },
+        scales: {
+          y: { beginAtZero: true }
         }
       }
-    }
-  });
-}
-
+    });
+  }
 
   // Panggil fetchData saat halaman dimuat
   document.addEventListener('DOMContentLoaded', fetchData);
 </script>
+ 
+
 
   
 </body>

@@ -80,7 +80,7 @@ $result = $conn->query($sql);
 
 <!-- Content -->
 <div class="content" id="content">
-  <h1 class="page-title">Data Customer</h1>
+  <h1 class="page-title">Data Pelanggan</h1>
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
   <a href="../admin-php/input_customer.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pelanggan</a>
 

@@ -1,6 +1,6 @@
 <?php
 // Koneksi ke database
-include 'database.php';
+include('database.php');
 
 // Query untuk mengambil data customer dengan kolom tambahan
 $sql = "SELECT c.Nama, c.No_Hp AS Telepon, c.Alamat, c.ID_Pesanan, 
@@ -22,7 +22,6 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="/exshoetic/admin-css/cont-customer.css"> 
 </head>
 <body>
-
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
@@ -60,8 +59,8 @@ $result = $conn->query($sql);
         <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
       </ul>
     </li>
-        <!-- Tambahan: Pengaturan Admin -->
-        <li style="--i:4">
+    <!-- Tambahan: Pengaturan Admin -->
+    <li style="--i:4">
       <a onclick="toggleSubmenu('pengaturan-admin')">
         <i class="fas fa-cogs"></i>
         Pengaturan
@@ -106,38 +105,40 @@ $result = $conn->query($sql);
         </tr>
       </thead>
       <tbody id="customerTable">
-        <?php
-        if ($result->num_rows > 0) {
-            $no = 1;
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$no}</td>
-                        <td>{$row['Nama']}</td>
-                        <td>{$row['Telepon']}</td>
-                        <td>{$row['Alamat']}</td>
-                        <td>{$row['ID_Pesanan']}</td>
-                        <td>{$row['Tanggal_Pesanan']}</td>
-                        <td>{$row['Treatment_ID']}</td>
-                        <td>{$row['Merk_Sepatu']}</td>
-                        <td><span class='status-badge status-{$row['Status']}'>{$row['Status']}</span></td>
-                 <td>
-  <form method='POST' action='../php/update_status.php'>
-    <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
-    <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
-      <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
-      <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
-    </select>
-  </form>
-</td>
-
-                      </tr>";
-                $no++;
-            }
-        } else {
-            echo "<tr><td colspan='11' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
-        }
-        ?>
-      </tbody>
+  <?php
+  if ($result->num_rows > 0) {
+      $no = 1;
+      while ($row = $result->fetch_assoc()) {
+          echo "<tr>
+                  <td>{$no}</td>
+                  <td>{$row['Nama']}</td>
+                  <td>{$row['Telepon']}</td>
+                  <td>{$row['Alamat']}</td>
+                  <td>{$row['ID_Pesanan']}</td>
+                  <td>{$row['Tanggal_Pesanan']}</td>
+                  <td>{$row['Treatment_ID']}</td>
+                  <td>{$row['Merk_Sepatu']}</td>
+                  <td>
+                      <span class='status-badge status-" . strtolower(str_replace(' ', '-', $row['Status'])) . "'>{$row['Status']}</span>
+                  </td>
+                  <td>
+                      <form method='POST' action='update_status.php'>
+                          <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
+                          <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
+                              <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
+                              <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
+                          </select>
+                      </form>
+                  </td>
+                </tr>";
+          $no++;
+      }
+  } else {
+      echo "<tr><td colspan='10' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
+  }
+  ?>
+</tbody>
+ 
     </table>
   </div>
 </div>
@@ -189,82 +190,102 @@ td, th {
 }
 </style>
 
-  <script>
-  // Fungsi untuk toggle sidebar
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('content');
-    const toggleButton = document.querySelector('.toggle-sidebar i');
-    sidebar.classList.toggle('hidden');
-    content.classList.toggle('full-width');
-    if (sidebar.classList.contains('hidden')) {
-      toggleButton.classList.remove('fa-arrow-left');
-      toggleButton.classList.add('fa-arrow-right');
-    } else {
-      toggleButton.classList.remove('fa-arrow-right');
-      toggleButton.classList.add('fa-arrow-left');
+<script>
+// Fungsi untuk toggle sidebar
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  const toggleButton = document.querySelector('.toggle-sidebar i');
+  sidebar.classList.toggle('hidden');
+  content.classList.toggle('full-width');
+  if (sidebar.classList.contains('hidden')) {
+    toggleButton.classList.remove('fa-arrow-left');
+    toggleButton.classList.add('fa-arrow-right');
+  } else {
+    toggleButton.classList.remove('fa-arrow-right');
+    toggleButton.classList.add('fa-arrow-left');
+  }
+}
+
+function toggleSubmenu(id) {
+  const submenu = document.getElementById(id);
+  const allSubmenus = document.querySelectorAll('.sidebar ul ul');
+  allSubmenus.forEach(menu => {
+    if (menu.id !== id) {
+      menu.classList.remove('show');
     }
-  }
-
-  function toggleSubmenu(id) {
-    const submenu = document.getElementById(id);
-    const allSubmenus = document.querySelectorAll('.sidebar ul ul');
-    allSubmenus.forEach(menu => {
-      if (menu.id !== id) {
-        menu.classList.remove('show');
-      }
-    });
-    submenu.classList.toggle('show');
-  }
-
-  // Membiarkan submenu transkasi tetap terbuka saat halaman dimuat
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('transaksi').classList.add('show');
   });
+  submenu.classList.toggle('show');
+}
 
-  function updateStatus(selectElement, idPesanan) {
-    const newStatus = selectElement.value;
-    const statusCell = selectElement.closest('tr').querySelector('.status-badge');
+// Membiarkan submenu transkasi tetap terbuka saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('transaksi').classList.add('show');
+});
 
-    // Update status badge warna dan teks
+
+function updateStatus(selectElement, idPesanan) {
+    const newStatus = selectElement.value; // Status baru yang dipilih
+    const statusCell = selectElement.closest('tr').querySelector('.status-badge'); // Elemen badge status
+
+    // Update tampilan badge status secara langsung
     statusCell.className = `status-badge status-${newStatus.replace(/\s+/g, '-').toLowerCase()}`;
     statusCell.textContent = newStatus;
 
-    // Kirim permintaan AJAX untuk memperbarui status di database
+    // Kirim permintaan AJAX ke server
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '../php/update_status.php', true);
+    xhr.open('POST', 'update_status.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(`id_pesanan=${idPesanan}&status=${newStatus}`);
+
+    // Kirim parameter ID dan status
+    xhr.send(`id_pesanan=${idPesanan}&status=${encodeURIComponent(newStatus)}`);
+
+    // Tangani respons dari server
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log("Respon dari server: " + xhr.responseText);
+            if (xhr.responseText.includes("Status berhasil diperbarui")) {
+                alert("Status berhasil diperbarui.");
+            } else {
+                alert("Gagal memperbarui status: " + xhr.responseText);
+            }
+        } else {
+            alert("Gagal memperbarui status. Kesalahan: " + xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function () {
+        alert("Terjadi kesalahan saat mengirim permintaan ke server.");
+    };
 }
 
-// Tambahan untuk fungsi pencarian yang diperbarui
+    
+
+
+
+
+
 function searchFunction() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.getElementById("customerTable").getElementsByTagName("tr");
-
-    for (let i = 0; i < rows.length; i++) {
-        const nama = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
-        const telepon = rows[i].getElementsByTagName("td")[2]?.innerText.toLowerCase() || "";
-        const alamat = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
-        const merkSepatu = rows[i].getElementsByTagName("td")[7]?.innerText.toLowerCase() || "";
-        const status = rows[i].getElementsByTagName("td")[9]?.innerText.toLowerCase() || "";
-
-        if (nama.includes(input) || 
-            telepon.includes(input) || 
-            alamat.includes(input) || 
-            merkSepatu.includes(input) || 
-            status.includes(input)) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
+  const input = document.getElementById('searchInput');
+  const filter = input.value.toLowerCase();
+  const table = document.getElementById('customerTable');
+  const tr = table.getElementsByTagName('tr');
+  
+  for (let i = 0; i < tr.length; i++) {
+    const td = tr[i].getElementsByTagName('td');
+    let found = false;
+    for (let j = 0; j < td.length; j++) {
+      if (td[j]) {
+        if (td[j].textContent.toLowerCase().indexOf(filter) > -1) {
+          found = true;
+          break;
         }
+      }
     }
+    tr[i].style.display = found ? "" : "none";
+  }
 }
 </script>
 
 </body>
 </html>
-
-<?php
-$conn->close();
-?>

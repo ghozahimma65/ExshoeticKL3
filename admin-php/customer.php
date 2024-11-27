@@ -3,7 +3,7 @@
 include 'database.php';
 
 // Query untuk mengambil data customer
-$sql = "SELECT Nama, No_Hp AS Telepon, Alamat, ID_Pesanan FROM customer";
+$sql = "SELECT Nama, No_Hp AS Telepon, Keterangan, Alamat, ID_Pesanan FROM customer";
 $result = $conn->query($sql);
 ?>
 
@@ -43,7 +43,7 @@ $result = $conn->query($sql);
       </a>
       <ul id="keuangan">
         <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
-        <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
+        <li><a href="../admin-php/pengeluaran.php"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
     <li style="--i:3">
@@ -94,6 +94,7 @@ $result = $conn->query($sql);
           <th>Nama</th>
           <th>Telepon</th>
           <th>Alamat</th>
+          <th>Keterangan</th>
           <th>ID Pesanan</th>
         </tr>
       </thead>
@@ -107,6 +108,7 @@ $result = $conn->query($sql);
                         <td>{$row['Nama']}</td>
                         <td>{$row['Telepon']}</td>
                         <td>{$row['Alamat']}</td>
+                        <td>{$row['Keterangan']}</td>
                         <td>{$row['ID_Pesanan']}</td>
                       </tr>";
                 $no++;

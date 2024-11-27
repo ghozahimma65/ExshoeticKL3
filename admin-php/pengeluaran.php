@@ -2,8 +2,8 @@
 // Koneksi ke database
 include 'database.php';
 
-// Query untuk mengambil data customer
-$sql = "SELECT Nama_Treatment, Treatment_ID, Deskripsi, Harga, Estimasi FROM treatmen";
+// Query untuk mengambil data pengeluaran
+$sql = "SELECT ID_Pengeluaran, Nama_Barang, Harga_Satuan, Total, Jumlah_Harga FROM pengeluaran";
 $result = $conn->query($sql);
 ?>
 
@@ -12,7 +12,7 @@ $result = $conn->query($sql);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Customer - Exshoetic Admin</title>
+  <title>Data Pengeluaran - Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
@@ -20,6 +20,7 @@ $result = $conn->query($sql);
 </head>
 <body>
 
+<!-- Sidebar -->
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <button class="toggle-sidebar" onclick="toggleSidebar()">
@@ -31,7 +32,7 @@ $result = $conn->query($sql);
         <i class="fas fa-database"></i>
         Data Master
       </a>
-      <ul id="data-master" class="show">
+      <ul id="data-master">
         <li><a href="../admin-php/customer.php"><i class="fas fa-users"></i>Customer</a></li>
         <li><a href="../admin-php/treatment.php"><i class="fas fa-shoe-prints"></i>Treatment</a></li>
       </ul>
@@ -41,7 +42,7 @@ $result = $conn->query($sql);
         <i class="fas fa-chart-line"></i>
         Keuangan
       </a>
-      <ul id="keuangan">
+      <ul id="keuangan" class="show">
         <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="../admin-php/pengeluaran.php"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
@@ -78,56 +79,53 @@ $result = $conn->query($sql);
   </ul>
 </div>
 
+
 <!-- Content -->
 <div class="content" id="content">
-  <h1 class="page-title">Data Treatment</h1>
+  <h1 class="page-title">Data Pengeluaran</h1>
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
-  <a href="tambah_treatment.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Treatment</a>
+  <a href="#" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pengeluaran</a>
 
-<input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Treatment dan Deskripsi" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
+  <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Barang" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
   <div class="table-container">
     <table>
       <thead>
         <tr>
           <th>No</th>
-          <th>Nama Treatment</th>
-          <th>ID</th>
-          <th>Deskripsi</th>
-          <th>Harga</th>
-          <th>Estimasi</th>
+          <th>Nama Barang</th>
+          <th>Harga Satuan</th>
+          <th>Total</th>
+          <th>Jumlah Harga</th>
           <th>Aksi</th>
-       
         </tr>
       </thead>
-      <tbody id="TreatmentTable">
+      <tbody id="PengeluaranTable">
         <?php
         if ($result->num_rows > 0) {
             $no = 1;
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>
                         <td>{$no}</td>
-                        <td>{$row['Nama_Treatment']}</td>
-                        <td>{$row['Treatment_ID']}</td>
-                        <td>{$row['Deskripsi']}</td>
-                        <td>{$row['Harga']}</td>
-                        <td>{$row['Estimasi']}</td>
+                        <td>" . htmlspecialchars($row['Nama_Barang'], ENT_QUOTES, 'UTF-8') . "</td>
+                        <td>" . htmlspecialchars($row['Harga_Satuan'], ENT_QUOTES, 'UTF-8') . "</td>
+                        <td>" . htmlspecialchars($row['Total'], ENT_QUOTES, 'UTF-8') . "</td>
+                        <td>" . htmlspecialchars($row['Jumlah_Harga'], ENT_QUOTES, 'UTF-8') . "</td>
                         <td class='p-3'>
-                          <a href='edit_treatment.php?id={$row['Treatment_ID']}' class='action-button edit'>
+                          <a href='edit_pengeluaran.php?id=" . htmlspecialchars($row['ID_Pengeluaran'], ENT_QUOTES, 'UTF-8') . "' class='action-button edit'>
                             <i class='fas fa-edit'></i>
                           </a>
-                          <a href='delete_treatment.php?Treatment_ID={$row['Treatment_ID']}' 
+                          <a href='delete_pengeluaran.php?ID_Pengeluaran=" . htmlspecialchars($row['ID_Pengeluaran'], ENT_QUOTES, 'UTF-8') . "' 
                              class='action-button delete' 
                              onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>
                             <i class='fas fa-trash'></i>
                           </a>
                         </td>
                       </tr>";
-
                 $no++;
             }
         } else {
-            echo "<tr><td colspan='6' style='text-align: center;'>Data treatment tidak ditemukan</td></tr>";
+            echo "<tr><td colspan='6' style='text-align: center;'>Data pengeluaran tidak ditemukan</td></tr>";
         }
         ?>
       </tbody>
@@ -136,6 +134,7 @@ $result = $conn->query($sql);
 </div>
 
 <script>
+  // Fungsi untuk toggle sidebar
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
@@ -151,6 +150,7 @@ $result = $conn->query($sql);
     }
   }
 
+  // Fungsi untuk toggle submenu
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
@@ -162,30 +162,26 @@ $result = $conn->query($sql);
     submenu.classList.toggle('show');
   }
 
-
-  // Keep data-master submenu open on page load
+  // Membiarkan submenu data-master tetap terbuka saat halaman dimuat
   document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('data-master').classList.add('show');
+    document.getElementById('keuangan').classList.add('show');
   });
 
   // Fungsi pencarian
   function searchFunction() {
     const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.getElementById("TreatmentTable").getElementsByTagName("tr");
+    const rows = document.getElementById("PengeluaranTable").getElementsByTagName("tr");
 
     for (let i = 0; i < rows.length; i++) {
-        const namaTreatment = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
-        const deskripsi = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
+        const namaBarang = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
 
-        if (namaTreatment.includes(input) || deskripsi.includes(input)) {
+        if (namaBarang.includes(input)) {
             rows[i].style.display = "";
         } else {
             rows[i].style.display = "none";
         }
     }
-}
-
-  
+  }
 </script>
 
 </body>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2024 at 01:24 PM
+-- Generation Time: Nov 28, 2024 at 01:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -43,7 +43,8 @@ INSERT INTO `admin` (`idadmin`, `username`, `password`) VALUES
 (3, 'kaka', '12345678'),
 (4, 'ghozahimma', 'akushlek'),
 (5, 'ainur', '55555'),
-(6, 'E31230781', '123');
+(6, 'E31230781', '123'),
+(7, 'pingki', '123');
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,13 @@ INSERT INTO `customer` (`Customer_ID`, `Nama`, `No_Hp`, `Alamat`, `keterangan`, 
 (15, 'ainur kipli', '081233786656', 'jl. jalan-jalan ', '', 1012),
 (16, 'kunti', '081330384433', 'jl. jalan-jalan ', '', 1013),
 (17, 'anis baswedan', '0813103834433', 'jl panjaitan', 'test', 1014),
-(18, 'ganjar baswedan', '085981654433', 'jl kadita ', '', 1015);
+(18, 'ganjar baswedan', '085981654433', 'jl kadita ', '', 1015),
+(19, 'mochammad salah', '085766610266', 'jl. jalan ', '', 1016),
+(20, 'mochammad salah', '081310384433', 'jl. jalan ', 'p', 1017),
+(21, 'pedri photer', '081310384433', 'jl. mastrip,no 58 ', '', 1018),
+(22, 'pedri photer', '081310383443', 'jl. jalan ', '', 1019),
+(23, 'mochammad salah', '0000813003', 'jl. mastrip,no 58 ', '', 1020),
+(24, 'ainur ', '0000813003', 'jl. mastrip,no 58 ', '', 1021);
 
 -- --------------------------------------------------------
 
@@ -92,7 +99,13 @@ INSERT INTO `detail_pesanan` (`ID_Pesanan`, `Customer_ID`, `Pembayaran_ID`) VALU
 (1012, 15, 'PM1012'),
 (1013, 16, 'PM1013'),
 (1014, 17, 'PM1014'),
-(1015, 18, 'PM1015');
+(1015, 18, 'PM1015'),
+(1016, 19, 'PM1016'),
+(1017, 20, 'PM1017'),
+(1018, 21, 'PM1018'),
+(1019, 22, 'PM1019'),
+(1020, 23, 'PM1020'),
+(1021, 24, 'PM1021');
 
 -- --------------------------------------------------------
 
@@ -130,7 +143,13 @@ INSERT INTO `pembayaran` (`Pembayaran_ID`, `ID_Pesanan`, `Tanggal_Pembayaran`, `
 ('PM1012', 1012, '2024-11-20', 'ShopeePay', 15000),
 ('PM1013', 1013, '2024-11-21', 'COD', 40000),
 ('PM1014', 1014, '2024-11-27', 'COD', 70000),
-('PM1015', 1015, '2024-11-27', 'COD', 70000);
+('PM1015', 1015, '2024-11-27', 'COD', 70000),
+('PM1016', 1016, '2024-11-28', 'COD', 40000),
+('PM1017', 1017, '2024-11-28', 'COD', 40000),
+('PM1018', 1018, '2024-11-28', 'COD', 35000),
+('PM1019', 1019, '2024-11-28', 'COD', 50000),
+('PM1020', 1020, '2024-11-28', 'COD', 15000),
+('PM1021', 1021, '2024-11-28', 'COD', 70000);
 
 -- --------------------------------------------------------
 
@@ -166,7 +185,7 @@ CREATE TABLE `pesanan` (
   `Treatment_ID` varchar(11) NOT NULL,
   `Merk_Sepatu` varchar(255) NOT NULL,
   `Total_Tagihan` int(11) NOT NULL,
-  `Status` enum('Diambil','Proses','Diantar','Selesai') NOT NULL
+  `Status` enum('Belum Selesai','Sudah Selesai') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -174,11 +193,17 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`ID_Pesanan`, `Tanggal_Pesanan`, `Treatment_ID`, `Merk_Sepatu`, `Total_Tagihan`, `Status`) VALUES
-(1011, '2024-11-20', 'TM008', 'adidas', 70000, ''),
-(1012, '2024-11-20', 'TM002', 'nike', 15000, ''),
-(1013, '2024-11-21', 'TM007', 'adidas', 40000, 'Diambil'),
-(1014, '2024-11-27', 'TM008', 'nike', 70000, 'Diambil'),
-(1015, '2024-11-27', 'TM008', 'nike', 70000, 'Diambil');
+(1011, '2024-11-20', 'TM008', 'adidas', 70000, 'Sudah Selesai'),
+(1012, '2024-11-20', 'TM002', 'nike', 15000, 'Sudah Selesai'),
+(1013, '2024-11-21', 'TM007', 'adidas', 40000, 'Sudah Selesai'),
+(1014, '2024-11-27', 'TM008', 'nike', 70000, 'Sudah Selesai'),
+(1015, '2024-11-27', 'TM008', 'nike', 70000, 'Sudah Selesai'),
+(1016, '2024-11-28', 'TM007', 'new balance', 40000, ''),
+(1017, '2024-11-28', 'TM007', 'new balance', 40000, ''),
+(1018, '2024-11-28', 'TM001', 'new balance', 35000, ''),
+(1019, '2024-11-28', 'TM006', 'new balance', 50000, ''),
+(1020, '2024-11-28', 'TM002', 'new balance', 15000, ''),
+(1021, '2024-11-28', 'TM008', 'new balance', 70000, '');
 
 -- --------------------------------------------------------
 
@@ -227,6 +252,26 @@ ALTER TABLE `customer`
   ADD KEY `ID_Pesanan` (`ID_Pesanan`);
 
 --
+-- Indexes for table `detail_pesanan`
+--
+ALTER TABLE `detail_pesanan`
+  ADD KEY `fk_detail_pesanan_pesanan` (`ID_Pesanan`),
+  ADD KEY `fk_detail_pesanan_customer` (`Customer_ID`);
+
+--
+-- Indexes for table `invoice`
+--
+ALTER TABLE `invoice`
+  ADD KEY `fk_invoice_pesanan` (`ID_Pesanan`),
+  ADD KEY `fk_invoice_customer` (`Customer_ID`);
+
+--
+-- Indexes for table `pembayaran`
+--
+ALTER TABLE `pembayaran`
+  ADD KEY `fk_pembayaran_pesanan` (`ID_Pesanan`);
+
+--
 -- Indexes for table `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
@@ -236,7 +281,8 @@ ALTER TABLE `pengeluaran`
 -- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  ADD PRIMARY KEY (`ID_Pesanan`);
+  ADD PRIMARY KEY (`ID_Pesanan`),
+  ADD KEY `fk_pesanan_treatmen` (`Treatment_ID`);
 
 --
 -- Indexes for table `treatmen`
@@ -252,13 +298,13 @@ ALTER TABLE `treatmen`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `idadmin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idadmin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `pengeluaran`
@@ -270,7 +316,43 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `ID_Pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1016;
+  MODIFY `ID_Pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1022;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `fk_customer_pesanan` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `detail_pesanan`
+--
+ALTER TABLE `detail_pesanan`
+  ADD CONSTRAINT `fk_detail_pesanan_customer` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`Customer_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_detail_pesanan_pesanan` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `invoice`
+--
+ALTER TABLE `invoice`
+  ADD CONSTRAINT `fk_invoice_customer` FOREIGN KEY (`Customer_ID`) REFERENCES `customer` (`Customer_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_invoice_pesanan` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pembayaran`
+--
+ALTER TABLE `pembayaran`
+  ADD CONSTRAINT `fk_pembayaran_pesanan` FOREIGN KEY (`ID_Pesanan`) REFERENCES `pesanan` (`ID_Pesanan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pesanan`
+--
+ALTER TABLE `pesanan`
+  ADD CONSTRAINT `fk_pesanan_treatmen` FOREIGN KEY (`Treatment_ID`) REFERENCES `treatmen` (`Treatment_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

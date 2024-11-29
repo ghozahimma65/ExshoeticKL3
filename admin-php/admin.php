@@ -1,6 +1,18 @@
 
 <?php
 session_start();
+include('database.php');
+
+// Query untuk menghitung jumlah pesanan yang sudah selesai
+$query_selesai = "SELECT COUNT(*) AS jumlah_selesai FROM pesanan WHERE Status = 'Sudah Selesai'";
+$result_selesai = $conn->query($query_selesai);
+$jumlah_selesai = 0;
+
+if ($result_selesai->num_rows > 0) {
+    $row_selesai = $result_selesai->fetch_assoc();
+    $jumlah_selesai = $row_selesai['jumlah_selesai'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -92,9 +104,11 @@ session_start();
     </div>
     <div class="stat-card">
       <h4>Treatment Selesai</h4>
-      <div class="value" id="total-treatment-selesai">Loading...</div>
+      <div class="value" id="total-treatment-selesai">Selesai</div>
+      <p><?= $jumlah_selesai ?> Pesanan</p>
     </div>
   </div>
+  
 
   <div class="chart-container">
     <div class="card">
@@ -146,7 +160,7 @@ session_start();
       document.getElementById('total-pesanan').innerText = data.total_pesanan;
       document.getElementById('total-pendapatan').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
       document.getElementById('total-customer').innerText = data.total_customer;
-      document.getElementById('total-treatment-selesai').innerText = data.total_treatment_selesai;
+      // document.getElementById('total-treatment-selesai').innerText = data.total_treatment_selesai;
       document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
 
       // Update grafik (Chart.js)

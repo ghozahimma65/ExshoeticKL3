@@ -26,12 +26,25 @@ $result_treatment_selesai = mysqli_query($conn, $query_total_treatment_selesai);
 $data_treatment_selesai = mysqli_fetch_assoc($result_treatment_selesai);
 $total_treatment_selesai = $data_treatment_selesai['total_treatment_selesai'];
 
+// Query data untuk grafik pesanan bulanan
+$query_bulanan = "
+    SELECT MONTH(tanggal_pesanan) AS bulan, COUNT(*) AS total 
+    FROM pesanan 
+    GROUP BY MONTH(tanggal_pesanan)";
+$result_bulanan = $conn->query($query_bulanan);
+
+$pesanan_bulanan = array_fill(1, 12, 0); // Isi awal dengan 0 untuk 12 bulan
+while ($row = $result_bulanan->fetch_assoc()) {
+    $pesanan_bulanan[(int)$row['bulan']] = (int)$row['total'];
+}
+
 // Return data sebagai array
 $data = [
     'total_pesanan' => $total_pesanan,
     'total_pendapatan' => $total_pendapatan,
     'total_customer' => $total_customer,
-    'total_treatment_selesai' => $total_treatment_selesai
+    'total_treatment_selesai' => $total_treatment_selesai,
+    'pesanan_bulanan' => $pesanan_bulanan
 ];
 
 echo json_encode($data); // Mengirim data dalam format JSON

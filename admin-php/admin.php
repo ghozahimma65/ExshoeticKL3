@@ -170,32 +170,33 @@ if ($result_selesai->num_rows > 0) {
     }
   }
 
-  function updateLineChart(data) {
+function updateLineChart(data) {
     const lineCtx = document.getElementById('lineChart').getContext('2d');
     new Chart(lineCtx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-          label: 'Total Pesanan',
-          data: Array(12).fill(100),  // Data dummy, bisa disesuaikan dengan data asli
-          borderColor: '#3b82f6',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          tension: 0.3,
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'top' }
+        type: 'line',
+        data: {
+           // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Total Pesanan',
+                data: data.pesanan_bulanan, // Gunakan data dari backend
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                tension: 0.3,
+                fill: true
+            }]
         },
-        scales: {
-          y: { beginAtZero: true }
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
-      }
     });
-  }
+}
+
 
   // Panggil fetchData saat halaman dimuat
   document.addEventListener('DOMContentLoaded', fetchData);

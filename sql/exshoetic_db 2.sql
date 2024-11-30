@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2024 at 01:26 PM
+-- Generation Time: Nov 29, 2024 at 01:43 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -76,7 +76,36 @@ INSERT INTO `customer` (`Customer_ID`, `Nama`, `No_Hp`, `Alamat`, `keterangan`, 
 (21, 'pedri photer', '081310384433', 'jl. mastrip,no 58 ', '', 1018),
 (22, 'pedri photer', '081310383443', 'jl. jalan ', '', 1019),
 (23, 'mochammad salah', '0000813003', 'jl. mastrip,no 58 ', '', 1020),
-(24, 'ainur ', '0000813003', 'jl. mastrip,no 58 ', '', 1021);
+(24, 'ainur ', '0000813003', 'jl. mastrip,no 58 ', '', 1021),
+(25, 'firman putra', '081234567890', 'jl. merpati 3', '', 1022),
+(26, 'ahmad farhan', '081345678901', 'jl. bunga mawar', '', 1023),
+(27, 'dina anjani', '081456789012', 'jl. durian 2', 'pelanggan setia', 1024),
+(28, 'nina mariana', '081567890123', 'jl. rambutan 9', '', 1025),
+(29, 'dika ramdhan', '081678901234', 'jl. mangga besar', '', 1026),
+(30, 'riska amalia', '081789012345', 'jl. pahlawan 10', '', 1027),
+(31, 'hanif santoso', '081890123456', 'jl. gatot subroto', '', 1028),
+(32, 'sinta lara', '081901234567', 'jl. sudirman', '', 1029),
+(33, 'irwan teguh', '082123456789', 'jl. ahmad yani', '', 1030),
+(34, 'lia anggraeni', '082234567890', 'jl. thamrin', 'vip customer', 1031),
+(35, 'ferdiansyah', '082345678901', 'jl. soekarno', '', 1032),
+(36, 'maya safitri', '082456789012', 'jl. suprapto', '', 1033),
+(37, 'ivan kusuma', '082567890123', 'jl. sudirman', '', 1034),
+(38, 'yusuf nur', '082678901234', 'jl. merdeka', '', 1035),
+(39, 'rahma fitri', '082789012345', 'jl. keadilan', '', 1036),
+(40, 'arif hadi', '082890123456', 'jl. pandawa', '', 1037),
+(41, 'ratna sari', '083123456789', 'jl. brantas', 'test', 1038),
+(42, 'dedi irawan', '083234567890', 'jl. semeru', '', 1039),
+(43, 'siska ardila', '083345678901', 'jl. bromo', '', 1040),
+(44, 'agus firmansyah', '083456789012', 'jl. kerinci', '', 1041),
+(45, 'lina anggraini', '083567890123', 'jl. kelud', '', 1042),
+(46, 'dian putri', '083678901234', 'jl. merapi', '', 1043),
+(47, 'ade wirawan', '083789012345', 'jl. sindoro', '', 1044),
+(48, 'taufik hidayat', '083890123456', 'jl. sumbing', '', 1045),
+(49, 'nita widya', '084123456789', 'jl. arjuna', '', 1046),
+(50, 'bayu firmansyah', '084234567890', 'jl. prabu siliwangi', '', 1047),
+(51, 'irfan hidayat', '084345678901', 'jl. ampera', '', 1048),
+(52, 'siti nurhayati', '084456789012', 'jl. adipura', '', 1049),
+(53, 'agus surya', '084567890123', 'jl. cendana', '', 1050);
 
 -- --------------------------------------------------------
 
@@ -203,7 +232,36 @@ INSERT INTO `pesanan` (`ID_Pesanan`, `Tanggal_Pesanan`, `Treatment_ID`, `Merk_Se
 (1018, '2024-11-28', 'TM001', 'new balance', 35000, ''),
 (1019, '2024-11-28', 'TM006', 'new balance', 50000, ''),
 (1020, '2024-11-28', 'TM002', 'new balance', 15000, ''),
-(1021, '2024-11-28', 'TM008', 'new balance', 70000, '');
+(1021, '2024-11-28', 'TM008', 'new balance', 70000, ''),
+(1022, '2024-11-28', 'TM003', 'puma', 20000, ''),
+(1023, '2024-11-29', 'TM004', 'adidas', 30000, ''),
+(1024, '2024-11-29', 'TM005', 'nike', 45000, 'Sudah Selesai'),
+(1025, '2024-11-29', 'TM006', 'puma', 50000, 'Sudah Selesai'),
+(1026, '2024-11-29', 'TM007', 'reebok', 40000, ''),
+(1027, '2024-11-29', 'TM008', 'new balance', 70000, 'Sudah Selesai'),
+(1028, '2024-11-29', 'TM002', 'adidas', 15000, ''),
+(1029, '2024-11-30', 'TM003', 'nike', 20000, 'Sudah Selesai'),
+(1030, '2024-11-30', 'TM004', 'new balance', 30000, ''),
+(1031, '2024-11-30', 'TM005', 'reebok', 45000, ''),
+(1032, '2024-11-30', 'TM006', 'puma', 50000, 'Sudah Selesai'),
+(1033, '2024-11-30', 'TM007', 'adidas', 40000, 'Sudah Selesai'),
+(1034, '2024-11-30', 'TM008', 'nike', 70000, ''),
+(1035, '2024-12-01', 'TM002', 'reebok', 15000, ''),
+(1036, '2024-12-01', 'TM003', 'puma', 20000, 'Sudah Selesai'),
+(1037, '2024-12-01', 'TM004', 'adidas', 30000, ''),
+(1038, '2024-12-01', 'TM005', 'new balance', 45000, 'Sudah Selesai'),
+(1039, '2024-12-01', 'TM006', 'nike', 50000, ''),
+(1040, '2024-12-01', 'TM007', 'reebok', 40000, ''),
+(1041, '2024-12-02', 'TM008', 'adidas', 70000, 'Sudah Selesai'),
+(1042, '2024-12-02', 'TM002', 'new balance', 15000, ''),
+(1043, '2024-12-02', 'TM003', 'nike', 20000, ''),
+(1044, '2024-12-02', 'TM004', 'puma', 30000, 'Sudah Selesai'),
+(1045, '2024-12-02', 'TM005', 'adidas', 45000, ''),
+(1046, '2024-12-02', 'TM006', 'reebok', 50000, ''),
+(1047, '2024-12-03', 'TM007', 'new balance', 40000, 'Sudah Selesai'),
+(1048, '2024-12-03', 'TM008', 'nike', 70000, ''),
+(1049, '2024-12-03', 'TM002', 'puma', 15000, 'Sudah Selesai'),
+(1050, '2024-12-03', 'TM003', 'reebok', 20000, '');
 
 -- --------------------------------------------------------
 
@@ -304,7 +362,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `pengeluaran`
@@ -316,7 +374,7 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `ID_Pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1022;
+  MODIFY `ID_Pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1051;
 
 --
 -- Constraints for dumped tables

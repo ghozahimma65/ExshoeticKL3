@@ -158,10 +158,10 @@ if ($result_selesai->num_rows > 0) {
 
       // Update nilai-nilai di dashboard
       document.getElementById('total-pesanan').innerText = data.total_pesanan;
-      document.getElementById('total-pendapatan').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
       document.getElementById('total-customer').innerText = data.total_customer;
       // document.getElementById('total-treatment-selesai').innerText = data.total_treatment_selesai;
-      document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
+      document.getElementById('total-pendapatan').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
+document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
 
       // Update grafik (Chart.js)
       updateLineChart(data);

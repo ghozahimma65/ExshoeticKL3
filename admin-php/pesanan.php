@@ -59,7 +59,7 @@ $result = $stmt->get_result();
       </a>
       <ul id="keuangan">
         <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
-        <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
+        <li><a href="../admin-php/pengeluaran.php"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
     <li style="--i:3">

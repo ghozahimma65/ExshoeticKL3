@@ -2,10 +2,18 @@
 // Koneksi ke database
 include 'database.php';
 
-// Query untuk mengambil data pengeluaran
-$sql = "SELECT ID_Pengeluaran, Nama_Barang, Harga_Satuan, Total, Jumlah_Harga FROM pengeluaran";
+// Ambil nilai bulan dan tahun dari parameter GET
+$bulan = isset($_GET['bulan']) ? (int)$_GET['bulan'] : date('m');
+$tahun = isset($_GET['tahun']) ? (int)$_GET['tahun'] : date('Y');
+
+// Query untuk mengambil data pengeluaran berdasarkan filter bulan dan tahun
+$sql = "SELECT ID_Pengeluaran, Tanggal_Pembelian, Nama_Barang, Harga_Satuan, Total, Jumlah_Harga 
+        FROM pengeluaran 
+        WHERE MONTH(Tanggal_Pembelian) = $bulan AND YEAR(Tanggal_Pembelian) = $tahun";
+
 $result = $conn->query($sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,8 +27,113 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="/exshoetic/admin-css/cont-treatment.css"> 
 </head>
 <body>
+<style>
+      .table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-top: 0px;
+        overflow-x: auto; /* Scroll secara horizontal jika tabel terlalu lebar */
+        overflow-y: auto; /* Scroll secara vertikal jika tabel terlalu tinggi */
+        max-height: 400px; /* Atur tinggi maksimum untuk membuat tabel lebih ringkas */
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+  
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+      }
+  
+      th {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 500;
+      }
+  
+      tr:hover {
+        background-color: #f9fafb;
+      }
+  
+      .page-title {
+        color: #1f2937;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+      .btn-add-customer {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+  }
+  
+  .btn-add-customer:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+  }
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
 
-<!-- Sidebar -->
+.filter-container label {
+    font-weight: 500;
+    color: #1f2937;
+    margin-right: 10px;
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95em;
+    background-color: #f9fafb;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-container select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.filter-container button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-container button:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+}
+  
+</style>
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <button class="toggle-sidebar" onclick="toggleSidebar()">
@@ -76,40 +189,68 @@ $result = $conn->query($sql);
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
   <a href="tambah_pengeluaran.php"class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pengeluaran</a>
 
+  <form method="GET" class="filter-container">
+  <label for="bulan">Pilih Bulan:</label>
+  <select name="bulan" id="bulan">
+    <?php
+    for ($i = 1; $i <= 12; $i++) {
+        $selected = ($i == $bulan) ? 'selected' : '';
+        echo "<option value='$i' $selected>" . date('F', mktime(0, 0, 0, $i, 10)) . "</option>";
+    }
+    ?>
+  </select>
+  
+  <label for="tahun">Pilih Tahun:</label>
+  <select name="tahun" id="tahun">
+    <?php
+    $currentYear = date('Y');
+    for ($i = $currentYear - 2; $i <= $currentYear; $i++) {
+        $selected = ($i == $tahun) ? 'selected' : '';
+        echo "<option value='$i' $selected>$i</option>";
+    }
+    ?>
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
+
   <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Barang" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
   <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Barang</th>
-          <th>Harga Satuan</th>
-          <th>Total</th>
-          <th>Jumlah Harga</th>
-        </tr>
-      </thead>
-      <tbody id="PengeluaranTable">
-        <?php
-        if ($result->num_rows > 0) {
-            $no = 1;
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$no}</td>
-                        <td>" . htmlspecialchars($row['Nama_Barang'], ENT_QUOTES, 'UTF-8') . "</td>
-                        <td>" . htmlspecialchars($row['Harga_Satuan'], ENT_QUOTES, 'UTF-8') . "</td>
-                        <td>" . htmlspecialchars($row['Total'], ENT_QUOTES, 'UTF-8') . "</td>
-                        <td>" . htmlspecialchars($row['Jumlah_Harga'], ENT_QUOTES, 'UTF-8') . "</td>
-                      </tr>";
-                $no++;
-            }
-        } else {
-            echo "<tr><td colspan='6' style='text-align: center;'>Data pengeluaran tidak ditemukan</td></tr>";
-        }
-        ?>
-      </tbody>
-    </table>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Tanggal Beli</th>
+        <th>Nama Barang</th>
+        <th>Harga Satuan</th>
+        <th>Total</th>
+        <th>Jumlah Harga</th>
+      </tr>
+    </thead>
+    <tbody id="PengeluaranTable">
+  <?php
+  if ($result->num_rows > 0) {
+      $no = 1;
+      while ($row = $result->fetch_assoc()) {
+          echo "<tr>
+                  <td>{$no}</td>
+                  <td>" . htmlspecialchars($row['Tanggal_Pembelian'], ENT_QUOTES, 'UTF-8') . "</td>
+                  <td>" . htmlspecialchars($row['Nama_Barang'], ENT_QUOTES, 'UTF-8') . "</td>
+                  <td>" . htmlspecialchars($row['Harga_Satuan'], ENT_QUOTES, 'UTF-8') . "</td>
+                  <td>" . htmlspecialchars($row['Total'], ENT_QUOTES, 'UTF-8') . "</td>
+                  <td>" . htmlspecialchars($row['Jumlah_Harga'], ENT_QUOTES, 'UTF-8') . "</td>
+                </tr>";
+          $no++;
+      }
+  } else {
+      echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data pengeluaran untuk bulan dan tahun yang dipilih</td></tr>";
+  }
+  ?>
+</tbody>
+
+  </table>
 </div>
 
 <script>

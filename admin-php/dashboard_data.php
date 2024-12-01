@@ -30,6 +30,12 @@ $result_treatment_selesai = mysqli_query($conn, $query_total_treatment_selesai);
 $data_treatment_selesai = mysqli_fetch_assoc($result_treatment_selesai);
 $total_treatment_selesai = $data_treatment_selesai['total_treatment_selesai'];
 
+// Query untuk menghitung total pengeluaran
+$query_total_pengeluaran = "SELECT SUM(Jumlah_Harga) AS total_pengeluaran FROM pengeluaran";
+$result_pengeluaran = mysqli_query($conn, $query_total_pengeluaran);
+$data_pengeluaran = mysqli_fetch_assoc($result_pengeluaran);
+$total_pengeluaran = $data_pengeluaran['total_pengeluaran'] ?? 0; // Pastikan jika NULL maka jadi 0
+
 // Query data untuk grafik pesanan bulanan
 $query_bulanan = "
     SELECT MONTH(tanggal_pesanan) AS bulan, COUNT(*) AS total 
@@ -48,7 +54,8 @@ $data = [
     'total_pendapatan' => (int)$total_pendapatan, // Pastikan angka, tidak diformat di sini
     'total_customer' => $total_customer,
     'total_treatment_selesai' => $total_treatment_selesai,
-    'pesanan_bulanan' => $pesanan_bulanan
+    'pesanan_bulanan' => $pesanan_bulanan,
+    'total_pengeluaran' => (int)$total_pengeluaran // Tambahkan pengeluaran
 ];
 
 echo json_encode($data); // Mengirim data dalam format JSON

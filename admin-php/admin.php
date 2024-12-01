@@ -52,7 +52,7 @@ if ($result_selesai->num_rows > 0) {
       </a>
       <ul id="keuangan">
         <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
-        <li><a href="#"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
+        <li><a href="../admin-php/pengeluaran.php"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
     </li>
     <li style="--i:3">
@@ -89,8 +89,8 @@ if ($result_selesai->num_rows > 0) {
       <div class="value" id="total-pendapatan">Loading...</div>
     </div>
     <div class="stat-card">
-      <h4>Total Customer</h4>
-      <div class="value" id="total-customer">Loading...</div>
+      <h4>Pengeluaran</h4>
+      <div class="value" id="total-pengeluaran">Loading...</div>
     </div>
     <div class="stat-card">
       <h4>Treatment Selesai</h4>
@@ -148,10 +148,9 @@ if ($result_selesai->num_rows > 0) {
 
       // Update nilai-nilai di dashboard
       document.getElementById('total-pesanan').innerText = data.total_pesanan;
-      document.getElementById('total-customer').innerText = data.total_customer;
-      // document.getElementById('total-treatment-selesai').innerText = data.total_treatment_selesai;
+      document.getElementById("total-pengeluaran").textContent = `Rp ${data.total_pengeluaran.toLocaleString('id-ID')}`;
       document.getElementById('total-pendapatan').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
-document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
+      document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
 
       // Update grafik (Chart.js)
       updateLineChart(data);

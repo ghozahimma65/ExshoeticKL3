@@ -30,7 +30,7 @@ $result = $stmt->get_result();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
-  <link rel="stylesheet" href="/exshoetic/admin-css/cont-customer.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-pesanan.css"> 
 </head>
 <body>
 
@@ -69,20 +69,10 @@ $result = $stmt->get_result();
       </a>
       <ul id="transaksi" class="show">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
-        <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
+        <li><a href="#"><i class="fas fa-file-alt"></i> Laporan</a></li>
       </ul>
     </li>
-    <!-- Tambahan: Pengaturan Admin -->
-    <li style="--i:4">
-      <a onclick="toggleSubmenu('pengaturan-admin')">
-        <i class="fas fa-cogs"></i>
-        Pengaturan
-      </a>
-      <ul id="pengaturan-admin">
-        <li><a href="../admin-php/profile.php"><i class="fas fa-user"></i>Profil Admin</a></li>
-        <li><a href="../admin-php/settings.php"><i class="fas fa-tools"></i>Pengaturan Sistem</a></li>
-      </ul>
-    </li>
+
     <!-- Tambahkan Tombol Logout -->
     <li class="logout-menu">
       <form method="POST" action="logout.php">
@@ -100,39 +90,31 @@ $result = $stmt->get_result();
   <h1 class="page-title">Data Pesanan</h1>
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
 
-  <h1>Data Pesanan Berdasarkan Bulan</h1>
+  <form method="GET" class="filter-container">
+    <label for="bulan">Pilih Bulan</label>
+    <select name="bulan" id="bulan">
+        <?php
+        for ($i = 1; $i <= 12; $i++) {
+            $selected = ($i == $bulan) ? 'selected' : '';
+            echo "<option value='$i' $selected>" . date('F', mktime(0, 0, 0, $i, 10)) . "</option>";
+        }
+        ?>
+    </select>
+    
+    <label for="tahun">Pilih Tahun:</label>
+    <select name="tahun" id="tahun">
+      <?php
+      $currentYear = date('Y');
+      for ($i = $currentYear - 2; $i <= $currentYear; $i++) {
+          $selected = ($i == $tahun) ? 'selected' : '';
+          echo "<option value='$i' $selected>$i</option>";
+      }
+      ?>
+    </select>
 
+    <button type="submit">Filter</button>
+  </form>
 
-<form method="GET" style="margin-bottom: 15px;">
-<label for="tahun">Pilih Bulan</label>
-<select name="bulan" id="bulan">
-    <?php
-    for ($i = 1; $i <= 12; $i++) {
-        // Set 'selected' pada bulan yang sesuai
-        $selected = ($i == $bulan) ? 'selected' : '';
-        echo "<option value='$i' $selected>" . date('F', mktime(0, 0, 0, $i, 10)) . "</option>";
-    }
-    ?>
-</select>
-
-  </select>
-  
-  <label for="tahun">Pilih Tahun:</label>
-  <select name="tahun" id="tahun">
-    <?php
-    $currentYear = date('Y');
-    for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
-        // Set 'selected' pada tahun yang sesuai
-        $selected = ($i == $tahun) ? 'selected' : '';
-        echo "<option value='$i' $selected>$i</option>";
-    }
-    ?>
-</select>
-
-  </select>
-
-  <button type="submit">Filter</button>
-</form>
 
   <!-- Notifikasi -->
   <div id="notification" class="notification hidden"></div>

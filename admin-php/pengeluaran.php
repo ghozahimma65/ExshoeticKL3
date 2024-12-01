@@ -54,20 +54,10 @@ $result = $conn->query($sql);
       </a>
       <ul id="transaksi">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
-        <li><a href="#"><i class="fas fa-truck"></i>Pengiriman</a></li>
+        <li><a href="#"><i class="fas fa-file-alt"></i> Laporan</a></li>
       </ul>
     </li>
-        <!-- Tambahan: Pengaturan Admin -->
-        <li style="--i:4">
-      <a onclick="toggleSubmenu('pengaturan-admin')">
-        <i class="fas fa-cogs"></i>
-        Pengaturan
-      </a>
-      <ul id="pengaturan-admin">
-        <li><a href="../admin-php/profile.php"><i class="fas fa-user"></i>Profil Admin</a></li>
-        <li><a href="../admin-php/settings.php"><i class="fas fa-tools"></i>Pengaturan Sistem</a></li>
-      </ul>
-    </li>
+
     <!-- Tambahkan Tombol Logout -->
     <li class="logout-menu">
       <form method="POST" action="logout.php">
@@ -97,7 +87,6 @@ $result = $conn->query($sql);
           <th>Harga Satuan</th>
           <th>Total</th>
           <th>Jumlah Harga</th>
-          <th>Aksi</th>
         </tr>
       </thead>
       <tbody id="PengeluaranTable">
@@ -111,16 +100,6 @@ $result = $conn->query($sql);
                         <td>" . htmlspecialchars($row['Harga_Satuan'], ENT_QUOTES, 'UTF-8') . "</td>
                         <td>" . htmlspecialchars($row['Total'], ENT_QUOTES, 'UTF-8') . "</td>
                         <td>" . htmlspecialchars($row['Jumlah_Harga'], ENT_QUOTES, 'UTF-8') . "</td>
-                        <td class='p-3'>
-                          <a href='edit_pengeluaran.php?id=" . htmlspecialchars($row['ID_Pengeluaran'], ENT_QUOTES, 'UTF-8') . "' class='action-button edit'>
-                            <i class='fas fa-edit'></i>
-                          </a>
-                          <a href='delete_pengeluaran.php?ID_Pengeluaran=" . htmlspecialchars($row['ID_Pengeluaran'], ENT_QUOTES, 'UTF-8') . "' 
-                             class='action-button delete' 
-                             onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>
-                            <i class='fas fa-trash'></i>
-                          </a>
-                        </td>
                       </tr>";
                 $no++;
             }

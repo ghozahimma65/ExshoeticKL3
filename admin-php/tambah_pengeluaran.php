@@ -5,12 +5,14 @@ function generateIdPengeluaran() {
     return 'PNG-' . date('YmdHis') . rand(100, 999);
 }
 
+$success = false; // Status keberhasilan
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_pengeluaran = generateIdPengeluaran();
     $nama_barang = htmlspecialchars($_POST['nama_barang']);
     $harga_satuan = (int) htmlspecialchars($_POST['harga_satuan']);
     $total = (int) htmlspecialchars($_POST['total']);
-    $harga_jumlah = $harga_satuan * $total;  // Harga Jumlah dihitung dengan harga satuan * total
+    $harga_jumlah = $harga_satuan * $total;
 
     if (empty($nama_barang) || empty($harga_satuan) || empty($total)) {
         echo "<script>alert('Semua field wajib diisi!');</script>";
@@ -23,16 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   VALUES ('$id_pengeluaran', '$nama_barang', '$harga_satuan', '$total', '$harga_jumlah')";
 
         if (mysqli_query($conn, $query)) {
-            echo "<script>
-                alert('Data pengeluaran berhasil ditambahkan!');
-                window.location.href = 'pengeluaran.php'; // Redirect ke halaman lain jika berhasil
-            </script>";
+            $success = true; // Menandai proses berhasil
         } else {
             echo "<script>alert('Terjadi kesalahan: " . mysqli_error($conn) . "');</script>";
         }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -42,14 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../admin-css/add.css" />
     <style>
-      .success-message {
-        background-color: #4CAF50;
-        color: white;
-        padding: 15px;
-        text-align: center;
-        border-radius: 5px;
-        display: none;
-      }
+.success-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
       .alert-success {
         background-color: #4CAF50;
         color: white;
@@ -78,9 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <h1 class="form-title">Form Input Pengeluaran</h1>
         </div>
 
-        <div id="successMessage" class="alert-success">
-          Data pengeluaran berhasil ditambahkan
-        </div>
+        <div class="success-message" id="successMessage" style="display: <?php echo $success ? 'block' : 'none'; ?>;">
+    Data pengeluaran berhasil ditambahkan
+</div>
 
         <div id="errorMessage" class="alert-error">
           Terjadi kesalahan saat menyimpan data
@@ -146,5 +148,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.getElementById("errorMessage").style.display = "block";
       }
     </script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const successMessage = document.getElementById("successMessage");
+      if (successMessage.style.display === "block") {
+          setTimeout(() => {
+              successMessage.style.display = "none"; // Sembunyikan pesan setelah 3 detik
+          }, 3000);
+      }
+  });
+</script>
+
   </body>
 </html>

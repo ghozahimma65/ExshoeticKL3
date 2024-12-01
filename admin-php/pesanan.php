@@ -3,8 +3,9 @@
 include('database.php');
 
 // Ambil bulan dan tahun dari input atau gunakan nilai default
-$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m');
-$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y');
+$bulan = isset($_GET['bulan']) ? intval($_GET['bulan']) : date('m');
+$tahun = isset($_GET['tahun']) ? intval($_GET['tahun']) : date('Y');
+
 
 // Query dengan filter bulan dan tahun
 $sql = "SELECT c.Nama, c.No_Hp AS Telepon, c.Alamat, c.ID_Pesanan, 
@@ -100,15 +101,20 @@ $result = $stmt->get_result();
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
 
   <h1>Data Pesanan Berdasarkan Bulan</h1>
+
+
 <form method="GET" style="margin-bottom: 15px;">
-  <label for="bulan">Pilih Bulan:</label>
-  <select name="bulan" id="bulan">
+<label for="tahun">Pilih Bulan</label>
+<select name="bulan" id="bulan">
     <?php
     for ($i = 1; $i <= 12; $i++) {
+        // Set 'selected' pada bulan yang sesuai
         $selected = ($i == $bulan) ? 'selected' : '';
         echo "<option value='$i' $selected>" . date('F', mktime(0, 0, 0, $i, 10)) . "</option>";
     }
     ?>
+</select>
+
   </select>
   
   <label for="tahun">Pilih Tahun:</label>
@@ -116,10 +122,13 @@ $result = $stmt->get_result();
     <?php
     $currentYear = date('Y');
     for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
+        // Set 'selected' pada tahun yang sesuai
         $selected = ($i == $tahun) ? 'selected' : '';
         echo "<option value='$i' $selected>$i</option>";
     }
     ?>
+</select>
+
   </select>
 
   <button type="submit">Filter</button>

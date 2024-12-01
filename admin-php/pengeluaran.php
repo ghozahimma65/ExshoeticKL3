@@ -84,7 +84,7 @@ $result = $conn->query($sql);
 <div class="content" id="content">
   <h1 class="page-title">Data Pengeluaran</h1>
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
-  <a href="#" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pengeluaran</a>
+  <a href="tambah_pengeluaran.php"class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pengeluaran</a>
 
   <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Barang" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 

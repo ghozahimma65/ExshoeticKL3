@@ -2,13 +2,23 @@
 // Koneksi ke database
 include('database.php');
 
-// Query untuk mengambil data customer dengan kolom tambahan
+// Ambil bulan dan tahun dari input atau gunakan nilai default
+$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('m');
+$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y');
+
+// Query dengan filter bulan dan tahun
 $sql = "SELECT c.Nama, c.No_Hp AS Telepon, c.Alamat, c.ID_Pesanan, 
         p.Tanggal_Pesanan, p.Treatment_ID, p.Merk_Sepatu, p.Status 
         FROM customer c
-        LEFT JOIN pesanan p ON c.ID_Pesanan = p.ID_Pesanan";
-$result = $conn->query($sql);
+        LEFT JOIN pesanan p ON c.ID_Pesanan = p.ID_Pesanan
+        WHERE MONTH(p.Tanggal_Pesanan) = ? AND YEAR(p.Tanggal_Pesanan) = ?";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $bulan, $tahun);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +32,8 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="/exshoetic/admin-css/cont-customer.css"> 
 </head>
 <body>
+
+
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
@@ -81,10 +93,40 @@ $result = $conn->query($sql);
   </ul>
 </div>
 
+
 <!-- Content -->
 <div class="content" id="content">
   <h1 class="page-title">Data Pesanan</h1>
   <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+
+  <h1>Data Pesanan Berdasarkan Bulan</h1>
+<form method="GET" style="margin-bottom: 15px;">
+  <label for="bulan">Pilih Bulan:</label>
+  <select name="bulan" id="bulan">
+    <?php
+    for ($i = 1; $i <= 12; $i++) {
+        $selected = ($i == $bulan) ? 'selected' : '';
+        echo "<option value='$i' $selected>" . date('F', mktime(0, 0, 0, $i, 10)) . "</option>";
+    }
+    ?>
+  </select>
+  
+  <label for="tahun">Pilih Tahun:</label>
+  <select name="tahun" id="tahun">
+    <?php
+    $currentYear = date('Y');
+    for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
+        $selected = ($i == $tahun) ? 'selected' : '';
+        echo "<option value='$i' $selected>$i</option>";
+    }
+    ?>
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
+  <!-- Notifikasi -->
+  <div id="notification" class="notification hidden"></div>
 
   <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama, Telepon, atau Alamat" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
@@ -105,66 +147,79 @@ $result = $conn->query($sql);
         </tr>
       </thead>
       <tbody id="customerTable">
-  <?php
-  if ($result->num_rows > 0) {
-      $no = 1;
-      while ($row = $result->fetch_assoc()) {
-          echo "<tr>
-                  <td>{$no}</td>
-                  <td>{$row['Nama']}</td>
-                  <td>{$row['Telepon']}</td>
-                  <td>{$row['Alamat']}</td>
-                  <td>{$row['ID_Pesanan']}</td>
-                  <td>{$row['Tanggal_Pesanan']}</td>
-                  <td>{$row['Treatment_ID']}</td>
-                  <td>{$row['Merk_Sepatu']}</td>
-                  <td>
-                      <span class='status-badge status-" . strtolower(str_replace(' ', '-', $row['Status'])) . "'>{$row['Status']}</span>
-                  </td>
-                  <td>
-                      <form method='POST' action='update_status.php'>
-                          <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
-                          <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
-                              <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
-                              <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
-                          </select>
-                      </form>
-                  </td>
-                </tr>";
-          $no++;
-      }
-  } else {
-      echo "<tr><td colspan='10' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
-  }
-  ?>
-</tbody>
- 
+        <?php
+        if ($result->num_rows > 0) {
+            $no = 1;
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$no}</td>
+                        <td>{$row['Nama']}</td>
+                        <td>{$row['Telepon']}</td>
+                        <td>{$row['Alamat']}</td>
+                        <td>{$row['ID_Pesanan']}</td>
+                        <td>{$row['Tanggal_Pesanan']}</td>
+                        <td>{$row['Treatment_ID']}</td>
+                        <td>{$row['Merk_Sepatu']}</td>
+                        <td>
+                            <span class='status-badge status-" . strtolower(str_replace(' ', '-', $row['Status'])) . "'>{$row['Status']}</span>
+                        </td>
+                        <td>
+                            <form method='POST' action='update_status.php'>
+                                <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
+                                <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
+                                    <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
+                                    <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
+                                </select>
+                            </form>
+                        </td>
+                      </tr>";
+                $no++;
+            }
+        } else {
+            echo "<tr><td colspan='10' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
+        }
+        ?>
+      </tbody>
     </table>
   </div>
 </div>
 
 <style>
+/* Gaya notifikasi */
+.notification {
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    transition: all 0.5s ease;
+}
+
+.notification.success {
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 1px solid #C3E6CB;
+}
+
+.notification.error {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+}
+
+.notification.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Gaya lainnya */
 .status-badge {
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
-}
-
-.status-diambil {
-    background-color: #FFF3CD;
-    color: #856404;
-}
-
-.status-proses {
-    background-color: #CCE5FF;
-    color: #004085;
-}
-
-.status-diantar {
-    background-color: #D1ECF1;
-    color: #0C5460;
 }
 
 .status-selesai {
@@ -180,111 +235,75 @@ table {
     min-width: 100%;
     white-space: nowrap;
 }
-
-td, th {
-    padding: 10px;
-}
-
-.action-button {
-    margin: 0 3px;
-}
 </style>
 
 <script>
-// Fungsi untuk toggle sidebar
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const content = document.getElementById('content');
-  const toggleButton = document.querySelector('.toggle-sidebar i');
-  sidebar.classList.toggle('hidden');
-  content.classList.toggle('full-width');
-  if (sidebar.classList.contains('hidden')) {
-    toggleButton.classList.remove('fa-arrow-left');
-    toggleButton.classList.add('fa-arrow-right');
-  } else {
-    toggleButton.classList.remove('fa-arrow-right');
-    toggleButton.classList.add('fa-arrow-left');
-  }
-}
-
-function toggleSubmenu(id) {
-  const submenu = document.getElementById(id);
-  const allSubmenus = document.querySelectorAll('.sidebar ul ul');
-  allSubmenus.forEach(menu => {
-    if (menu.id !== id) {
-      menu.classList.remove('show');
-    }
-  });
-  submenu.classList.toggle('show');
-}
-
-// Membiarkan submenu transkasi tetap terbuka saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('transaksi').classList.add('show');
-});
-
-
 function updateStatus(selectElement, idPesanan) {
-    const newStatus = selectElement.value; // Status baru yang dipilih
-    const statusCell = selectElement.closest('tr').querySelector('.status-badge'); // Elemen badge status
+    const newStatus = selectElement.value;
+    const statusCell = selectElement.closest('tr').querySelector('.status-badge');
 
-    // Update tampilan badge status secara langsung
+    // Update tampilan status badge
     statusCell.className = `status-badge status-${newStatus.replace(/\s+/g, '-').toLowerCase()}`;
     statusCell.textContent = newStatus;
 
-    // Kirim permintaan AJAX ke server
+    // Kirim data ke server
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'update_status.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    // Kirim parameter ID dan status
     xhr.send(`id_pesanan=${idPesanan}&status=${encodeURIComponent(newStatus)}`);
 
-    // Tangani respons dari server
+    // Tampilkan notifikasi
+    const notification = document.getElementById('notification');
     xhr.onload = function () {
         if (xhr.status === 200) {
-            console.log("Respon dari server: " + xhr.responseText);
             if (xhr.responseText.includes("Status berhasil diperbarui")) {
-                alert("Status berhasil diperbarui.");
+                notification.textContent = "Status berhasil diperbarui.";
+                notification.className = "notification success";
             } else {
-                alert("Gagal memperbarui status: " + xhr.responseText);
+                notification.textContent = "Gagal memperbarui status: " + xhr.responseText;
+                notification.className = "notification error";
             }
         } else {
-            alert("Gagal memperbarui status. Kesalahan: " + xhr.statusText);
+            notification.textContent = "Kesalahan server: " + xhr.statusText;
+            notification.className = "notification error";
         }
+        notification.classList.remove('hidden');
+        setTimeout(() => notification.classList.add('hidden'), 3000);
     };
 
     xhr.onerror = function () {
-        alert("Terjadi kesalahan saat mengirim permintaan ke server.");
+        notification.textContent = "Kesalahan jaringan.";
+        notification.className = "notification error";
+        notification.classList.remove('hidden');
+        setTimeout(() => notification.classList.add('hidden'), 3000);
     };
 }
 
-    
-
-
-
-
-
-function searchFunction() {
-  const input = document.getElementById('searchInput');
-  const filter = input.value.toLowerCase();
-  const table = document.getElementById('customerTable');
-  const tr = table.getElementsByTagName('tr');
-  
-  for (let i = 0; i < tr.length; i++) {
-    const td = tr[i].getElementsByTagName('td');
-    let found = false;
-    for (let j = 0; j < td.length; j++) {
-      if (td[j]) {
-        if (td[j].textContent.toLowerCase().indexOf(filter) > -1) {
-          found = true;
-          break;
-        }
-      }
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+    const toggleButton = document.querySelector('.toggle-sidebar i');
+    sidebar.classList.toggle('hidden');
+    content.classList.toggle('full-width');
+    if (sidebar.classList.contains('hidden')) {
+      toggleButton.classList.remove('fa-arrow-left');
+      toggleButton.classList.add('fa-arrow-right');
+    } else {
+      toggleButton.classList.remove('fa-arrow-right');
+      toggleButton.classList.add('fa-arrow-left');
     }
-    tr[i].style.display = found ? "" : "none";
   }
-}
+
+  function toggleSubmenu(id) {
+    const submenu = document.getElementById(id);
+    const allSubmenus = document.querySelectorAll('.sidebar ul ul');
+    allSubmenus.forEach(menu => {
+      if (menu.id !== id) {
+        menu.classList.remove('show');
+      }
+    });
+    submenu.classList.toggle('show');
+  }
 </script>
 
 </body>

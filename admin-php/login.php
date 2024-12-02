@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signin'])) {
             $user = $result->fetch_assoc();
             $_SESSION['username'] = $user['Username']; // Simpan username di session
             $_SESSION['loggedin'] = true; // Menandakan user sudah login
-            header("Location: admin.php"); // Redirect ke admin.php
+            header("Location: adminPowerBi.php"); // Redirect ke admin.php
             exit(); // Menghentikan eksekusi lebih lanjut
         } else {
             $error_message = "Username atau Password salah!";

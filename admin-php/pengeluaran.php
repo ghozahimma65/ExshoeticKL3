@@ -186,7 +186,7 @@ $result = $conn->query($sql);
 <!-- Content -->
 <div class="content" id="content">
   <h1 class="page-title">Data Pengeluaran</h1>
-  <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="../admin-php/adminPowerBi.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
   <a href="tambah_pengeluaran.php"class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Pengeluaran</a>
 
   <form method="GET" class="filter-container">

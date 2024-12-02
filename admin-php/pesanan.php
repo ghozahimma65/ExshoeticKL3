@@ -88,7 +88,7 @@ $result = $stmt->get_result();
 <!-- Content -->
 <div class="content" id="content">
   <h1 class="page-title">Data Pesanan</h1>
-  <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="../admin-php/adminPowerBi.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
 
   <form method="GET" class="filter-container">
     <label for="bulan">Pilih Bulan</label>

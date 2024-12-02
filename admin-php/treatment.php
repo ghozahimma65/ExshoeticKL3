@@ -71,7 +71,7 @@ $result = $conn->query($sql);
 <!-- Content -->
 <div class="content" id="content">
   <h1 class="page-title">Data Treatment</h1>
-  <a href="../admin-php/admin.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+  <a href="../admin-php/adminPowerBi.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
   <a href="tambah_treatment.php" class="btn-add-customer"><i class="fas fa-user-plus"></i> Tambah Treatment</a>
 
 <input type="text" id="searchInput" placeholder="Cari berdasarkan Nama Treatment dan Deskripsi" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">

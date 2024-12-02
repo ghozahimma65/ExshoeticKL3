@@ -1,26 +1,32 @@
 <?php
-// Koneksi ke database
-include 'database.php';
-
-// Query untuk mengambil data pembayaran
-$sql = "SELECT Pembayaran_ID, ID_Pesanan, Tanggal_Pembayaran, Metode_Pembayaran, Total_Tagihan FROM pembayaran";
-$result = $conn->query($sql);
+session_start();
+include('database.php');
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Pembayaran - Exshoetic Admin</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>ESAC Admin Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
-  <link rel="stylesheet" href="/exshoetic/admin-css/cont-customer.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-admin.css"> 
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    .content.full-width {
+      margin-left: 0;
+    }
+  </style>
 </head>
 <body>
-
-<!-- Sidebar -->
+  
 <div class="sidebar" id="sidebar">
   <button class="toggle-sidebar" onclick="toggleSidebar()">
     <i class="fas fa-arrow-left"></i>
@@ -41,7 +47,7 @@ $result = $conn->query($sql);
         <i class="fas fa-chart-line"></i>
         Keuangan
       </a>
-      <ul id="keuangan" class="show">
+      <ul id="keuangan">
         <li><a href="../admin-php/pemasukan.php"><i class="fas fa-arrow-up"></i>Pemasukan</a></li>
         <li><a href="../admin-php/pengeluaran.php"><i class="fas fa-arrow-down"></i>Pengeluaran</a></li>
       </ul>
@@ -57,7 +63,6 @@ $result = $conn->query($sql);
       </ul>
     </li>
 
-    <!-- Tambahkan Tombol Logout -->
     <li class="logout-menu">
       <form method="POST" action="logout.php">
         <button type="submit" name="logout" class="logout-btn">
@@ -67,53 +72,22 @@ $result = $conn->query($sql);
     </li>
   </ul>
 </div>
-
-<!-- Content -->
+  
 <div class="content" id="content">
-  <h1 class="page-title">Data Pembayaran</h1>
-  <a href="../admin-php/adminPowerBi.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
-
-  <input type="text" id="searchInput" placeholder="Cari berdasarkan ID Pesanan atau Metode Pembayaran" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
-
-  <div class="table-container">
-    <table>
-    <thead>
-  <tr>
-    <th>No</th>
-    <th>Pembayaran ID</th>
-    <th>ID Pesanan</th>
-    <th>Tanggal Pembayaran</th>
-    <th>Metode Pembayaran</th>
-    <th>Total Tagihan</th>
-  </tr>
-</thead>
-<tbody id="pembayaranTable">
-  <?php
-  if ($result->num_rows > 0) {
-      $no = 1;
-      while ($row = $result->fetch_assoc()) {
-          echo "<tr>
-                  <td>{$no}</td>
-                  <td>{$row['Pembayaran_ID']}</td>
-                  <td>{$row['ID_Pesanan']}</td>
-                  <td>{$row['Tanggal_Pembayaran']}</td>
-                  <td>{$row['Metode_Pembayaran']}</td>
-                  <td>Rp " . number_format($row['Total_Tagihan'], 0, ',', '.') . "</td>
-                </tr>";
-          $no++;
-      }
-  } else {
-      echo "<tr><td colspan='6' style='text-align: center;'>Data pembayaran tidak ditemukan</td></tr>";
-  }
-  ?>
-</tbody>
-
-    </table>
+  <div class="chart-container">
+    <div class="card">
+      <iframe 
+        title="PolijeUnited" 
+        src="https://app.powerbi.com/view?r=eyJrIjoiMDFhNDgzZTQtMjM3Ny00ZDA2LWJkNzYtNzZjYmM5ZjQ2MjUxIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D" 
+        frameborder="0" 
+        allowFullScreen="true" 
+        style="width: 100vw; height: 100vh;">
+      </iframe>
+    </div>
   </div>
 </div>
-
+ 
 <script>
-  // Fungsi untuk toggle sidebar
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
@@ -129,7 +103,6 @@ $result = $conn->query($sql);
     }
   }
 
-  // Fungsi untuk toggle submenu
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
@@ -140,29 +113,7 @@ $result = $conn->query($sql);
     });
     submenu.classList.toggle('show');
   }
-
-  // Fungsi pencarian
-  function searchFunction() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.getElementById("keuangan").getElementsByTagName("tr");
-
-    for (let i = 0; i < rows.length; i++) {
-      const idPesanan = rows[i].getElementsByTagName("td")[2]?.innerText.toLowerCase() || "";
-      const metode = rows[i].getElementsByTagName("td")[4]?.innerText.toLowerCase() || "";
-
-      // Menampilkan baris jika cocok dengan input pencarian
-      if (idPesanan.includes(input) || metode.includes(input)) {
-        rows[i].style.display = "";
-      } else {
-        rows[i].style.display = "none";
-      }
-    }
-  }
 </script>
-
+ 
 </body>
 </html>
-
-<?php
-$conn->close();
-?>

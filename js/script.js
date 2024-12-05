@@ -41,3 +41,20 @@ document.querySelectorAll('.featured-image-3').forEach(image_3 =>{
         document.querySelector('.big-image-3').src = src;
     });
 });
+
+// Fungsi untuk membuka pop-up QRIS
+function showQrisPopup() {
+    document.getElementById("qrisPopup").style.display = "flex";
+}
+
+// Fungsi untuk menutup pop-up QRIS
+function closeQrisPopup() {
+    document.getElementById("qrisPopup").style.display = "none";
+}
+
+// Tambahkan event listener untuk dropdown pembayaran
+document.getElementById("payment_method").addEventListener("change", function () {
+    if (this.value === "QRIS") {
+        showQrisPopup();
+    }
+});

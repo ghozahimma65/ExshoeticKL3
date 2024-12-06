@@ -14,6 +14,16 @@ $sql = "SELECT c.Nama, c.No_Hp AS Telepon, c.Alamat, c.ID_Pesanan,
         LEFT JOIN pesanan p ON c.ID_Pesanan = p.ID_Pesanan
         WHERE MONTH(p.Tanggal_Pesanan) = ? AND YEAR(p.Tanggal_Pesanan) = ?";
 
+// Query untuk menghitung jumlah pesanan yang sudah selesai
+$query_selesai = "SELECT COUNT(*) AS jumlah_selesai FROM pesanan WHERE Status = 'Sudah Selesai'";
+$result_selesai = $conn->query($query_selesai);
+$jumlah_selesai = 0;
+
+if ($result_selesai->num_rows > 0) {
+    $row_selesai = $result_selesai->fetch_assoc();
+    $jumlah_selesai = $row_selesai['jumlah_selesai'];
+}
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $bulan, $tahun);
 $stmt->execute();
@@ -30,11 +40,9 @@ $result = $stmt->get_result();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
-  <link rel="stylesheet" href="/exshoetic/admin-css/cont-pesanan.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-laporan.css"> 
 </head>
 <body>
-
-
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
@@ -69,7 +77,7 @@ $result = $stmt->get_result();
       </a>
       <ul id="transaksi" class="show">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
-        <li><a href="#"><i class="fas fa-file-alt"></i> Laporan</a></li>
+        <li><a href="../admin-php/laporan.php"><i class="fas fa-file-alt"></i> Laporan</a></li>
       </ul>
     </li>
 
@@ -113,8 +121,11 @@ $result = $stmt->get_result();
     </select>
 
     <button type="submit">Filter</button>
-  </form>
 
+    <h4>Treatment Selesai</h4>
+      <div class="value" id="total-treatment-selesai">Selesai</div>
+      <p><?= $jumlah_selesai ?> Pesanan</p>
+  </form>
 
   <!-- Notifikasi -->
   <div id="notification" class="notification hidden"></div>

@@ -62,7 +62,7 @@ if ($result_selesai->num_rows > 0) {
       </a>
       <ul id="transaksi">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
-        <li><a href="#"><i class="fas fa-file-alt"></i> Laporan</a></li>
+        <li><a href="../admin-php/laporan.php"><i class="fas fa-file-alt"></i> Laporan</a></li>
       </ul>
     </li>
 
@@ -190,9 +190,6 @@ function updateLineChart(data) {
   // Panggil fetchData saat halaman dimuat
   document.addEventListener('DOMContentLoaded', fetchData);
 </script>
- 
-
-
   
 </body>
 </html>

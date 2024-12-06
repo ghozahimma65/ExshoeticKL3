@@ -59,7 +59,7 @@ include('database.php');
       </a>
       <ul id="transaksi">
         <li><a href="../admin-php/pesanan.php"><i class="fas fa-shopping-cart"></i>Pesanan</a></li>
-        <li><a href="#"><i class="fas fa-file-alt"></i> Laporan</a></li>
+        <li><a href="../admin-php/laporan.php"><i class="fas fa-file-alt"></i> Laporan</a></li>
       </ul>
     </li>
 
@@ -77,8 +77,9 @@ include('database.php');
   <div class="chart-container">
     <div class="card">
       <iframe 
+        id="powerBiIframe" 
         title="PolijeUnited" 
-        src="https://app.powerbi.com/view?r=eyJrIjoiMDFhNDgzZTQtMjM3Ny00ZDA2LWJkNzYtNzZjYmM5ZjQ2MjUxIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D" 
+        src="https://app.powerbi.com/view?r=eyJrIjoiMDk2N2M3OWQtODQwNC00NzZlLTgzNmMtNWY2ZjljYmNmNzU1IiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D" 
         frameborder="0" 
         allowFullScreen="true" 
         style="width: 100vw; height: 100vh;">
@@ -86,8 +87,9 @@ include('database.php');
     </div>
   </div>
 </div>
- 
+
 <script>
+  // Fungsi untuk toggle sidebar
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
@@ -103,6 +105,7 @@ include('database.php');
     }
   }
 
+  // Fungsi untuk toggle submenu
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
@@ -113,6 +116,12 @@ include('database.php');
     });
     submenu.classList.toggle('show');
   }
+
+  // Refresh otomatis untuk iFrame
+  setInterval(() => {
+    const iframe = document.getElementById('powerBiIframe');
+    iframe.src = iframe.src; // Refresh iframe
+  }, 300000); // Refresh setiap 5 menit (300.000 ms)
 </script>
  
 </body>

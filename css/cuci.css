@@ -223,3 +223,68 @@ textarea {
 }
 
 
+
+/* Styling untuk Popup QRIS */
+#qrisPopup {
+    display: none;
+    position: fixed;
+    top: 50%; /* Menempatkan di tengah layar */
+    left: 50%; /* Menempatkan di tengah layar */
+    transform: translate(-50%, -50%); /* Memastikan di tengah */
+    width: 80%;  /* Menyesuaikan ukuran lebar popup */
+    max-width: 600px;  /* Lebar maksimal popup */
+    max-height: 600px;  /* Menyesuaikan tinggi maksimal popup */
+    background-color: rgba(0, 0, 0, 0.7);  /* Menambah transparansi agar lebih gelap */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;  /* Menambahkan padding untuk memberi ruang lebih pada konten */
+    width: 100%;
+    max-width: 600px;  /* Ukuran maksimal lebar */
+    max-height: 500px; /* Ukuran maksimal tinggi */
+    position: relative;
+    display: flex;
+    flex-direction: column;  /* Menata konten secara vertikal */
+    justify-content: center; /* Menjaga konten di tengah secara vertikal */
+    align-items: center; /* Menjaga konten di tengah secara horizontal */
+    text-align: center;  /* Mengatur teks dan gambar agar sejajar di tengah */
+    overflow: hidden;
+    color: #333; /* Menetapkan warna teks agar lebih kontras dengan latar belakang */
+}
+
+.popup-content h3 {
+    font-size: 22px;  /* Ukuran font judul lebih kecil */
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #000;  /* Mengubah warna judul agar lebih jelas */
+}
+
+.popup-content p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #000;  /* Mengubah warna teks agar lebih kontras */
+}
+
+.popup-content img {
+    width: 80%;  /* Mengurangi ukuran gambar QRIS */
+    max-width: 400px;  /* Lebar maksimal gambar */
+    height: auto;
+    margin: 0 auto;  /* Memastikan gambar di tengah secara horizontal */
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #000;
+    cursor: pointer;
+    background: none;
+    border: none;
+}

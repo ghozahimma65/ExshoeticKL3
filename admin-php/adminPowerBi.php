@@ -14,16 +14,6 @@ include('database.php');
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
   <link rel="stylesheet" href="/exshoetic/admin-css/cont-admin.css"> 
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    .content.full-width {
-      margin-left: 0;
-    }
-  </style>
 </head>
 <body>
   
@@ -79,7 +69,7 @@ include('database.php');
       <iframe 
         id="powerBiIframe" 
         title="PolijeUnited" 
-        src="https://app.powerbi.com/view?r=eyJrIjoiMDk2N2M3OWQtODQwNC00NzZlLTgzNmMtNWY2ZjljYmNmNzU1IiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D" 
+        src="https://app.powerbi.com/view?r=eyJrIjoiYmM0NjUwOTAtNzUxMS00YmUxLTgwM2MtOGFmZGFkNDEwYjgwIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D"
         frameborder="0" 
         allowFullScreen="true" 
         style="width: 100vw; height: 100vh;">

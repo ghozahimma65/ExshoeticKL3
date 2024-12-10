@@ -43,7 +43,112 @@ $result = $stmt->get_result();
   <link rel="stylesheet" href="/exshoetic/admin-css/cont-laporan.css"> 
 </head>
 <body>
+<style>
+        .table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-top: 0px;
+        overflow-x: auto; /* Scroll secara horizontal jika tabel terlalu lebar */
+        overflow-y: auto; /* Scroll secara vertikal jika tabel terlalu tinggi */
+        max-height: 400px; /* Atur tinggi maksimum untuk membuat tabel lebih ringkas */
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+  
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+      }
+  
+      th {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 500;
+      }
+  
+      tr:hover {
+        background-color: #f9fafb;
+      }
+  
+      .page-title {
+        color: #1f2937;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+      .btn-add-customer {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+  }
+  
+  .btn-add-customer:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+  }
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
 
+.filter-container label {
+    font-weight: 500;
+    color: #1f2937;
+    margin-right: 10px;
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95em;
+    background-color: #f9fafb;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-container select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.filter-container button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-container button:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+}
+</style>
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <button class="toggle-sidebar" onclick="toggleSidebar()">

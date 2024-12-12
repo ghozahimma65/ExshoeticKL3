@@ -8,14 +8,20 @@ $bulan_filter = isset($_GET['bulan']) ? $_GET['bulan'] : date('Y-m');
 // Query untuk mengambil data pemasukan
 $query_pemasukan = "SELECT 'Pemasukan' AS jenis, Pembayaran_ID AS id, Tanggal_Pembayaran AS tanggal, Metode_Pembayaran AS metode, Total_Tagihan AS nominal 
                     FROM pembayaran 
-                    WHERE DATE_FORMAT(Tanggal_Pembayaran, '%Y-%m') = '$bulan_filter'";
-$result_pemasukan = $conn->query($query_pemasukan);
+                    WHERE DATE_FORMAT(Tanggal_Pembayaran, '%Y-%m') = ?";
+$stmt_pemasukan = $conn->prepare($query_pemasukan);
+$stmt_pemasukan->bind_param('s', $bulan_filter);
+$stmt_pemasukan->execute();
+$result_pemasukan = $stmt_pemasukan->get_result();
 
 // Query untuk mengambil data pengeluaran
 $query_pengeluaran = "SELECT 'Pengeluaran' AS jenis, ID_Pengeluaran AS id, Tanggal_Pembelian AS tanggal, NULL AS metode, Jumlah_Harga AS nominal 
                       FROM pengeluaran 
-                      WHERE DATE_FORMAT(Tanggal_Pembelian, '%Y-%m') = '$bulan_filter'";
-$result_pengeluaran = $conn->query($query_pengeluaran);
+                      WHERE DATE_FORMAT(Tanggal_Pembelian, '%Y-%m') = ?";
+$stmt_pengeluaran = $conn->prepare($query_pengeluaran);
+$stmt_pengeluaran->bind_param('s', $bulan_filter);
+$stmt_pengeluaran->execute();
+$result_pengeluaran = $stmt_pengeluaran->get_result();
 
 // Gabungkan data pemasukan dan pengeluaran
 $laporan_data = array_merge(
@@ -49,13 +55,119 @@ $saldo_akhir = $total_pemasukan - $total_pengeluaran;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Customer - Exshoetic Admin</title>
+  <title>Laporan Keuangan - Exshoetic Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
-  <link rel="stylesheet" href="/exshoetic/admin-css/cont-laporan.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-treatment.css"> 
 </head>
 <body>
+<style>
+        .table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-top: 0px;
+        overflow-x: auto; /* Scroll secara horizontal jika tabel terlalu lebar */
+        overflow-y: auto; /* Scroll secara vertikal jika tabel terlalu tinggi */
+        max-height: 400px; /* Atur tinggi maksimum untuk membuat tabel lebih ringkas */
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+  
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+      }
+  
+      th {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 500;
+      }
+  
+      tr:hover {
+        background-color: #f9fafb;
+      }
+  
+      .page-title {
+        color: #1f2937;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+      .btn-add-customer {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    margin-left: 10px; /* Beri jarak dari tombol "Kembali" */
+  }
+  
+  .btn-add-customer:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+  }
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.filter-container label {
+    font-weight: 500;
+    color: #1f2937;
+    margin-right: 10px;
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95em;
+    background-color: #f9fafb;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-container select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.filter-container button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.filter-container button:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+}
+</style>
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
@@ -110,16 +222,12 @@ $saldo_akhir = $total_pemasukan - $total_pengeluaran;
   <h1 class="page-title">Laporan Keuangan</h1>
   <a href="../admin-php/adminPowerBi.php" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
   <button onclick="window.print()" class="btn-add-customer"><i class="fas fa-print"></i> Cetak Laporan</button>
-  <div class="filter-container">
-  <form method="GET" action="">
-    <label for="bulan">Filter Bulan:</label>
+
+  <form method="GET" class="filter-container">
+    <label for="bulan">Pilih Bulan</label>
     <input type="month" id="bulan" name="bulan" value="<?= htmlspecialchars($bulan_filter) ?>">
     <button type="submit">Terapkan</button>
   </form>
-</div>
-
-
-  <input type="text" id="searchInput" placeholder="Cari berdasarkan Jenis Transaksi, Tanggal, atau ID" onkeyup="searchFunction()" style="width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px;">
 
   <div class="table-container">
     <table>
@@ -133,7 +241,7 @@ $saldo_akhir = $total_pemasukan - $total_pengeluaran;
           <th>Nominal</th>
         </tr>
       </thead>
-      <tbody id="laporanTable">
+      <tbody>
         <?php
         $no = 1;
         foreach ($laporan_data as $data) {
@@ -185,30 +293,6 @@ function toggleSidebar() {
     });
     submenu.classList.toggle('show');
   }
-
-  // Keep data-master submenu open on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('transaksi').classList.add('show');
-  });
-
-  // Fungsi untuk pencarian
-  function searchFunction() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.getElementById("laporanTable").getElementsByTagName("tr");
-
-    for (let i = 0; i < rows.length; i++) {
-      const jenis = rows[i].getElementsByTagName("td")[1]?.innerText.toLowerCase() || "";
-      const tanggal = rows[i].getElementsByTagName("td")[3]?.innerText.toLowerCase() || "";
-      const id = rows[i].getElementsByTagName("td")[2]?.innerText.toLowerCase() || "";
-
-      if (jenis.includes(input) || tanggal.includes(input) || id.includes(input)) {
-        rows[i].style.display = "";
-      } else {
-        rows[i].style.display = "none";
-      }
-    }
-  }
-  
 </script>
 
 </body>

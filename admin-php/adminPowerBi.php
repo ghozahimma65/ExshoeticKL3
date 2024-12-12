@@ -12,7 +12,7 @@ include('database.php');
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
-  <link rel="stylesheet" href="/exshoetic/admin-css/cont-admin.css"> 
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-customer.css"> 
 
 </head>
 <body>
@@ -69,7 +69,7 @@ include('database.php');
       <iframe 
         id="powerBiIframe" 
         title="PolijeUnited" 
-        src="https://app.powerbi.com/view?r=eyJrIjoiYmM0NjUwOTAtNzUxMS00YmUxLTgwM2MtOGFmZGFkNDEwYjgwIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D"
+        src="https://app.powerbi.com/view?r=eyJrIjoiNjFkNWNiYjktZGFiNS00YmJjLWE1MWEtYzcwNmIwODNmOTllIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D"
         frameborder="0" 
         allowFullScreen="true" 
         style="width: 100vw; height: 100vh;">

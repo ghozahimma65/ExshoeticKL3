@@ -20,7 +20,7 @@ function mapTreatmentId($formId) {
 
 try {
     // Validasi input
-    if (!isset($_POST['name'], $_POST['phone'], $_POST['treatment_id'], $_POST['total_bill'], $_POST['payment_method'])) {
+    if (!isset($_POST['name'], $_POST['phone'], $_POST['treatment_id'], $_POST['total_bill'], $_POST['payment_method'], $_POST['address'], $_POST['brand'])) {
         throw new Exception("Data yang diperlukan tidak lengkap.");
     }
 
@@ -43,7 +43,7 @@ try {
 
     // 1. Insert ke tabel pesanan
     $queryPesanan = "INSERT INTO pesanan (Tanggal_Pesanan, Treatment_ID, Merk_Sepatu, Total_Tagihan, Status) 
-                     VALUES (CURRENT_DATE(), ?, ?, ?, 'Diambil')";
+                     VALUES (NOW(), ?, ?, ?, 'Belum Selesai')";
     $stmtPesanan = $conn->prepare($queryPesanan);
     $stmtPesanan->bind_param("ssi", $treatment_id, $merk_sepatu, $total_tagihan);
     if (!$stmtPesanan->execute()) {
@@ -55,21 +55,16 @@ try {
     $queryCustomer = "INSERT INTO customer (Nama, No_Hp, Alamat, Keterangan, ID_Pesanan) 
                     VALUES (?, ?, ?, ?, ?)";
     $stmtCustomer = $conn->prepare($queryCustomer);
-    if (!$stmtCustomer) {
-        throw new Exception("Prepare statement customer gagal: " . $conn->error);
-    }
     $stmtCustomer->bind_param("ssssi", $nama, $no_hp, $alamat, $notes, $id_pesanan);
     if (!$stmtCustomer->execute()) {
-        throw new Exception("Execute statement customer gagal: " . $stmtCustomer->error);
+        throw new Exception("Gagal menyimpan data customer: " . $stmtCustomer->error);
     }
     $customer_id = $conn->insert_id;
-
-
 
     // 3. Insert ke tabel pembayaran
     $pembayaran_id = 'PM' . str_pad($id_pesanan, 3, '0', STR_PAD_LEFT);
     $queryPembayaran = "INSERT INTO pembayaran (Pembayaran_ID, ID_Pesanan, Tanggal_Pembayaran, Metode_Pembayaran, Total_Tagihan) 
-                        VALUES (?, ?, CURRENT_DATE(), ?, ?)";
+                        VALUES (?, ?, NOW(), ?, ?)";
     $stmtPembayaran = $conn->prepare($queryPembayaran);
     $stmtPembayaran->bind_param("sisi", $pembayaran_id, $id_pesanan, $metode_pembayaran, $total_tagihan);
     if (!$stmtPembayaran->execute()) {
@@ -77,10 +72,10 @@ try {
     }
 
     // 4. Insert ke tabel detail_pesanan
-    $queryDetail = "INSERT INTO detail_pesanan (ID_Pesanan, Customer_ID, Pembayaran_ID) 
-                   VALUES (?, ?, ?)";
+    $queryDetail = "INSERT INTO detail_pesanan (ID_Pesanan, Customer_ID, Pembayaran_ID, Treatment_ID) 
+                   VALUES (?, ?, ?, ?)";
     $stmtDetail = $conn->prepare($queryDetail);
-    $stmtDetail->bind_param("iis", $id_pesanan, $customer_id, $pembayaran_id);
+    $stmtDetail->bind_param("iiss", $id_pesanan, $customer_id, $pembayaran_id, $treatment_id);
     if (!$stmtDetail->execute()) {
         throw new Exception("Gagal menyimpan detail pesanan: " . $stmtDetail->error);
     }

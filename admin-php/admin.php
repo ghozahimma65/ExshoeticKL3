@@ -2,17 +2,6 @@
 <?php
 session_start();
 include('database.php');
-
-// Query untuk menghitung jumlah pesanan yang sudah selesai
-$query_selesai = "SELECT COUNT(*) AS jumlah_selesai FROM pesanan WHERE Status = 'Sudah Selesai'";
-$result_selesai = $conn->query($query_selesai);
-$jumlah_selesai = 0;
-
-if ($result_selesai->num_rows > 0) {
-    $row_selesai = $result_selesai->fetch_assoc();
-    $jumlah_selesai = $row_selesai['jumlah_selesai'];
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +14,7 @@ if ($result_selesai->num_rows > 0) {
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
-  <link rel="stylesheet" href="/exshoetic/admin-css/cont-admin.css"> 
-
+  <link rel="stylesheet" href="/exshoetic/admin-css/cont-customer.css"> 
 </head>
 <body>
   
@@ -66,7 +54,6 @@ if ($result_selesai->num_rows > 0) {
       </ul>
     </li>
 
-    <!-- Tambahkan Tombol Logout -->
     <li class="logout-menu">
       <form method="POST" action="logout.php">
         <button type="submit" name="logout" class="logout-btn">
@@ -76,44 +63,24 @@ if ($result_selesai->num_rows > 0) {
     </li>
   </ul>
 </div>
-
-
-<div class="content" id="content">
-  <div class="stats-container">
-    <div class="stat-card">
-      <h4>Total Pesanan</h4>
-      <div class="value" id="total-pesanan">Loading...</div>
-    </div>
-    <div class="stat-card">
-      <h4>Pendapatan</h4>
-      <div class="value" id="total-pendapatan">Loading...</div>
-    </div>
-    <div class="stat-card">
-      <h4>Pengeluaran</h4>
-      <div class="value" id="total-pengeluaran">Loading...</div>
-    </div>
-    <div class="stat-card">
-      <h4>Treatment Selesai</h4>
-      <div class="value" id="total-treatment-selesai">Selesai</div>
-      <p><?= $jumlah_selesai ?> Pesanan</p>
-    </div>
-  </div>
   
-
+<div class="content" id="content">
   <div class="chart-container">
     <div class="card">
-      <h3>Grafik Pesanan</h3>
-      <p>Total Profit <span style="color: #3b82f6; font-weight: 600; font-size: 1.2em;" id="profit">Loading...</span></p>
-      <canvas id="lineChart"></canvas>
-    </div>
-    <div class="card">
-      <h3>Jenis Treatment</h3>
-      <canvas id="pieChart"></canvas>
+      <iframe 
+        id="powerBiIframe" 
+        title="PolijeUnited" 
+        src="https://app.powerbi.com/view?r=eyJrIjoiNjFkNWNiYjktZGFiNS00YmJjLWE1MWEtYzcwNmIwODNmOTllIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D"
+        frameborder="0" 
+        allowFullScreen="true" 
+        style="width: 100vw; height: 100vh;">
+      </iframe>
     </div>
   </div>
 </div>
 
 <script>
+  // Fungsi untuk toggle sidebar
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
@@ -129,6 +96,7 @@ if ($result_selesai->num_rows > 0) {
     }
   }
 
+  // Fungsi untuk toggle submenu
   function toggleSubmenu(id) {
     const submenu = document.getElementById(id);
     const allSubmenus = document.querySelectorAll('.sidebar ul ul');
@@ -140,56 +108,12 @@ if ($result_selesai->num_rows > 0) {
     submenu.classList.toggle('show');
   }
 
-    // Ambil data dari file PHP yang sudah dipisahkan
-    async function fetchData() {
-    try {
-      const response = await fetch('dashboard_data.php'); // Mengambil data dari file PHP
-      const data = await response.json();
-
-      // Update nilai-nilai di dashboard
-      document.getElementById('total-pesanan').innerText = data.total_pesanan;
-      document.getElementById("total-pengeluaran").textContent = `Rp ${data.total_pengeluaran.toLocaleString('id-ID')}`;
-      document.getElementById('total-pendapatan').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
-      document.getElementById('profit').innerText = 'Rp ' + data.total_pendapatan.toLocaleString('id-ID');
-
-      // Update grafik (Chart.js)
-      updateLineChart(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }
-
-function updateLineChart(data) {
-    const lineCtx = document.getElementById('lineChart').getContext('2d');
-    new Chart(lineCtx, {
-        type: 'line',
-        data: {
-           // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'Total Pesanan',
-                data: data.pesanan_bulanan, // Gunakan data dari backend
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                tension: 0.3,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'top' }
-            },
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-}
-
-
-  // Panggil fetchData saat halaman dimuat
-  document.addEventListener('DOMContentLoaded', fetchData);
+  // Refresh otomatis untuk iFrame
+  setInterval(() => {
+    const iframe = document.getElementById('powerBiIframe');
+    iframe.src = iframe.src; // Refresh iframe
+  }, 300000); // Refresh setiap 5 menit (300.000 ms)
 </script>
-  
+ 
 </body>
 </html>

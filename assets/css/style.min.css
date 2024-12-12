@@ -782,7 +782,7 @@ video {
   --tw-gradient-to: #2563eb var(--tw-gradient-to-position);
 }
 .to-orange-700{
-  --tw-gradient-to: #c2410c var(--tw-gradient-to-position);
+  --tw-gradient-to: #1e1b5f var(--tw-gradient-to-position);
 }
 .bg-clip-text{
   -webkit-background-clip: text;

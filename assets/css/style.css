@@ -28,10 +28,10 @@
 */
 html {
   line-height: 1.5; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
-  -moz-tab-size: 4; /* 3 */
-  -o-tab-size: 4;
-     tab-size: 4; /* 3 */
+  -webkit-text-size-adjust: 95%; /* 2 */
+  -moz-tab-size: 3; /* 3 */
+  -o-tab-size: 3;
+     tab-size: 3; /* 3 */
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
   font-feature-settings: normal; /* 5 */
   font-variation-settings: normal; /* 6 */
@@ -769,7 +769,7 @@ video {
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }
 .from-orange-600{
-  --tw-gradient-from: #ea580c var(--tw-gradient-from-position);
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(234 88 12 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
@@ -779,10 +779,10 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 .to-blue-600{
-  --tw-gradient-to: #2563eb var(--tw-gradient-to-position);
+  --tw-gradient-to: #0c8eea var(--tw-gradient-to-position);
 }
 .to-orange-700{
-  --tw-gradient-to: #c2410c var(--tw-gradient-to-position);
+  --tw-gradient-to: #1e1b5f var(--tw-gradient-to-position);
 }
 .bg-clip-text{
   -webkit-background-clip: text;

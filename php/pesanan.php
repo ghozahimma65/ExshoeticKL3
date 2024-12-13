@@ -86,7 +86,7 @@ try {
     echo json_encode([
         "status" => "success",
         "message" => "Pesanan berhasil dibuat.",
-        "redirect" => "../invoice.php?id_pesanan=$id_pesanan"
+        "redirect" => "php/invoice.php?id_pesanan=$id_pesanan"
     ]);
 } catch (Exception $e) {
     // Rollback jika terjadi kesalahan

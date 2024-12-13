@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Exshoetic Shoes & Care</title> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="css/kombinasi.css"> 
+    <link rel="stylesheet" href="css/cuci.css"> 
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header> 
+        <a href="#" class="logo">Exshoetic</a> 
+        <nav class="navbar"> 
+            <a href="index.html">Beranda</a> 
+            <a href="lokasi.html">Lokasi</a> 
+            <a href="layanan.html">Layanan</a> 
+            <a href="testcuci.html" class="active">Pesan</a> 
+            <a href="review.html">Galeri</a> 
+        </nav> 
+        <div class="icons"> 
+            <a href="#" aria-label="Favorit"><i class="fa fa-heart"></i></a> 
+            <a href="#" aria-label="Keranjang Belanja"><i class="fa fa-shopping-cart"></i></a> 
+            <a href="#" aria-label="Profil Pengguna"><i class="fa fa-user"></i></a> 
+        </div> 
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1 class="form-title">Form Pemesanan Layanan Cuci Sepatu</h1>
+                <div class="service-highlights">
+                    <div class="highlight-item"><i class="fas fa-box"></i><span>Packing Aman</span></div>
+                    <div class="highlight-item"><i class="fas fa-truck"></i><span>Pickup & Delivery</span></div>
+                    <div class="highlight-item"><i class="fas fa-map-marker-alt"></i><span>Tracking Real-time</span></div>
+                </div>
+            </div>
+
+            <div class="success-message" id="successMessage" style="display: none;">
+                Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.
+            </div>
+
+            <form id="shoeServiceForm" action="php/pesanan.php" method="POST">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Nomor Telepon</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brand">Merk Sepatu</label>
+                        <input type="text" id="brand" name="brand" placeholder="Contoh: Nike, Adidas" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="notes">Keterangan Tambahan</label>
+                        <textarea id="notes" name="notes" placeholder="Catatan khusus untuk layanan (opsional)"></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address">Alamat Lengkap</label>
+                        <input type="text" id="address" name="address" placeholder="Nama Jalan, Nomor Rumah" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="service">Jenis Layanan</label>
+                        <select id="service" name="treatment_id" onchange="updateHarga()" required>
+                            <option value="">Pilih Layanan</option>
+                            <option value="1">Deep Clean</option>
+                            <option value="2">Fast Cleaning</option>
+                            <option value="3">Unyellowing</option>
+                            <option value="4">Repaint</option>
+                            <option value="5">Repair Sol</option>
+                            <option value="6">Whitening</option>
+                            <option value="7">Leather Care</option>
+                            <option value="8">Reglue</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="total">Total Tagihan</label>
+                        <input type="number" id="total" name="total_bill" readonly required>
+                        <div id="formatted-price" class="price-display"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_method">Metode Pembayaran</label>
+                        <select id="payment_method" name="payment_method" required>
+                            <option value="COD">COD</option>
+                            <option value="QRIS">QRIS</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Pesanan</button>
+            </form>
+        </div>
+        <div id="qrisPopup" class="popup" style="display: none;">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closeQrisPopup()">&times;</span>
+                <h3>Pembayaran QRIS</h3>
+                <img src="img/qris.jpg" alt="QRIS Code">
+            </div>
+        </div>
+         
+    </div>
+
+    <footer> 
+        <div class="footer-content"> 
+            <div class="footer-section"> 
+                <h3>Tentang Kami</h3> 
+                <p>Exshoetic adalah mitra terpercaya Anda dalam layanan perawatan sepatu premium. Kami berkomitmen menjaga sepatu Anda agar selalu tampak terbaik.</p> 
+            </div> 
+            <div class="footer-section"> 
+                <h3>Tautan Cepat</h3> 
+                <a href="#services">Layanan</a> 
+                <a href="#home">Tentang Kami</a> 
+                <a href="lokasi.html">Lokasi</a>  
+                <a href="#contact">Kontak</a>  
+            </div> 
+            <div class="footer-section">
+                <h3>Info Kontak</h3>
+                <p>Email: exshoetic@gmail.com</p>
+                <p>Telepon: 0815-5290-506</p>
+                <p>Alamat: Jl. MT Haryono No.4, Mojorejo, Kec. Taman, Kota Madiun, Jawa Timur 63131</p>
+            </div>
+        </div>
+        <div>
+            <p>Exshoetic Shoes and Care</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fungsi untuk memformat harga ke format Rupiah
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(angka);
+        }
+        
+        // Fungsi untuk mengupdate harga berdasarkan treatment yang dipilih
+        function updateHarga() {
+            const serviceSelect = document.getElementById('service');
+            const totalInput = document.getElementById('total');
+            const formattedPriceDiv = document.getElementById('formatted-price');
+            
+            const priceMapping = {
+                '1': 35000,  // Deep Clean
+                '2': 15000,  // Fast Cleaning
+                '3': 45000,  // Unyellowing
+                '4': 150000, // Repaint
+                '5': 70000,  // Repair Sol
+                '6': 50000,  // Whitening
+                '7': 40000,  // Leather Care
+                '8': 70000   // Reglue
+            };
+            
+            const harga = priceMapping[serviceSelect.value] || 0;
+            totalInput.value = harga;
+            formattedPriceDiv.textContent = formatRupiah(harga);
+        }
+        
+        // Fungsi untuk mengaktifkan drag-and-drop pada popup QRIS
+        function makePopupDraggable() {
+            const popup = document.getElementById('qrisPopup');
+            const popupContent = popup.querySelector('.popup-content');
+            
+            let offsetX, offsetY, isDragging = false;
+        
+            popupContent.addEventListener('mousedown', function(event) {
+                isDragging = true;
+                offsetX = event.clientX - popup.offsetLeft;
+                offsetY = event.clientY - popup.offsetTop;
+                popupContent.style.cursor = 'grabbing';
+            });
+        
+            document.addEventListener('mousemove', function(event) {
+                if (isDragging) {
+                    popup.style.left = `${event.clientX - offsetX}px`;
+                    popup.style.top = `${event.clientY - offsetY}px`;
+                }
+            });
+        
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+                popupContent.style.cursor = 'move';
+            });
+        }
+        
+        // Fungsi untuk menutup popup QRIS
+        function closeQrisPopup() {
+            document.getElementById('qrisPopup').style.display = 'none';
+        }
+        
+        // Fungsi untuk mengatur tampilan pembayaran QRIS
+        function handlePaymentMethodChange() {
+            const paymentMethod = document.getElementById('payment_method');
+            const qrisPopup = document.getElementById('qrisPopup');
+            const buktiPembayaran = document.getElementById('buktiPembayaran');
+        
+            if (paymentMethod.value === 'QRIS') {
+                qrisPopup.style.display = 'block';
+                buktiPembayaran.style.display = 'block';
+            } else {
+                qrisPopup.style.display = 'none';
+                buktiPembayaran.style.display = 'none';
+            }
+        }
+        
+        // Fungsi untuk mendapatkan parameter dari URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Fungsi untuk mengatur layanan berdasarkan parameter URL
+        function setServiceFromUrl() {
+            const serviceParam = getUrlParameter('service');
+            if (!serviceParam) return;
+        
+            const serviceMapping = {
+                'fast-clean': '2',
+                'deep-clean': '1',
+                'unyellowing': '3',
+                'repaint': '4',
+                'repair-sol': '5',
+                'whitening': '6',
+                'leather-care': '7',
+                'reglue': '8'
+            };
+        
+            const serviceSelect = document.getElementById('service');
+            if (serviceMapping[serviceParam]) {
+                serviceSelect.value = serviceMapping[serviceParam];
+                updateHarga();
+            }
+        }
+        
+        // Event listener untuk submit form
+        document.getElementById("shoeServiceForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+        
+            const form = this;
+            const formData = new FormData(form);
+            const submitButton = form.querySelector('button[type="submit"]');
+            const successMessage = document.getElementById("successMessage");
+        
+            submitButton.disabled = true;
+            submitButton.textContent = 'Mengirim...';
+        
+            fetch("php/pesanan.php", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Terjadi kesalahan jaringan (${response.status}): ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === "success") {
+                    successMessage.style.display = "block";
+                    successMessage.textContent = data.message;
+                    
+                    form.reset();
+                    updateHarga();
+                    
+                    successMessage.scrollIntoView({ behavior: "smooth", block: "center" });
+        
+                    setTimeout(() => {
+                        successMessage.style.display = "none";
+                        window.location.href = data.redirect || "php/invoice.php";
+                    }, 1000);
+                } else {
+                    throw new Error(data.message || "Terjadi kesalahan saat memproses pesanan");
+                }
+            })
+            .catch(error => {
+                alert(`Terjadi kesalahan: ${error.message}`);
+                console.error("Error:", error);
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = "Kirim Pesanan";
+            });
+        });
+        
+        // Event listeners untuk inisialisasi
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi harga
+            const serviceSelect = document.getElementById('service');
+            if (serviceSelect.value) {
+                updateHarga();
+            }
+        
+            // Set layanan dari URL
+            setServiceFromUrl();
+        
+            // Aktifkan drag-and-drop pada popup
+            makePopupDraggable();
+        
+            // Tambahkan event listener untuk perubahan metode pembayaran
+            document.getElementById('payment_method').addEventListener('change', handlePaymentMethodChange);
+        });
+        </script>
+</body>
+</html>

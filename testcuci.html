@@ -16,7 +16,7 @@
             <a href="index.html">Beranda</a> 
             <a href="lokasi.html">Lokasi</a> 
             <a href="layanan.html">Layanan</a> 
-            <a href="cuci.html" class="active">Pesan</a> 
+            <a href="testcuci.html" class="active">Pesan</a> 
             <a href="review.html">Galeri</a> 
         </nav> 
         <div class="icons"> 
@@ -41,7 +41,7 @@
                 Pesanan berhasil dikirim! Kurir kami akan segera menghubungi Anda.
             </div>
 
-            <form id="shoeServiceForm" action="php/proses_pemesanan.php" method="POST">
+            <form id="shoeServiceForm" action="php/pesanan.php" method="POST">
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="name">Nama Lengkap</label>
@@ -183,8 +183,6 @@ function closeQrisPopup() {
     document.getElementById('qrisPopup').style.display = 'none';
 }
 
-
-
         // Fungsi untuk memformat harga ke format Rupiah
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', {
@@ -230,7 +228,7 @@ function closeQrisPopup() {
     submitButton.textContent = 'Mengirim...';
 
     // Kirim data ke server menggunakan fetch
-    fetch("php/proses_pemesanan.php", {
+    fetch("php/pesanan.php", {
         method: "POST",
         body: formData,
     })
@@ -259,7 +257,7 @@ function closeQrisPopup() {
                 setTimeout(() => {
                     successMessage.style.display = "none";
                     // Arahkan ke halaman invoice setelah 5 detik
-                    window.location.href = "invoice.php";
+                    window.location.href = "php/invoice.php";
                 }, 1000);
             } else {
                 // Tangani error dari respons server

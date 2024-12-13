@@ -69,7 +69,7 @@ include('database.php');
       <iframe 
         id="powerBiIframe" 
         title="PolijeUnited" 
-        src="https://app.powerbi.com/view?r=eyJrIjoiNjFkNWNiYjktZGFiNS00YmJjLWE1MWEtYzcwNmIwODNmOTllIiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D"
+        src="https://app.powerbi.com/view?r=eyJrIjoiZDI1NDliZmUtMTg0OC00MWVjLThmZWEtZmM4ZTYxMzgxY2E0IiwidCI6IjUyNjNjYzgxLTU5MTItNDJjNC1hYmMxLWQwZjFiNjY4YjUzMCIsImMiOjEwfQ%3D%3D"
         frameborder="0" 
         allowFullScreen="true" 
         style="width: 100vw; height: 100vh;">

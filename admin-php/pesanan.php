@@ -28,7 +28,27 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $bulan, $tahun);
 $stmt->execute();
 $result = $stmt->get_result();
+
+
+
+if (isset($_GET['status']) && $_GET['status'] == 'success') {
+    echo "<div class='popup success'>
+            <span class='close-btn' onclick='closePopup()'>&times;</span>
+            Pesanan berhasil dihapus!
+          </div>";
+} elseif (isset($_GET['status']) && $_GET['status'] == 'error') {
+    echo "<div class='popup error'>
+            <span class='close-btn' onclick='closePopup()'>&times;</span>
+            Terjadi kesalahan. Pesanan tidak dapat dihapus.
+          </div>";
+} elseif (isset($_GET['status']) && $_GET['status'] == 'invalid') {
+    echo "<div class='popup invalid'>
+            <span class='close-btn' onclick='closePopup()'>&times;</span>
+            ID Pesanan tidak valid!
+          </div>";
+}
 ?>
+
 
 
 <!DOCTYPE html>
@@ -41,6 +61,10 @@ $result = $stmt->get_result();
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/exshoetic/admin-css/sidebar.css"> 
   <link rel="stylesheet" href="/exshoetic/admin-css/cont-treatment.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 </head>
 <body>
 <style>
@@ -254,38 +278,48 @@ $result = $stmt->get_result();
         </tr>
       </thead>
       <tbody id="customerTable">
-        <?php
-        if ($result->num_rows > 0) {
-            $no = 1;
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$no}</td>
-                        <td>{$row['Nama']}</td>
-                        <td>{$row['Telepon']}</td>
-                        <td>{$row['Alamat']}</td>
-                        <td>{$row['ID_Pesanan']}</td>
-                        <td>{$row['Tanggal_Pesanan']}</td>
-                        <td>{$row['Treatment_ID']}</td>
-                        <td>{$row['Merk_Sepatu']}</td>
-                        <td>
-                            <span class='status-badge status-" . strtolower(str_replace(' ', '-', $row['Status'])) . "'>{$row['Status']}</span>
-                        </td>
-                        <td>
-                            <form method='POST' action='update_status.php'>
-                                <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
-                                <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
-                                    <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
-                                    <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
-                                </select>
-                            </form>
-                        </td>
-                      </tr>";
-                $no++;
-            }
-        } else {
-            echo "<tr><td colspan='10' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
-        }
-        ?>
+    <?php
+if ($result->num_rows > 0) {
+    $no = 1;
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>{$no}</td>
+                <td>{$row['Nama']}</td>
+                <td>{$row['Telepon']}</td>
+                <td>{$row['Alamat']}</td>
+                <td>{$row['ID_Pesanan']}</td>
+                <td>{$row['Tanggal_Pesanan']}</td>
+                <td>{$row['Treatment_ID']}</td>
+                <td>{$row['Merk_Sepatu']}</td>
+                <td>
+                    <span class='status-badge status-" . strtolower(str_replace(' ', '-', $row['Status'])) . "'>{$row['Status']}</span>
+                </td>
+                <td>
+                    <!-- Form to update the status -->
+                    <form method='POST' action='update_status.php' style='display:inline-block;'>
+                        <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
+                        <select name='status' onchange='updateStatus(this, {$row['ID_Pesanan']})'>
+                            <option value='Belum Selesai' " . ($row['Status'] == 'Belum Selesai' ? 'selected' : '') . ">Belum Selesai</option>
+                            <option value='Sudah Selesai' " . ($row['Status'] == 'Sudah Selesai' ? 'selected' : '') . ">Sudah Selesai</option>
+                        </select>
+                    </form>
+                    <!-- Delete order with trash icon -->
+                    <form method='POST' action='delete_pesanan.php' onsubmit='return confirm(\"Apakah Anda yakin ingin menghapus pesanan ini?\");' style='display:inline-block;'>
+                        <input type='hidden' name='id_pesanan' value='{$row['ID_Pesanan']}'>
+                        <button type='submit' style='background-color: red; border: none; cursor: pointer; padding: 5px 10px; border-radius: 5px;'>
+                            <i class='fas fa-trash' style='color: white; font-size: 20px;'></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>";
+        $no++;
+    }
+} else {
+    echo "<tr><td colspan='10' style='text-align: center;'>Data customer tidak ditemukan</td></tr>";
+}
+?>
+
+
       </tbody>
     </table>
   </div>
@@ -342,6 +376,57 @@ table {
     min-width: 100%;
     white-space: nowrap;
 }
+
+/* Popup styles */
+.popup {
+    position: fixed;
+    top: 20px; /* Bisa disesuaikan untuk mengatur jarak dari atas */
+    left: 50%;
+    transform: translateX(-50%); /* Untuk memposisikan pop-up tepat di tengah secara horizontal */
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center; /* Agar teks berada di tengah */
+}
+
+.popup.success {
+    background-color: #4CAF50; /* Green */
+}
+
+.popup.error {
+    background-color: #f44336; /* Red */
+}
+
+.popup.invalid {
+    background-color: #ff9800; /* Orange */
+}
+
+.popup .close-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.popup .close-btn:hover {
+    color: #ddd;
+}
+
+/* Hide the popup */
+.popup.hidden {
+    display: none;
+}
+
 </style>
 
 <script>
@@ -411,6 +496,23 @@ function toggleSidebar() {
     });
     submenu.classList.toggle('show');
   }
+
+
+
+  // Close popup when the close button is clicked
+function closePopup() {
+    var popup = document.querySelector('.popup');
+    popup.classList.add('hidden');
+}
+
+// Optional: Auto close the popup after 5 seconds
+setTimeout(function() {
+    var popup = document.querySelector('.popup');
+    if (popup) {
+        popup.classList.add('hidden');
+    }
+}, 5000); // 5000ms = 5 seconds
+
 </script>
 
 </body>

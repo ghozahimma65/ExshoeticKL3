@@ -46,16 +46,18 @@ $order = $result->fetch_assoc();
 </head>
 <body>
     <div class="invoice">
+        <button class="close-btn" onclick="closeInvoice()">×</button>
         <h1>Invoice</h1>
         <p><strong>Tanggal Pesanan:</strong> <?php echo date("d-m-Y", strtotime($order['Tanggal_Pesanan'])); ?></p>
         <p><strong>Nama:</strong> <?php echo htmlspecialchars($order['Nama']); ?></p>
         <p><strong>Nomor Telepon:</strong> <?php echo htmlspecialchars($order['No_Hp']); ?></p>
         <p><strong>Alamat:</strong> <?php echo htmlspecialchars($order['Alamat']); ?></p>
         <p><strong>Keterangan:</strong> <?php echo htmlspecialchars($order['Keterangan']); ?></p>
-        <p><strong>Merk Sepatu:</strong> <?php echo htmlspecialchars($order['Nama_Treatment']); ?></p>
+        <p><strong>Treatment:</strong> <?php echo htmlspecialchars($order['Nama_Treatment']); ?></p>
         <p><strong>Total Tagihan:</strong> <?php echo number_format($order['Total_Tagihan'], 0, ',', '.'); ?> IDR</p>
         
         <a href="#" id="download-btn" onclick="downloadPDF()">Download Invoice</a>
+        <a href="#" id="wa-btn" onclick="sendWhatsApp()">Konfirmasi ke WhatsApp</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -72,6 +74,26 @@ $order = $result->fetch_assoc();
 
             html2pdf().set(opt).from(invoice).save();
         }
+
+        function closeInvoice() {
+            document.querySelector('.invoice').style.display = 'none';
+        }
+
+        function sendWhatsApp() {
+                const nomorHP = "<?php echo htmlspecialchars($order['No_Hp']); ?>"; // Nomor pelanggan
+                const pesan = `Halo, <?php echo htmlspecialchars($order['Nama']); ?>!
+                
+            Pesanan Anda telah dibuat dengan detail berikut:
+            - Tanggal Pesanan: <?php echo date("d-m-Y", strtotime($order['Tanggal_Pesanan'])); ?>
+            - Treatment: <?php echo htmlspecialchars($order['Nama_Treatment']); ?>
+            - Total Tagihan: <?php echo number_format($order['Total_Tagihan'], 0, ',', '.'); ?> IDR.
+
+            Silakan hubungi kami untuk detail lebih lanjut. Terima kasih!`;
+
+                const url = `https://wa.me/${08155290506}?text=${encodeURIComponent(pesan)}`;
+                window.open(url, '_blank');
+            }
+
     </script>
 </body>
 </html>

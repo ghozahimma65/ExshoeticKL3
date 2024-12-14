@@ -4,7 +4,21 @@
     padding: 0;
     box-sizing: border-box;
   }
-  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #f44336;
+    cursor: pointer;
+}
+.close-btn:hover {
+    color: #d32f2f;
+}
+
   body {
     font-family: 'Roboto', sans-serif;
     background-color: #f8f9fa;
@@ -79,7 +93,31 @@
   .invoice p strong {
     color: var(--secondary-color);
   }
-  
+  #wa-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #25D366; /* Warna hijau WhatsApp */
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    transition: all 0.3s ease;
+}
+
+#wa-btn:hover {
+    background-color: #1CA751; /* Warna hijau lebih gelap */
+    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+    transform: translateY(-3px);
+}
+
+#wa-btn:focus {
+    outline: 3px solid #1CA751;
+    outline-offset: 2px;
+}
+
   #download-btn {
     display: inline-block;
     margin-top: 20px;

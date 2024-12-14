@@ -15,11 +15,32 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     text-align: center;
     transition: 0.3s;
+    display: flex; /* Mengaktifkan flexbox */
+    flex-direction: column; /* Kolom vertikal */
+    justify-content: flex-start; /* Konten awal dimulai dari atas */
+    align-items: center; /* Rata tengah horizontal */
+    height: 100%; /* Pastikan card memiliki tinggi penuh */
 }
 
 .service-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.service-card a{
+    margin-top: auto; /* Mendorong tombol ke bagian bawah */
+    padding: 0.5rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.service-card a:hover {
+    background-color: var(--secondary-color); /* Warna saat hover */
 }
 
 .service-card h3 {

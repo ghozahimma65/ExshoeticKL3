@@ -42,29 +42,8 @@ $order = $result->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice - Exshoetic</title>
-    <link rel="stylesheet" href="css/invoice.css"> <!-- Optional: Add your own CSS for styling -->
+    <link rel="stylesheet" href="../css/faktur.css">
 </head>
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-.invoice {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-h1 {
-    text-align: center;
-}
-
-footer {
-    text-align: center;
-    margin-top: 20px;
-}
-</style>
 <body>
     <div class="invoice">
         <h1>Invoice</h1>
@@ -75,10 +54,25 @@ footer {
         <p><strong>Keterangan:</strong> <?php echo htmlspecialchars($order['Keterangan']); ?></p>
         <p><strong>Merk Sepatu:</strong> <?php echo htmlspecialchars($order['Nama_Treatment']); ?></p>
         <p><strong>Total Tagihan:</strong> <?php echo number_format($order['Total_Tagihan'], 0, ',', '.'); ?> IDR</p>
+        
+        <a href="#" id="download-btn" onclick="downloadPDF()">Download Invoice</a>
     </div>
-    <footer>
-        <p>Terima kasih telah menggunakan layanan kami!</p>
-    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const invoice = document.querySelector('.invoice');
+            const opt = {
+                margin: 10,
+                filename: 'invoice_<?php echo $id_pesanan; ?>.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(invoice).save();
+        }
+    </script>
 </body>
 </html>
 

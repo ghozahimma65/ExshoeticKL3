@@ -1,0 +1,159 @@
+/* Reset dasar untuk memastikan konsistensi */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* Variabel global untuk warna dan lainnya */
+  :root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --secondary-color: #495057;
+    --background-light: #f8f9fa;
+    --background-gradient: linear-gradient(135deg, #e3f2fd, #ffffff);
+    --text-color: #343a40;
+    --muted-color: #6c757d;
+    --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    --border-radius: 20px;
+  }
+  
+  /* Styling elemen utama */
+  .invoice {
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    border: 1px solid #e9ecef;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .invoice:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .invoice:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-gradient);
+    z-index: -1;
+  }
+  
+  .invoice h1 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+  }
+  
+  .invoice p {
+    font-size: 1rem;
+    margin: 10px 0;
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+  
+  .invoice p strong {
+    color: var(--secondary-color);
+  }
+  
+  #download-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  #download-btn:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+    transform: translateY(-3px);
+  }
+  
+  #download-btn:focus {
+    outline: 3px solid var(--primary-hover);
+    outline-offset: 2px;
+  }
+  
+  footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted-color);
+  }
+  
+  footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  footer a:hover {
+    color: var(--primary-hover);
+  }
+  
+  /* Media query untuk tampilan responsif */
+  @media (max-width: 768px) {
+    .invoice {
+      padding: 20px;
+    }
+  
+    .invoice h1 {
+      font-size: 1.8rem;
+    }
+  
+    #download-btn {
+      font-size: 0.9rem;
+      padding: 10px 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .invoice {
+      padding: 15px;
+    }
+  
+    .invoice h1 {
+      font-size: 1.5rem;
+    }
+  
+    #download-btn {
+      font-size: 0.8rem;
+      padding: 8px 16px;
+    }
+  
+    footer {
+      font-size: 0.8rem;
+    }
+  }
+  

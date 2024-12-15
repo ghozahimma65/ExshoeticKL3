@@ -1,15 +1,30 @@
 <?php
 // Konfigurasi koneksi database
+// cors
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+
+// Handle preflight (OPTIONS) requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
+// Konfigurasi koneksi database
 $host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'exshoetic_db';
+$user = 'mifmyho2_exshoetic';
+$password = '@Mif2024';
+$dbname = 'mifmyho2_exshoetic';
 
 $conn = new mysqli($host, $user, $password, $dbname);
 
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+// if ($conn->connect_error) {
+//     die("Koneksi gagal: " . $conn->connect_error);
+// } else {
+//     echo "Koneksi berhasil!";
+// }
 
 // Ambil ID pesanan dari parameter URL
 $id_pesanan = isset($_GET['id_pesanan']) ? intval($_GET['id_pesanan']) : 0;

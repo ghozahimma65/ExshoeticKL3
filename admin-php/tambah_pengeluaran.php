@@ -13,16 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $harga_satuan = (int) htmlspecialchars($_POST['harga_satuan']);
     $total = (int) htmlspecialchars($_POST['total']);
     $harga_jumlah = $harga_satuan * $total;
+    $tanggal = htmlspecialchars($_POST['tanggal']); // Tangkap tanggal dari input
 
-    if (empty($nama_barang) || empty($harga_satuan) || empty($total)) {
+    if (empty($nama_barang) || empty($harga_satuan) || empty($total) || empty($tanggal)) {
         echo "<script>alert('Semua field wajib diisi!');</script>";
     } else {
         if (!$conn) {
             die('Koneksi database gagal: ' . mysqli_connect_error());
         }
 
-        $query = "INSERT INTO pengeluaran (id_pengeluaran, nama_barang, harga_satuan, total, jumlah_harga) 
-                  VALUES ('$id_pengeluaran', '$nama_barang', '$harga_satuan', '$total', '$harga_jumlah')";
+        $query = "INSERT INTO pengeluaran (id_pengeluaran, nama_barang, harga_satuan, total, jumlah_harga, tanggal_pembelian) 
+                  VALUES ('$id_pengeluaran', '$nama_barang', '$harga_satuan', '$total', '$harga_jumlah', '$tanggal')";
 
         if (mysqli_query($conn, $query)) {
             $success = true; // Menandai proses berhasil
@@ -52,24 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     font-size: 16px;
 }
 
-      .alert-success {
-        background-color: #4CAF50;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 18px;
-        border-radius: 5px;
-        display: none;
-      }
-      .alert-error {
-        background-color: #f44336;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 18px;
-        border-radius: 5px;
-        display: none;
-      }
+.alert-error {
+    background-color: #f44336;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 5px;
+    display: none;
+}
     </style>
   </head>
   <body>
@@ -81,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="success-message" id="successMessage" style="display: <?php echo $success ? 'block' : 'none'; ?>;">
-    Data pengeluaran berhasil ditambahkan
-</div>
+            Data pengeluaran berhasil ditambahkan
+        </div>
 
         <div id="errorMessage" class="alert-error">
           Terjadi kesalahan saat menyimpan data
@@ -106,6 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
               <label for="harga_jumlah">Harga Jumlah</label>
               <input type="number" id="harga_jumlah" name="harga_jumlah" readonly required />
+            </div>
+            <div class="form-group">
+              <label for="tanggal">Tanggal</label>
+              <input type="date" id="tanggal" name="tanggal" value="<?php echo date('Y-m-d'); ?>" required />
             </div>
           </div>
           <button type="submit" class="btn-submit">Kirim Data</button>
@@ -139,25 +135,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       document.getElementById("total").addEventListener("input", updateTotal);
 
       // Show success message after form submission
-      function showSuccessMessage() {
-        document.getElementById("successMessage").style.display = "block";
-      }
-
-      // Show error message if something goes wrong
-      function showErrorMessage() {
-        document.getElementById("errorMessage").style.display = "block";
-      }
+      document.addEventListener("DOMContentLoaded", function () {
+          const successMessage = document.getElementById("successMessage");
+          if (successMessage.style.display === "block") {
+              setTimeout(() => {
+                  successMessage.style.display = "none"; // Sembunyikan pesan setelah 3 detik
+              }, 3000);
+          }
+      });
     </script>
-    <script>
-  document.addEventListener("DOMContentLoaded", function () {
-      const successMessage = document.getElementById("successMessage");
-      if (successMessage.style.display === "block") {
-          setTimeout(() => {
-              successMessage.style.display = "none"; // Sembunyikan pesan setelah 3 detik
-          }, 3000);
-      }
-  });
-</script>
-
   </body>
 </html>
